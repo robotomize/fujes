@@ -2,15 +2,13 @@
 
 namespace jsonSearch;
 
-require_once 'AbstractSearch.php';
-
 /**
  * Class RecursiveTraversal
  * @package jsonSearch
  * @author robotomzie@gmail.com
- * @version 0.0.1
+ * @version 0.2
  */
-class LevDistanceSearch extends AbstractSearch
+class SearchTreeWalk extends AbstractSearch
 {
     /**
      * @var array
@@ -37,6 +35,11 @@ class LevDistanceSearch extends AbstractSearch
     }
 
     /**
+     * @var int
+     */
+    private static $_coefficient = 1.5;
+
+    /**
      * @param $current
      * @param $key
      *
@@ -44,11 +47,12 @@ class LevDistanceSearch extends AbstractSearch
      */
     private function compareStart($current, $key)
     {
-        $compare = levenshtein(mb_strtolower($current), $this->_matchString);
+        $compare = levenshtein(strtolower($current), $this->_matchString);
         return [$key, $current, $compare];
     }
 
     /**
+     * Recursive array converted from json
      * @param $inputArray
      * @param string $key
      *
@@ -61,6 +65,10 @@ class LevDistanceSearch extends AbstractSearch
         }
 
         foreach ($inputArray as $kkey => $values) {
+            /**
+             * Check came an array or a string, if the string, then compare with the unknown.
+             * If you receive an array, calls itself recursively.
+             */
             if (is_array($values)) {
                 $keys = $key !== '' ?  sprintf('%s,%s', $key, $kkey) : $kkey;
                 $this->search($values, $keys, $level);
@@ -87,6 +95,7 @@ class LevDistanceSearch extends AbstractSearch
     private $_sortingArray = [];
 
     /**
+     * It is necessary to generate an array of reference on the basis of race Levenshtein
      * @return array
      */
     private function generateSortArray()
@@ -98,6 +107,7 @@ class LevDistanceSearch extends AbstractSearch
     }
 
     /**
+     * This method sorts the resulting array of distance.
      * @return bool
      */
     private function sortingScoreMatrix()
@@ -123,7 +133,31 @@ class LevDistanceSearch extends AbstractSearch
             }
         }
     }
-    
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if (0 !== count($this->_scoreMatrix)) {
+            return serialize($this->_scoreMatrix);
+        } else {
+            return serialize($this);
+        }
+    }
+
+    /**
+     * @return $this|array
+     */
+    public function __invoke()
+    {
+        if (0 !== count($this->_scoreMatrix)) {
+            return $this->_scoreMatrix;
+        } else {
+            return $this;
+        }
+    }
+
     /**
      * @return array
      */
@@ -194,29 +228,5 @@ class LevDistanceSearch extends AbstractSearch
     public function setInputArray($inputArray)
     {
         $this->_inputArray = $inputArray;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        if (0 !== count($this->_scoreMatrix)) {
-            return serialize($this->_scoreMatrix);
-        } else {
-            return serialize($this);
-        }
-    }
-
-    /**
-     * @return $this|array
-     */
-    public function __invoke()
-    {
-        if (0 !== count($this->_scoreMatrix)) {
-            return $this->_scoreMatrix;
-        } else {
-            return $this;
-        }
     }
 }
