@@ -3,7 +3,7 @@
 namespace FuzzyJsonSearch;
 
 /**
- * Class RecursiveTraversal
+ * Class SearchTreeWalk
  * @package jsonSearch
  * @author robotomzie@gmail.com
  * @version 0.3

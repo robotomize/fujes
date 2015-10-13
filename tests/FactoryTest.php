@@ -2,40 +2,47 @@
 
 namespace tests;
 
+use FuzzyJsonSearch\SearchFactory;
+
+/**
+ * Class JsonSearchTest
+ * @package tests
+ * @author robotomize@gmail.com
+ */
 class JsonSearchTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        return true;
+        //return true;
     }
 
     public function testFacade()
     {
-        return true;
+        //return true;
     }
 
     public function testSearchEngineObject()
     {
-        return true;
+        //return true;
     }
 
     public function testCompareLevenshtein()
     {
-        return true;
+        //return true;
     }
 
     public function testArrayParse()
     {
-        return true;
+        //return true;
     }
 
     public function testFetchOne()
     {
-        return true;
+        //return true;
     }
 
     public function testFetchFew()
     {
-        return true;
+        //return true;
     }
 }
