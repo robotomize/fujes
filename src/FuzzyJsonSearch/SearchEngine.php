@@ -1,6 +1,6 @@
 <?php
 
-namespace jsonSearch;
+namespace FuzzyJsonSearch;
 
 /**
  * Class FuzzyFuzzy Json Search Engine
@@ -158,9 +158,7 @@ class SearchEngine
              * Calculating matrix with scores
              */
             $searchObj->search();
-            print 'tractor ' . $this->getMultipleResult() . PHP_EOL;
             if (0 !== count($searchObj->getDirectMatch()) && !$this->_multipleResult) {
-                print 'mamka';
                 $searchObj->setScoreMatrix($searchObj->getDirectMatch());
             } else {
                 $searchObj->relevantCalc();
@@ -168,9 +166,7 @@ class SearchEngine
 
             $this->_sortedScoreMatrix = $searchObj->getScoreMatrix();
             $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
-            print $this->getRangeSortedMatrix();
         }
-
     }
 
     /**

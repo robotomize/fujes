@@ -1,6 +1,6 @@
 <?php
 
-namespace jsonSearch;
+namespace FuzzyJsonSearch;
 
 /**
  * Class RecursiveTraversal

@@ -1,6 +1,6 @@
 <?php
 
-namespace jsonSearch;
+namespace FuzzyJsonSearch;
 
 ini_set('memory_limit', '1024M');
 
