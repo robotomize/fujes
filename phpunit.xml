@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    phpunit configuration file
+
+    phpunit -c phpunit.xml
+-->
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="./src/vendor/autoload.php">
+    <testsuites>
+        <testsuite name="FuJaySearch tests">
+            <directory suffix=".php">./tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

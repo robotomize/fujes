@@ -1,17 +1,21 @@
 <?php
+/**
+ * @link    http://github.com/myclabs/php-enum
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
 namespace FuzzyJsonSearch;
 
 /**
  * Class FuzzyFuzzy Json Search Engine
  *
- * ** FuuJaySearch **
+ * ** FuJaySearch **
  *
  * This is the class that implements the FUZZY search json document. This is an approximate version.
  * You can use it to FUZZY search when receiving data from the mongo or external API.
  * Algorithm? Simple recursive pass on the document tree json.
  * The complexity of the algorithm, when passing the array O(n).
- * Use the glasses on the basis of metrics Levenshtein. The lower floor is gaining points the higher the rank.
+ * Use the glasses on the basis of metrics of Levenshtein. The lower floor is gaining points the higher the rank.
  *
  * @package jsonSearch
  * @author robotomize@gmail.com
