@@ -10,8 +10,10 @@ namespace FuzzyJsonSearch;
  * @author  robotomize@gmail.com
  * @version
  * @usage
- * $resultArray = SearchEngineFactory::createSearchEngine('http://uWtfAPI.json', 'Avengers', 1, true)->fetchOne(); -> json string
- * $resultArray = SearchEngineFactory::createSearchEngine('http://uWtfAPI.json', 'Avengers', 1, false)->fetchOne(); -> PHP assoc array
+ * $resultArray = SearchEngineFactory::createSearchEngine('http://uWtfAPI.json', 'Avengers', 1, true)->fetchOne();
+ * -> json string
+ * $resultArray = SearchEngineFactory::createSearchEngine('http://uWtfAPI.json', 'Avengers', 1, false)->fetchOne();
+ * -> PHP assoc array
  */
 class SearchFactory
 {

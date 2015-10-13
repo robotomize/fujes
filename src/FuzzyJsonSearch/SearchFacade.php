@@ -18,35 +18,37 @@ class SearchFacade
     /**
      * @var string
      */
-    private $_urlName = '';
+    private $urlName = '';
 
     /**
      * @var string
      */
-    private $_matchString = '';
+    private $matchString = '';
 
     /**
      * @var int
      */
-    private $_depth;
+    private $depth;
 
     /**
      * @var
      */
-    private $_jsonEncode;
+    private $jsonEncode;
 
     /**
      * @var boolean
      */
-    private $_multipleResult;
+    private $multipleResult;
 
     /**
      * Facade constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
      * @param $matchString      -> 'What we are looking for'
-     * @param int                                                                          $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
-     * @param bool                                                                         $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
+     * @param int
+     * $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
+     * @param bool
+     * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool
      */
     public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
@@ -54,11 +56,11 @@ class SearchFacade
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
         } else {
-            $this->_urlName = $urlName;
-            $this->_matchString = mb_strtolower($matchString);
-            $this->_depth = 0;
-            $this->_jsonEncode = $jsonEncode;
-            $this->_multipleResult = $multipleResult;
+            $this->urlName = $urlName;
+            $this->matchString = mb_strtolower($matchString);
+            $this->depth = 0;
+            $this->jsonEncode = $jsonEncode;
+            $this->multipleResult = $multipleResult;
         }
     }
 
@@ -70,7 +72,10 @@ class SearchFacade
     public function fetchOne()
     {
         $jsonSearch = new SearchEngine(
-            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode
+            $this->urlName,
+            $this->matchString,
+            $this->depth,
+            $this->jsonEncode
         );
         $jsonSearch->run();
         return $jsonSearch->fetchOne();
@@ -86,7 +91,11 @@ class SearchFacade
     public function fetchFew($count)
     {
         $jsonSearch = new SearchEngine(
-            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode, $this->_multipleResult
+            $this->urlName,
+            $this->matchString,
+            $this->depth,
+            $this->jsonEncode,
+            $this->multipleResult
         );
         $jsonSearch->run();
         return $jsonSearch->fetchFew($count);
@@ -100,7 +109,11 @@ class SearchFacade
     public function fetchAll()
     {
         $jsonSearch = new SearchEngine(
-            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode, $this->_multipleResult
+            $this->urlName,
+            $this->matchString,
+            $this->depth,
+            $this->jsonEncode,
+            $this->multipleResult
         );
         $jsonSearch->run();
         return $jsonSearch->fetchAll();
@@ -119,7 +132,7 @@ class SearchFacade
      */
     public function __toString()
     {
-        if ($this->_jsonEncode == false) {
+        if ($this->jsonEncode == false) {
             return serialize($this->fetchOne());
         } else {
             return $this->fetchOne();
@@ -131,7 +144,7 @@ class SearchFacade
      */
     public function getUrlName()
     {
-        return $this->_urlName;
+        return $this->urlName;
     }
 
     /**
@@ -139,7 +152,7 @@ class SearchFacade
      */
     public function setUrlName($urlName)
     {
-        $this->_urlName = $urlName;
+        $this->urlName = $urlName;
     }
 
     /**
@@ -147,7 +160,7 @@ class SearchFacade
      */
     public function getMatchString()
     {
-        return $this->_matchString;
+        return $this->matchString;
     }
 
     /**
@@ -155,7 +168,7 @@ class SearchFacade
      */
     public function setMatchString($matchString)
     {
-        $this->_matchString = $matchString;
+        $this->matchString = $matchString;
     }
 
     /**
@@ -163,7 +176,7 @@ class SearchFacade
      */
     public function getDepth()
     {
-        return $this->_depth;
+        return $this->depth;
     }
 
     /**
@@ -171,7 +184,7 @@ class SearchFacade
      */
     public function setDepth($depth)
     {
-        $this->_depth = $depth;
+        $this->depth = $depth;
     }
 
     /**
@@ -179,7 +192,7 @@ class SearchFacade
      */
     public function getJsonEncode()
     {
-        return $this->_jsonEncode;
+        return $this->jsonEncode;
     }
 
     /**
@@ -187,7 +200,7 @@ class SearchFacade
      */
     public function setJsonEncode($jsonEncode)
     {
-        $this->_jsonEncode = $jsonEncode;
+        $this->jsonEncode = $jsonEncode;
     }
 
     /**
@@ -195,7 +208,7 @@ class SearchFacade
      */
     public function getMultipleResult()
     {
-        return $this->_multipleResult;
+        return $this->multipleResult;
     }
 
     /**
@@ -203,6 +216,6 @@ class SearchFacade
      */
     public function setMultipleResult($resultsCount)
     {
-        $this->_multipleResult = $resultsCount;
+        $this->multipleResult = $resultsCount;
     }
 }

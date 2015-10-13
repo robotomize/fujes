@@ -13,17 +13,17 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @var array
      */
-    private $_inputArray = [];
+    private $inputArray = [];
 
     /**
      * @var string
      */
-    private $_matchString = '';
+    private $matchString = '';
 
     /**
      * @var boolean
      */
-    private $_multipleResult;
+    private $multipleResult;
 
     /**
      * @param $inputArray
@@ -34,26 +34,26 @@ class SearchTreeWalk extends AbstractSearch
         if (0 === count($inputArray) || $matchString === '') {
             throw new \InvalidArgumentException;
         } else {
-            $this->_inputArray = $inputArray;
-            $this->_matchString = $matchString;
-            $this->_multipleResult = $multipleResult;
+            $this->inputArray = $inputArray;
+            $this->matchString = $matchString;
+            $this->multipleResult = $multipleResult;
         }
     }
 
     /**
      * @var int
      */
-    private static $_coefficient = 1.5;
+    private static $coefficient = 1.5;
 
     /**
      * @var int
      */
-    private static $_directMatchCoefficient = 0;
+    private static $directMatchCoefficient = 0;
 
     /**
      * @var array
      */
-    private $_directMatch = [];
+    private $directMatch = [];
 
     /**
      * Direct comparison for equality.
@@ -65,8 +65,8 @@ class SearchTreeWalk extends AbstractSearch
      */
     private function directCompareTwoString($current, $key)
     {
-        if (strtolower($current) === $this->_matchString) {
-            $this->_directMatch[] = [$key, $current, self::$_directMatchCoefficient];
+        if (strtolower($current) === $this->matchString) {
+            $this->directMatch[] = [$key, $current, self::$directMatchCoefficient];
             return true;
         } else {
             return false;
@@ -85,7 +85,7 @@ class SearchTreeWalk extends AbstractSearch
     public function preSearch($inputArray = [], $key = '', $level = 0)
     {
         if (0 === count($inputArray)) {
-            $inputArray = $this->_inputArray;
+            $inputArray = $this->inputArray;
         }
 
         foreach ($inputArray as $kk => $vv) {
@@ -98,7 +98,7 @@ class SearchTreeWalk extends AbstractSearch
                 $this->preSearch($vv, $keys, $level);
             } else {
                 $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
-                if(!$this->directCompareTwoString($vv, $keys)) {
+                if (!$this->directCompareTwoString($vv, $keys)) {
                     continue;
                 } else {
                     break;
@@ -106,7 +106,7 @@ class SearchTreeWalk extends AbstractSearch
             }
         }
 
-        if (0 !== count($this->_directMatch)) {
+        if (0 !== count($this->directMatch)) {
             return true;
         } else {
             return false;
@@ -116,7 +116,7 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @var int
      */
-    private static $_precision = 3;
+    private static $precision = 3;
 
     /**
      * @param $current
@@ -126,9 +126,9 @@ class SearchTreeWalk extends AbstractSearch
      */
     private function compareStart($current, $key)
     {
-        $compare = levenshtein(strtolower($current), $this->_matchString);
-        if (strtolower($current) === $this->_matchString || $compare <= self::$_precision) {
-            $this->_directMatch[] = [$key, $current, $compare];
+        $compare = levenshtein(strtolower($current), $this->matchString);
+        if (strtolower($current) === $this->matchString || $compare <= self::$precision) {
+            $this->directMatch[] = [$key, $current, $compare];
             return [$key, $current, $compare];
         } else {
             return [$key, $current, $compare];
@@ -146,7 +146,7 @@ class SearchTreeWalk extends AbstractSearch
     public function search($inputArray = [], $key = '', $level = 0)
     {
         if (0 === count($inputArray)) {
-            $inputArray = $this->_inputArray;
+            $inputArray = $this->inputArray;
         }
 
         foreach ($inputArray as $kk => $vv) {
@@ -159,13 +159,13 @@ class SearchTreeWalk extends AbstractSearch
                 $this->search($vv, $keys, $level);
             } else {
                 $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
-                $this->_scoreMatrix[] = $this->compareStart($vv, $keys);
-                if (0 !== count($this->_directMatch) && !$this->_multipleResult) {
+                $this->scoreMatrix[] = $this->compareStart($vv, $keys);
+                if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
                 }
             }
         }
-        if (0 !== count($this->_scoreMatrix)) {
+        if (0 !== count($this->scoreMatrix)) {
             return true;
         } else {
             return false;
@@ -175,12 +175,12 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @var array
      */
-    private $_scoreMatrix = [];
+    private $scoreMatrix = [];
 
     /**
      * @var array
      */
-    private $_sortingArray = [];
+    private $sortingArray = [];
 
     /**
      * It is necessary to generate an array of reference on the basis of race Levenshtein
@@ -188,10 +188,10 @@ class SearchTreeWalk extends AbstractSearch
      */
     private function generateSortArray()
     {
-        foreach ($this->_scoreMatrix as $vv) {
-            $this->_sortingArray[] = $vv[2];
+        foreach ($this->scoreMatrix as $vv) {
+            $this->sortingArray[] = $vv[2];
         }
-        return $this->_sortingArray;
+        return $this->sortingArray;
     }
 
     /**
@@ -200,8 +200,8 @@ class SearchTreeWalk extends AbstractSearch
      */
     private function sortingScoreMatrix()
     {
-        if (0 !== $this->_scoreMatrix) {
-            array_multisort($this->generateSortArray(), SORT_DESC, $this->_scoreMatrix, SORT_ASC);
+        if (0 !== $this->scoreMatrix) {
+            array_multisort($this->generateSortArray(), SORT_DESC, $this->scoreMatrix, SORT_ASC);
         } else {
             return false;
         }
@@ -213,9 +213,9 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function relevantCalc()
     {
-        if (0 !== count($this->_scoreMatrix)) {
+        if (0 !== count($this->scoreMatrix)) {
             if ($this->sortingScoreMatrix()) {
-                return $this->_scoreMatrix;
+                return $this->scoreMatrix;
             } else {
                 return [];
             }
@@ -227,8 +227,8 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function __toString()
     {
-        if (0 !== count($this->_scoreMatrix)) {
-            return serialize($this->_scoreMatrix);
+        if (0 !== count($this->scoreMatrix)) {
+            return serialize($this->scoreMatrix);
         } else {
             return serialize($this);
         }
@@ -239,8 +239,8 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function __invoke()
     {
-        if (0 !== count($this->_scoreMatrix)) {
-            return $this->_scoreMatrix;
+        if (0 !== count($this->scoreMatrix)) {
+            return $this->scoreMatrix;
         } else {
             return $this;
         }
@@ -251,7 +251,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getScoreMatrix()
     {
-        return $this->_scoreMatrix;
+        return $this->scoreMatrix;
     }
 
     /**
@@ -259,7 +259,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getSortingArray()
     {
-        return $this->_sortingArray;
+        return $this->sortingArray;
     }
 
     /**
@@ -267,7 +267,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getCountArrays()
     {
-        return [count($this->_sortingArray), count($this->_scoreMatrix)];
+        return [count($this->sortingArray), count($this->scoreMatrix)];
     }
 
     /**
@@ -275,7 +275,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getMatchString()
     {
-        return $this->_matchString;
+        return $this->matchString;
     }
 
     /**
@@ -283,7 +283,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function setMatchString($matchString)
     {
-        $this->_matchString = $matchString;
+        $this->matchString = $matchString;
     }
 
     /**
@@ -291,7 +291,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getMatch()
     {
-        return $this->_matchString;
+        return $this->matchString;
     }
 
     /**
@@ -299,7 +299,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function setMatch($match)
     {
-        $this->_matchString = $match;
+        $this->matchString = $match;
     }
 
     /**
@@ -307,7 +307,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getInputArray()
     {
-        return $this->_inputArray;
+        return $this->inputArray;
     }
 
     /**
@@ -315,7 +315,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function setInputArray($inputArray)
     {
-        $this->_inputArray = $inputArray;
+        $this->inputArray = $inputArray;
     }
 
     /**
@@ -323,7 +323,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getDirectMatch()
     {
-        return $this->_directMatch;
+        return $this->directMatch;
     }
 
     /**
@@ -331,7 +331,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function setScoreMatrix($scoreMatrix)
     {
-        $this->_scoreMatrix = $scoreMatrix;
+        $this->scoreMatrix = $scoreMatrix;
     }
 
     /**
@@ -339,7 +339,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public static function getPrecision()
     {
-        return self::$_precision;
+        return self::$precision;
     }
 
     /**
@@ -347,7 +347,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public static function setPrecision($precision)
     {
-        self::$_precision = $precision;
+        self::$precision = $precision;
     }
 
     /**
@@ -355,7 +355,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function getMultipleResult()
     {
-        return $this->_multipleResult;
+        return $this->multipleResult;
     }
 
     /**
@@ -363,7 +363,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public function setMultipleResult($resultsCount)
     {
-        $this->_multipleResult = $resultsCount;
+        $this->multipleResult = $resultsCount;
     }
 
     /**
@@ -371,7 +371,7 @@ class SearchTreeWalk extends AbstractSearch
      */
     public static function getDirectMatchCoefficient()
     {
-        return self::$_directMatchCoefficient;
+        return self::$directMatchCoefficient;
     }
 
     /**
@@ -379,6 +379,6 @@ class SearchTreeWalk extends AbstractSearch
      */
     public static function setDirectMatchCoefficient($directMatchCoefficient)
     {
-        self::$_directMatchCoefficient = $directMatchCoefficient;
+        self::$directMatchCoefficient = $directMatchCoefficient;
     }
 }

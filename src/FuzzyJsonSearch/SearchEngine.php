@@ -30,35 +30,37 @@ class SearchEngine
     /**
      * @var string
      */
-    private $_urlName = '';
+    private $urlName = '';
 
     /**
      * @var string
      */
-    private $_matchString = '';
+    private $matchString = '';
 
     /**
      * @var int
      */
-    private $_depth = 0;
+    private $depth = 0;
 
     /**
      * @var
      */
-    private $_jsonEncode;
+    private $jsonEncode;
 
     /**
      * @var boolean
      */
-    private $_multipleResult;
+    private $multipleResult;
 
     /**
      * Search engine constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
      * @param $matchString      -> 'What we are looking for'
-     * @param int                                                                          $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
-     * @param bool                                                                         $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
+     * @param int
+     * $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
+     * @param bool
+     * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool              -> multiple result or no
      */
     public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
@@ -66,33 +68,33 @@ class SearchEngine
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
         } else {
-            $this->_urlName = $urlName;
-            $this->_matchString = mb_strtolower($matchString);
-            $this->_depth = $depth;
-            $this->_jsonEncode = $jsonEncode;
-            $this->_multipleResult = $multipleResult;
+            $this->urlName = $urlName;
+            $this->matchString = mb_strtolower($matchString);
+            $this->depth = $depth;
+            $this->jsonEncode = $jsonEncode;
+            $this->multipleResult = $multipleResult;
         }
     }
 
     /**
      * @var string
      */
-    private $_jsonData = '';
+    private $jsonData = '';
 
     /**
      * @var array
      */
-    private $_jsonTree = [];
+    private $jsonTree = [];
 
     /**
      * @var array
      */
-    private $_errorStackTraces = [];
+    private $errorStackTraces = [];
 
     /**
      * @var int
      */
-    private $_rangeSortedMatrix = 0;
+    private $rangeSortedMatrix = 0;
 
     /**
      * Parsing Json to array and that is all
@@ -100,15 +102,15 @@ class SearchEngine
     private function parseJsonToArray()
     {
         try {
-            $this->_jsonData = file_get_contents($this->_urlName);
-            $this->_jsonTree = json_decode($this->_jsonData, true);
+            $this->jsonData = file_get_contents($this->urlName);
+            $this->jsonTree = json_decode($this->jsonData, true);
         } catch (\Exception $ex) {
             /**
              * Fast view Exceptions
              */
             print sprintf('You get exception in %s with message %s', $ex->getLine(), $ex->getMessage());
 
-            $this->_errorStackTraces[] = [
+            $this->errorStackTraces[] = [
                 $ex->getCode(),
                 $ex->getFile(),
                 $ex->getLine(),
@@ -121,12 +123,12 @@ class SearchEngine
     /**
      * @var array
      */
-    private $_relevantTree = [];
+    private $relevantTree = [];
 
     /**
      * @var array
      */
-    private $_sortedScoreMatrix = [];
+    private $sortedScoreMatrix = [];
 
     /**
      * Function for preliminary passage through the tree.
@@ -140,8 +142,8 @@ class SearchEngine
         $searchObject->preSearch();
         if (0 !== count($searchObject->getDirectMatch())) {
             $searchObject->setScoreMatrix($searchObject->getDirectMatch());
-            $this->_sortedScoreMatrix = $searchObject->getScoreMatrix();
-            $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+            $this->sortedScoreMatrix = $searchObject->getScoreMatrix();
+            $this->setRangeSortedMatrix(count($this->sortedScoreMatrix));
             return true;
         } else {
             return false;
@@ -154,29 +156,29 @@ class SearchEngine
     public function run()
     {
         $this->parseJsonToArray();
-        $searchObj = new SearchTreeWalk($this->_jsonTree, $this->_matchString, $this->_multipleResult);
+        $searchObj = new SearchTreeWalk($this->jsonTree, $this->matchString, $this->multipleResult);
 
-        if (!$this->_multipleResult) {
+        if (!$this->multipleResult) {
             $searchObj->preSearch();
         }
 
         if (0 !== count($searchObj->getDirectMatch())) {
             $searchObj->setScoreMatrix($searchObj->getDirectMatch());
-            $this->_sortedScoreMatrix = $searchObj->getScoreMatrix();
-            $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+            $this->sortedScoreMatrix = $searchObj->getScoreMatrix();
+            $this->setRangeSortedMatrix(count($this->sortedScoreMatrix));
         } else {
             /**
              * Calculating matrix with scores
              */
             $searchObj->search();
-            if (0 !== count($searchObj->getDirectMatch()) && !$this->_multipleResult) {
+            if (0 !== count($searchObj->getDirectMatch()) && !$this->multipleResult) {
                 $searchObj->setScoreMatrix($searchObj->getDirectMatch());
             } else {
                 $searchObj->relevantCalc();
             }
 
-            $this->_sortedScoreMatrix = $searchObj->getScoreMatrix();
-            $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+            $this->sortedScoreMatrix = $searchObj->getScoreMatrix();
+            $this->setRangeSortedMatrix(count($this->sortedScoreMatrix));
         }
     }
 
@@ -188,22 +190,22 @@ class SearchEngine
     private function createResultArray($relevantArray)
     {
         if (0 === count($relevantArray)) {
-            $relevantArray = $this->_relevantTree;
+            $relevantArray = $this->relevantTree;
         }
 
         $keysArray = explode(',', $relevantArray[0]);
 
-        if ($this->_depth === 0) {
+        if ($this->depth === 0) {
             $depth = count($keysArray) - 1;
         } else {
-            $depth = count($keysArray) - $this->_depth;
+            $depth = count($keysArray) - $this->depth;
         }
 
         $keysArray = array_slice($keysArray, 0, $depth);
         $needleBranch = [];
         foreach ($keysArray as $vv) {
             if (0 === count($needleBranch)) {
-                $needleBranch = $this->_jsonTree[$vv];
+                $needleBranch = $this->jsonTree[$vv];
             } else {
                 $needleBranch = $needleBranch[$vv];
             }
@@ -218,9 +220,9 @@ class SearchEngine
     private function jsonEncode($needleBranch)
     {
         if (0 !== count($needleBranch)) {
-            return $this->_jsonEncode ? json_encode($needleBranch) : $needleBranch;
+            return $this->jsonEncode ? json_encode($needleBranch) : $needleBranch;
         } else {
-            return $this->_jsonEncode ? json_encode($this->_relevantTree) : $this->_relevantTree;
+            return $this->jsonEncode ? json_encode($this->relevantTree) : $this->relevantTree;
         }
     }
 
@@ -231,20 +233,20 @@ class SearchEngine
      */
     public function fetchOne()
     {
-        $this->_relevantTree = array_pop($this->_sortedScoreMatrix);
-        $branchArray = $this->createResultArray($this->_relevantTree);
+        $this->relevantTree = array_pop($this->sortedScoreMatrix);
+        $branchArray = $this->createResultArray($this->relevantTree);
         return $this->jsonEncode($branchArray);
     }
 
     /**
      * @var array
      */
-    private $_moreRelevantJsonTreesOnArray = [];
+    private $moreRelevantJsonTreesOnArray = [];
 
     /**
      * @var string
      */
-    private $_moreJsonTreesOnString = '';
+    private $moreJsonTreesOnString = '';
 
     /**
      * Get a set of search results, specify the number yourself.
@@ -255,25 +257,25 @@ class SearchEngine
      */
     public function fetchFew($count = 1)
     {
-        if (!$this->_multipleResult) {
+        if (!$this->multipleResult) {
             return $this->fetchOne();
         }
 
-        if ($count > $this->_rangeSortedMatrix) {
-            $count = $this->_rangeSortedMatrix;
+        if ($count > $this->rangeSortedMatrix) {
+            $count = $this->rangeSortedMatrix;
         }
         while ($count > 0) {
-            $this->_relevantTree = array_pop($this->_sortedScoreMatrix);
-            $branchArray = $this->createResultArray($this->_relevantTree);
-            if ($this->_jsonEncode == true) {
-                $this->_moreJsonTreesOnString .= $this->jsonEncode($branchArray);
+            $this->relevantTree = array_pop($this->sortedScoreMatrix);
+            $branchArray = $this->createResultArray($this->relevantTree);
+            if ($this->jsonEncode == true) {
+                $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
             } else {
-                $this->_moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
+                $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
             }
 
             $count--;
         }
-        return $this->_jsonEncode ? $this->_moreJsonTreesOnString : $this->_moreRelevantJsonTreesOnArray;
+        return $this->jsonEncode ? $this->moreJsonTreesOnString : $this->moreRelevantJsonTreesOnArray;
     }
 
     /**
@@ -283,22 +285,22 @@ class SearchEngine
      */
     public function fetchAll()
     {
-        if (!$this->_multipleResult) {
+        if (!$this->multipleResult) {
             return $this->fetchOne();
         }
 
-        $count = count($this->_sortedScoreMatrix);
+        $count = count($this->sortedScoreMatrix);
         while ($count > 0) {
-            $this->_relevantTree = array_pop($this->_sortedScoreMatrix);
-            $branchArray = $this->createResultArray($this->_relevantTree);
-            if ($this->_jsonEncode == true) {
-                $this->_moreJsonTreesOnString .= $this->jsonEncode($branchArray);
+            $this->relevantTree = array_pop($this->sortedScoreMatrix);
+            $branchArray = $this->createResultArray($this->relevantTree);
+            if ($this->jsonEncode == true) {
+                $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
             } else {
-                $this->_moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
+                $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
             }
             $count--;
         }
-        return $this->_jsonEncode ? $this->_moreJsonTreesOnString : $this->_moreRelevantJsonTreesOnArray;
+        return $this->jsonEncode ? $this->moreJsonTreesOnString : $this->moreRelevantJsonTreesOnArray;
     }
 
     /**
@@ -306,10 +308,10 @@ class SearchEngine
      */
     public function __toString()
     {
-        if (0 === count($this->_relevantTree)) {
+        if (0 === count($this->relevantTree)) {
             return '';
         } else {
-            return $this->jsonEncode($this->_relevantTree);
+            return $this->jsonEncode($this->relevantTree);
         }
     }
 
@@ -318,7 +320,7 @@ class SearchEngine
      */
     public function __invoke()
     {
-        if (0 === count($this->_relevantTree)) {
+        if (0 === count($this->relevantTree)) {
             $this->run();
             return $this->fetchOne();
         } else {
@@ -331,7 +333,7 @@ class SearchEngine
      */
     public function getMatchString()
     {
-        return $this->_matchString;
+        return $this->matchString;
     }
 
     /**
@@ -339,7 +341,7 @@ class SearchEngine
      */
     public function setMatchString($matchString)
     {
-        $this->_matchString = $matchString;
+        $this->matchString = $matchString;
     }
 
     /**
@@ -347,7 +349,7 @@ class SearchEngine
      */
     public function getUrlName()
     {
-        return $this->_urlName;
+        return $this->urlName;
     }
 
     /**
@@ -355,7 +357,7 @@ class SearchEngine
      */
     public function setUrlName($urlName)
     {
-        $this->_urlName = $urlName;
+        $this->urlName = $urlName;
     }
 
     /**
@@ -363,7 +365,7 @@ class SearchEngine
      */
     public function getJsonTree()
     {
-        return $this->_jsonTree;
+        return $this->jsonTree;
     }
 
     /**
@@ -371,7 +373,7 @@ class SearchEngine
      */
     public function setJsonTree($jsonTree)
     {
-        $this->_jsonTree = $jsonTree;
+        $this->jsonTree = $jsonTree;
     }
 
     /**
@@ -379,7 +381,7 @@ class SearchEngine
      */
     public function getRelevantTree()
     {
-        return $this->_relevantTree;
+        return $this->relevantTree;
     }
 
     /**
@@ -387,7 +389,7 @@ class SearchEngine
      */
     public function getErrorStackTraces()
     {
-        return $this->_errorStackTraces;
+        return $this->errorStackTraces;
     }
 
     /**
@@ -395,7 +397,7 @@ class SearchEngine
      */
     public function getJsonData()
     {
-        return $this->_jsonData;
+        return $this->jsonData;
     }
 
     /**
@@ -403,7 +405,7 @@ class SearchEngine
      */
     public function getScoreMatrix()
     {
-        return $this->_sortedScoreMatrix;
+        return $this->sortedScoreMatrix;
     }
 
     /**
@@ -411,7 +413,7 @@ class SearchEngine
      */
     public function setRangeSortedMatrix($rangeSortedMatrix)
     {
-        $this->_rangeSortedMatrix = $rangeSortedMatrix;
+        $this->rangeSortedMatrix = $rangeSortedMatrix;
     }
 
     /**
@@ -419,7 +421,7 @@ class SearchEngine
      */
     public function getMoreJsonTreesOnString()
     {
-        return $this->_moreJsonTreesOnString;
+        return $this->moreJsonTreesOnString;
     }
 
     /**
@@ -427,7 +429,7 @@ class SearchEngine
      */
     public function getRangeSortedMatrix()
     {
-        return $this->_rangeSortedMatrix;
+        return $this->rangeSortedMatrix;
     }
 
     /**
@@ -435,7 +437,7 @@ class SearchEngine
      */
     public function getSortedScoreMatrix()
     {
-        return $this->_sortedScoreMatrix;
+        return $this->sortedScoreMatrix;
     }
 
     /**
@@ -443,7 +445,7 @@ class SearchEngine
      */
     public function getDepth()
     {
-        return $this->_depth;
+        return $this->depth;
     }
 
     /**
@@ -451,7 +453,7 @@ class SearchEngine
      */
     public function getJsonEncode()
     {
-        return $this->_jsonEncode;
+        return $this->jsonEncode;
     }
 
     /**
@@ -459,7 +461,7 @@ class SearchEngine
      */
     public function getMultipleResult()
     {
-        return $this->_multipleResult;
+        return $this->multipleResult;
     }
 
     /**
@@ -467,6 +469,6 @@ class SearchEngine
      */
     public function setMultipleResult($resultsCount)
     {
-        $this->_multipleResult = $resultsCount;
+        $this->multipleResult = $resultsCount;
     }
 }
