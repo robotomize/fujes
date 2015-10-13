@@ -3,7 +3,9 @@
 namespace jsonSearch;
 
 /**
- * Class SearchEngine
+ * Class FuzzyFuzzy Json Search Engine
+ *
+ * ** FuuJaySearch **
  *
  * This is the class that implements the FUZZY search json document. This is an approximate version.
  * You can use it to FUZZY search when receiving data from the mongo or external API.
@@ -13,7 +15,7 @@ namespace jsonSearch;
  *
  * @package jsonSearch
  * @author robotomize@gmail.com
- * @version 0.2
+ * @version 0.3
  * @usage
  * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true)
  * $tt->run();
@@ -43,6 +45,11 @@ class SearchEngine
     private $_jsonEncode;
 
     /**
+     * @var boolean
+     */
+    private $_multipleResult;
+
+    /**
      * Search engine constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -50,7 +57,7 @@ class SearchEngine
      * @param int $depth        -> 'Nesting depth of the resulting array. Standard 1, key => value'
      * @param bool $jsonEncode  -> 'Encode whether the result back in json or leave in an array php'
      */
-    public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true)
+    public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
     {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
@@ -59,6 +66,7 @@ class SearchEngine
             $this->_matchString = mb_strtolower($matchString);
             $this->_depth = $depth;
             $this->_jsonEncode = $jsonEncode;
+            $this->_multipleResult = $multipleResult;
         }
     }
 
@@ -94,8 +102,15 @@ class SearchEngine
             /**
              * Fast view Exceptions
              */
-            print sprintf('U get exception in %s with message %s', $ex->getLine(), $ex->getMessage());
-            $this->_errorStackTraces[] = [$ex->getCode(), $ex->getFile(), $ex->getLine(), $ex->getMessage(), $ex->getTraceAsString()];
+            print sprintf('You get exception in %s with message %s', $ex->getLine(), $ex->getMessage());
+
+            $this->_errorStackTraces[] = [
+                $ex->getCode(),
+                $ex->getFile(),
+                $ex->getLine(),
+                $ex->getMessage(),
+                $ex->getTraceAsString()
+            ];
         }
     }
 
@@ -109,22 +124,53 @@ class SearchEngine
      */
     private $_sortedScoreMatrix = [];
 
+    public function preCompilationDirectMatch(SearchTreeWalk $searchObject)
+    {
+        $searchObject->preSearch();
+        if (0 !== count($searchObject->getDirectMatch())) {
+            $searchObject->setScoreMatrix($searchObject->getDirectMatch());
+            $this->_sortedScoreMatrix = $searchObject->getScoreMatrix();
+            $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Main method
      */
     public function run()
     {
         $this->parseJsonToArray();
-        $searchObj = new SearchTreeWalk($this->_jsonTree, $this->_matchString);
+        $searchObj = new SearchTreeWalk($this->_jsonTree, $this->_matchString, $this->_multipleResult);
 
-        /**
-         * Calculating matrix with scores
-         */
-        $searchObj->search();
-        $searchObj->relevantCalc();
+        if (!$this->_multipleResult) {
+            $searchObj->preSearch();
+        }
 
-        $this->_sortedScoreMatrix = $searchObj->getScoreMatrix();
-        $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+        if (0 !== count($searchObj->getDirectMatch())) {
+            $searchObj->setScoreMatrix($searchObj->getDirectMatch());
+            $this->_sortedScoreMatrix = $searchObj->getScoreMatrix();
+            $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+        } else {
+            /**
+             * Calculating matrix with scores
+             */
+            $searchObj->search();
+            print 'tractor ' . $this->getMultipleResult() . PHP_EOL;
+            if (0 !== count($searchObj->getDirectMatch()) && !$this->_multipleResult) {
+                print 'mamka';
+                $searchObj->setScoreMatrix($searchObj->getDirectMatch());
+            } else {
+                $searchObj->relevantCalc();
+            }
+
+            $this->_sortedScoreMatrix = $searchObj->getScoreMatrix();
+            $this->setRangeSortedMatrix(count($this->_sortedScoreMatrix));
+            print $this->getRangeSortedMatrix();
+        }
+
     }
 
     /**
@@ -202,6 +248,10 @@ class SearchEngine
      */
     public function fetchFew($count = 1)
     {
+        if (!$this->_multipleResult) {
+            return $this->fetchOne();
+        }
+
         if ($count > $this->_rangeSortedMatrix) {
             $count = $this->_rangeSortedMatrix;
         }
@@ -226,6 +276,10 @@ class SearchEngine
      */
     public function fetchAll()
     {
+        if (!$this->_multipleResult) {
+            return $this->fetchOne();
+        }
+
         $count = count($this->_sortedScoreMatrix);
         while ($count > 0) {
             $this->_relevantTree = array_pop($this->_sortedScoreMatrix);
@@ -391,5 +445,21 @@ class SearchEngine
     public function getJsonEncode()
     {
         return $this->_jsonEncode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMultipleResult()
+    {
+        return $this->_multipleResult;
+    }
+
+    /**
+     * @param int $resultsCount
+     */
+    public function setMultipleResult($resultsCount)
+    {
+        $this->_multipleResult = $resultsCount;
     }
 }

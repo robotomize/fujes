@@ -10,7 +10,7 @@ namespace jsonSearch;
  *
  * @package jsonSearch
  * @author robotomize@gmail.com
- * @version 0.2
+ * @version 0.3
  */
 class SearchFacade
 {
@@ -36,6 +36,11 @@ class SearchFacade
     private $_jsonEncode;
 
     /**
+     * @var boolean
+     */
+    private $_multipleResult;
+
+    /**
      * Facade constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -43,7 +48,7 @@ class SearchFacade
      * @param int $depth        -> 'Nesting depth of the resulting array. Standard 1, key => value'
      * @param bool $jsonEncode  -> 'Encode whether the result back in json or leave in an array php'
      */
-    public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true)
+    public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
     {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
@@ -52,6 +57,7 @@ class SearchFacade
             $this->_matchString = mb_strtolower($matchString);
             $this->_depth = 0;
             $this->_jsonEncode = $jsonEncode;
+            $this->_multipleResult = $multipleResult;
         }
     }
 
@@ -79,7 +85,7 @@ class SearchFacade
     public function fetchFew($count)
     {
         $jsonSearch = new SearchEngine(
-            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode
+            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode, $this->_multipleResult
         );
         $jsonSearch->run();
         return $jsonSearch->fetchFew($count);
@@ -93,7 +99,7 @@ class SearchFacade
     public function fetchAll()
     {
         $jsonSearch = new SearchEngine(
-            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode
+            $this->_urlName, $this->_matchString, $this->_depth, $this->_jsonEncode, $this->_multipleResult
         );
         $jsonSearch->run();
         return $jsonSearch->fetchAll();
@@ -181,5 +187,21 @@ class SearchFacade
     public function setJsonEncode($jsonEncode)
     {
         $this->_jsonEncode = $jsonEncode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMultipleResult()
+    {
+        return $this->_multipleResult;
+    }
+
+    /**
+     * @param int $resultsCount
+     */
+    public function setMultipleResult($resultsCount)
+    {
+        $this->_multipleResult = $resultsCount;
     }
 }

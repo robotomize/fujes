@@ -23,9 +23,9 @@ class SearchFactory
      *
      * @return SearchEngine
      */
-    public static function createSearchEngine($urlName, $matchString, $depth, $jsonEncode)
+    public static function createSearchEngine($urlName, $matchString, $depth, $jsonEncode, $multipleResult)
     {
-        $objectFactory = new SearchEngine($urlName, $matchString, $depth, $jsonEncode);
+        $objectFactory = new SearchEngine($urlName, $matchString, $depth, $jsonEncode, $multipleResult);
         $objectFactory->run();
         return $objectFactory;
     }
