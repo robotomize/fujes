@@ -26,17 +26,24 @@ class SearchTreeWalk extends AbstractSearch
     private $multipleResult;
 
     /**
+     * @var int
+     */
+    private $quality;
+
+    /**
      * @param $inputArray
      * @param $matchString
      */
-    public function __construct($inputArray, $matchString, $multipleResult = false)
+    public function __construct($inputArray, $matchString, $multipleResult = false, $quality = 3)
     {
         if (0 === count($inputArray) || $matchString === '') {
             throw new \InvalidArgumentException;
         } else {
             $this->inputArray = $inputArray;
-            $this->matchString = $matchString;
+            $this->matchString = mb_strtolower($matchString);
             $this->multipleResult = $multipleResult;
+            $this->quality = $quality;
+            $this->precision = $this->quality;
         }
     }
 
@@ -63,7 +70,7 @@ class SearchTreeWalk extends AbstractSearch
      *
      * @return array|bool
      */
-    private function directCompareTwoString($current, $key)
+    public function directCompareTwoString($current, $key)
     {
         if (strtolower($current) === $this->matchString) {
             $this->directMatch[] = [$key, $current, self::$directMatchCoefficient];
@@ -116,7 +123,7 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @var int
      */
-    private static $precision = 3;
+    private $precision = 3;
 
     /**
      * @param $current
@@ -124,10 +131,10 @@ class SearchTreeWalk extends AbstractSearch
      *
      * @return array
      */
-    private function compareStart($current, $key)
+    public function compareStart($current, $key)
     {
         $compare = levenshtein(strtolower($current), $this->matchString);
-        if (strtolower($current) === $this->matchString || $compare <= self::$precision) {
+        if (strtolower($current) === $this->matchString || $compare <= $this->precision) {
             $this->directMatch[] = [$key, $current, $compare];
             return [$key, $current, $compare];
         } else {
@@ -284,22 +291,6 @@ class SearchTreeWalk extends AbstractSearch
     public function setMatchString($matchString)
     {
         $this->matchString = $matchString;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMatch()
-    {
-        return $this->matchString;
-    }
-
-    /**
-     * @param string $match
-     */
-    public function setMatch($match)
-    {
-        $this->matchString = $match;
     }
 
     /**

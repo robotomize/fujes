@@ -41,6 +41,11 @@ class SearchFacade
     private $multipleResult;
 
     /**
+     * @var int
+     */
+    private $quality = 3;
+
+    /**
      * Facade constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -51,7 +56,7 @@ class SearchFacade
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool
      */
-    public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
+    public function __construct($urlName, $matchString, $depth = 1, $jsonEncode = true, $multipleResult = false)
     {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
@@ -217,5 +222,21 @@ class SearchFacade
     public function setMultipleResult($resultsCount)
     {
         $this->multipleResult = $resultsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuality()
+    {
+        return $this->quality;
+    }
+
+    /**
+     * @param int $quality
+     */
+    public function setQuality($quality)
+    {
+        $this->quality = $quality;
     }
 }

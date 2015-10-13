@@ -10,9 +10,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 
 
-$tt = new SearchFacade(__DIR__ . '/data/cities.json', 'vldivastok', 1, true, false);
+$tt = new SearchFacade(__DIR__ . '/data/cities.json', 'ekateburg', 1, false, false);
 \PHP_Timer::start();
-print $tt->fetchOne() . PHP_EOL;
+print $tt->fetchOne()['name'] . PHP_EOL;
 $time = \PHP_Timer::stop();
 print \PHP_Timer::secondsToTimeString($time);
 print PHP_EOL . $tt->getMultipleResult();

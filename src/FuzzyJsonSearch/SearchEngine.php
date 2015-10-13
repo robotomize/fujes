@@ -53,6 +53,11 @@ class SearchEngine
     private $multipleResult;
 
     /**
+     * @var int
+     */
+    private $quality;
+
+    /**
      * Search engine constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -63,7 +68,7 @@ class SearchEngine
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool              -> multiple result or no
      */
-    public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
+    public function __construct($urlName, $matchString, $depth = 1, $jsonEncode = true, $multipleResult = false, $quality = 3)
     {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
@@ -73,6 +78,7 @@ class SearchEngine
             $this->depth = $depth;
             $this->jsonEncode = $jsonEncode;
             $this->multipleResult = $multipleResult;
+            $this->quality = $quality;
         }
     }
 
@@ -156,7 +162,7 @@ class SearchEngine
     public function run()
     {
         $this->parseJsonToArray();
-        $searchObj = new SearchTreeWalk($this->jsonTree, $this->matchString, $this->multipleResult);
+        $searchObj = new SearchTreeWalk($this->jsonTree, $this->matchString, $this->multipleResult, $this->quality);
 
         if (!$this->multipleResult) {
             $searchObj->preSearch();
