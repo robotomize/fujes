@@ -5,7 +5,7 @@ namespace FuzzyJsonSearch;
 /**
  * Class SearchTreeWalk
  * @package jsonSearch
- * @author robotomzie@gmail.com
+ * @author  robotomzie@gmail.com
  * @version 0.3
  */
 class SearchTreeWalk extends AbstractSearch
@@ -76,9 +76,9 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * Function for preliminary passage through the tree.
      *
-     * @param array $inputArray
+     * @param array  $inputArray
      * @param string $key
-     * @param int $level
+     * @param int    $level
      *
      * @return bool
      */
@@ -137,8 +137,9 @@ class SearchTreeWalk extends AbstractSearch
 
     /**
      * Recursive array converted from json
+     *
      * @param $inputArray
-     * @param string $key
+     * @param string     $key
      *
      * @return bool
      */

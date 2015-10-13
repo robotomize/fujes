@@ -18,13 +18,12 @@ namespace FuzzyJsonSearch;
  * Use the glasses on the basis of metrics of Levenshtein. The lower floor is gaining points the higher the rank.
  *
  * @package jsonSearch
- * @author robotomize@gmail.com
+ * @author  robotomize@gmail.com
  * @version 0.3
  * @usage
  * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true)
  * $tt->run();
  * print $tt->fetchOne();
- *
  */
 class SearchEngine
 {
@@ -58,8 +57,9 @@ class SearchEngine
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
      * @param $matchString      -> 'What we are looking for'
-     * @param int $depth        -> 'Nesting depth of the resulting array. Standard 1, key => value'
-     * @param bool $jsonEncode  -> 'Encode whether the result back in json or leave in an array php'
+     * @param int                                                                          $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
+     * @param bool                                                                         $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
+     * @param bool              -> multiple result or no
      */
     public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
     {
@@ -102,7 +102,7 @@ class SearchEngine
         try {
             $this->_jsonData = file_get_contents($this->_urlName);
             $this->_jsonTree = json_decode($this->_jsonData, true);
-        } catch(\Exception $ex) {
+        } catch (\Exception $ex) {
             /**
              * Fast view Exceptions
              */
@@ -128,6 +128,13 @@ class SearchEngine
      */
     private $_sortedScoreMatrix = [];
 
+    /**
+     * Function for preliminary passage through the tree.
+     *
+     * @param SearchTreeWalk $searchObject
+     *
+     * @return bool
+     */
     public function preCompilationDirectMatch(SearchTreeWalk $searchObject)
     {
         $searchObject->preSearch();

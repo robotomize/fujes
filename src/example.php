@@ -5,12 +5,12 @@ ini_set('memory_limit', '1024M');
 use FuzzyJsonSearch\SearchFacade;
 use FuzzyJsonSearch\SearchFactory;
 
-include 'autoload.php';
-include '../vendor/autoload.php';
+require __DIR__ . '/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 
 
-$tt = new SearchFacade('data/cities.json', 'vldivastok', 1, true, false);
+$tt = new SearchFacade(__DIR__ . '/data/cities.json', 'vldivastok', 1, true, false);
 \PHP_Timer::start();
 print $tt->fetchOne() . PHP_EOL;
 $time = \PHP_Timer::stop();

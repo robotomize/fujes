@@ -9,7 +9,7 @@ namespace FuzzyJsonSearch;
  * have the option of using factory or techniques to deal with directly.
  *
  * @package jsonSearch
- * @author robotomize@gmail.com
+ * @author  robotomize@gmail.com
  * @version 0.3
  */
 class SearchFacade
@@ -45,8 +45,9 @@ class SearchFacade
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
      * @param $matchString      -> 'What we are looking for'
-     * @param int $depth        -> 'Nesting depth of the resulting array. Standard 1, key => value'
-     * @param bool $jsonEncode  -> 'Encode whether the result back in json or leave in an array php'
+     * @param int                                                                          $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
+     * @param bool                                                                         $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
+     * @param bool
      */
     public function __construct($urlName, $matchString, $depth = 0, $jsonEncode = true, $multipleResult = false)
     {

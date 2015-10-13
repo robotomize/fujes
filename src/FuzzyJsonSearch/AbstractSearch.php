@@ -8,7 +8,7 @@ namespace FuzzyJsonSearch;
  * You can search for another class that implements only the search can be inherited and expanded.
  *
  * @package jsonSearch
- * @author robotomize@gmail.com
+ * @author  robotomize@gmail.com
  */
 abstract class AbstractSearch
 {
