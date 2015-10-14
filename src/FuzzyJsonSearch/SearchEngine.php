@@ -150,7 +150,6 @@ class SearchEngine
             $this->jsonData = file_get_contents($this->urlName);
             $this->jsonTree = json_decode($this->jsonData, true);
         } catch (\Exception $ex) {
-
             /**
              * Fast view Exceptions
              */
@@ -162,7 +161,7 @@ class SearchEngine
                  */
                 try {
                     $this->exceptionObject->saveToDisk($ex);
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
                     print $dumpEx . PHP_EOL;
                     print $e->getTraceAsString() . PHP_EOL;

@@ -55,11 +55,11 @@ class ExceptionWrap
     public function fetchAll()
     {
         foreach ($this->errorStackTraces as $vv) {
-            print sprintf('code:    %s',    $vv['code'])        . PHP_EOL;
-            print sprintf('file:    %s',    $vv['file'])        . PHP_EOL;
-            print sprintf('line:    %s',    $vv['line'])        . PHP_EOL;
-            print sprintf('msg:     %s',    $vv['msg'])         . PHP_EOL;
-            print sprintf('string:  %s',    $vv['string'])      . PHP_EOL;
+            print sprintf('code: %s', $vv['code']) . PHP_EOL;
+            print sprintf('file: %s', $vv['file']) . PHP_EOL;
+            print sprintf('line: %s', $vv['line']) . PHP_EOL;
+            print sprintf('msg: %s', $vv['msg']) . PHP_EOL;
+            print sprintf('string: %s', $vv['string']) . PHP_EOL;
         }
     }
 
@@ -76,7 +76,7 @@ class ExceptionWrap
     {
         try {
             $this->logger->addError(Carbon::now()->toDateTimeString() . ' : ' . $objEx->getTraceAsString());
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->push($e);
         }
         $this->push($objEx);
