@@ -23,7 +23,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         'vladvostk',            // 0
         'vladivostok',          // 1
         'moscow',               // 2
-        'mcow',                 // 3
+        'mocow',                // 3
         'ekateburg',            // 4
         'mscow',                // 5
         'yuzhno-sakhalinsk',    // 6
@@ -53,13 +53,147 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     private static $prefix = __DIR__ . '/../src/data/';
 
+    /**
+     * @group factory
+     */
     public function testCities()
     {
-        //print SearchFactory::createSearchEngine(self::$prefix . self::$testUrlName[2], self::$bioForTest[0], 1, true, false);
+        $this->assertEquals('Vladivostok', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[0],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Vladivostok', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[1],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Moscow', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[2],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Moscow', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[3],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Ekaterinburg', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[4],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Moscow', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[5],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[6],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[7],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[8],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Newport', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[9],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Kaliningrad', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[13],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+        $this->assertEquals('Smolensk', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[14],
+            2,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['name']);
+
+
     }
 
+    /**
+     * @group Bio
+     */
     public function testBio()
-    {}
+    {
+        $this->assertEquals('56939', SearchFactory::createSearchEngine(
+        self::$prefix . self::$testUrlName[2],
+        self::$bioForTest[0],
+        1,
+        false,
+        false,
+        1,
+        'dev'
+    )->fetchOne()['line']);
+        $this->assertEquals('57113', SearchFactory::createSearchEngine(
+            self::$prefix . self::$testUrlName[2],
+            self::$bioForTest[1],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['line']);
+    }
 
 }
 

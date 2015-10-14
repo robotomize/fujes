@@ -7,6 +7,8 @@ require __DIR__ . '/../src/autoload.php';
 use FuzzyJsonSearch\SearchEngine;
 use FuzzyJsonSearch\SearchTreeWalk;
 
+ini_set('memory_limit', '1024M');
+
 /**
  * Class SearchEngineTest
  * @package tests
@@ -81,7 +83,8 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
             self::$testMatchString[8],
             1,
             false,
-            false
+            false,
+            1
         );
         $searchEngine->run();
 
@@ -124,14 +127,15 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($searchWalk->getDirectMatch()));
 
         $searchWalk->compareStart('yugnosakhalinsk', mt_rand(0, 10));
-        $this->assertEquals(2, count($searchWalk->getDirectMatch()));
+        $this->assertEquals(1, count($searchWalk->getDirectMatch()));
 
         $searchWalk->compareStart('yuzhno-sakhalinsk', mt_rand(0, 10));
-        $this->assertEquals(3, count($searchWalk->getDirectMatch()));
+        $this->assertEquals(1, count($searchWalk->getDirectMatch()));
     }
 
     /**
      * Parsing json test
+     * @group parse
      */
     public function testParseJson()
     {
@@ -177,8 +181,8 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSearch()
     {
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[10], 1, false, false);
+        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[10], 2, false, false);
         $searchEngine->run();
-        $this->assertEquals('Komako', $searchEngine->fetchOne()['name']);
+        $this->assertEquals('Soroako', $searchEngine->fetchOne()['name']);
     }
 }

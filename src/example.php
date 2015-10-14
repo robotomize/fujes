@@ -12,11 +12,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 
 //$tt = new SearchFacade(__DIR__ . '/data/biographical-directory-footnotes.json', 'Christensen', 1, false, false);
-$tt = new SearchEngine(__DIR__ . '/data/biographical-directory-footnotes.json', 'Maxwell', 1, false, true, 1, 'dev');
+$tt = new SearchEngine(__DIR__ . '/data/biographical-directory-footnotes.json', 'Max', 1, false, true, 1, 'dev');
+
 //print $tt->getVersionType();
 \PHP_Timer::start();
 //print_r($tt->fetchOne());
 $tt->run();
+//print_r($tt->getSortedScoreMatrix());
 print_r($tt->fetchOne());
 $time = \PHP_Timer::stop();
 print \PHP_Timer::secondsToTimeString($time);

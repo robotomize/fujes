@@ -43,7 +43,7 @@ class SearchFacade
     /**
      * @var int
      */
-    private $quality = 3;
+    private $quality;
 
     /**
      * Facade constructor
@@ -63,7 +63,7 @@ class SearchFacade
         } else {
             $this->urlName = $urlName;
             $this->matchString = mb_strtolower($matchString);
-            $this->depth = 0;
+            $this->depth = $depth;
             $this->jsonEncode = $jsonEncode;
             $this->multipleResult = $multipleResult;
         }

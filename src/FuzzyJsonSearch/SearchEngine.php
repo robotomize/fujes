@@ -9,7 +9,8 @@ namespace FuzzyJsonSearch;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Carbon\Carbon;
-
+use Utils\Log;
+use Utils\ExWrap;
 /**
  * Class FuzzyFuzzy Json Search Engine
  *
@@ -44,7 +45,7 @@ class SearchEngine
     /**
      * @var int
      */
-    private $depth = 0;
+    private $depth;
 
     /**
      * @var
@@ -78,6 +79,11 @@ class SearchEngine
     private $logger;
 
     /**
+     * @var
+     */
+    private $exceptionObject;
+
+    /**
      * Search engine constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -108,9 +114,10 @@ class SearchEngine
             $this->multipleResult = $multipleResult;
             $this->quality = $quality;
             $this->versionType = $versionType;
+            $this->exceptionObject = new ExWrap();
 
             if ($this->versionType === 'dev') {
-                $this->logger = new Logger('Exceptions');
+                $this->logger = new Logger('Logging');
                 $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../data/logs/common.log', Logger::DEBUG));
             }
         }
@@ -160,9 +167,9 @@ class SearchEngine
             try {
                 $this->logger->addError(Carbon::now()->toDateTimeString() . ' : ' . $objEx->getTraceAsString());
             } catch(\Exception $e) {
-                $this->pushErrorStackTrace($e);
+                $this->exceptionObject->push($e);
             }
-            $this->pushErrorStackTrace($objEx);
+            $this->exceptionObject->push($objEx);
         }
     }
 
@@ -185,7 +192,7 @@ class SearchEngine
                 /**
                  * Debug section
                  */
-                $this->pushErrorTrace($ex);
+                $this->exceptionObject->push($ex);
                 try {
                     $this->logger->addError($dumpEx);
                     $this->logger->addError($ex->getTraceAsString());
@@ -195,7 +202,7 @@ class SearchEngine
                     /**
                      * Debug section
                      */
-                    $this->pushErrorTrace($e);
+                    $this->exceptionObject->push($e);
 
                     print $e->getTraceAsString() . PHP_EOL;
                 }
@@ -305,7 +312,6 @@ class SearchEngine
          * Parse stored keys
          */
         $keysArray = explode(',', $relevantArray[0]);
-
         if ($this->depth === 0) {
             $depth = count($keysArray) - 1;
         } else {
@@ -415,7 +421,7 @@ class SearchEngine
                  * Print if debug setting on
                  */
                 $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
-                $this->pushErrorTrace($e);
+                $this->exceptionObject->push($e);
 
                 /**
                  * Debug section
