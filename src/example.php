@@ -10,7 +10,6 @@ require __DIR__ . '/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 
-
 //$tt = new SearchFacade(__DIR__ . '/data/biographical-directory-footnotes.json', 'Christensen', 1, false, false);
 $tt = new SearchEngine(__DIR__ . '/data/biographical-directory-footnotes.json', 'Max', 1, false, true, 1, 'dev');
 

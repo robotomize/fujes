@@ -10,7 +10,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Carbon\Carbon;
 use Utils\Log;
-use Utils\ExWrap;
+use Utils\ExceptionWrap;
 /**
  * Class FuzzyFuzzy Json Search Engine
  *
@@ -114,12 +114,10 @@ class SearchEngine
             $this->multipleResult = $multipleResult;
             $this->quality = $quality;
             $this->versionType = $versionType;
-            $this->exceptionObject = new ExWrap();
 
-            if ($this->versionType === 'dev') {
-                $this->logger = new Logger('Logging');
-                $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../data/logs/common.log', Logger::DEBUG));
-            }
+            $this->exceptionObject = new ExceptionWrap();
+
+            $this->logger = new Log($this->versionType);
         }
     }
 
@@ -144,36 +142,6 @@ class SearchEngine
     private $rangeSortedMatrix = 0;
 
     /**
-     * @param \Exception $objEx
-     */
-    private function pushErrorStackTrace(\Exception $objEx)
-    {
-        $this->errorStackTraces[] = [
-            $objEx->getCode(),
-            $objEx->getFile(),
-            $objEx->getLine(),
-            $objEx->getMessage(),
-            $objEx->getTraceAsString()
-        ];
-    }
-
-    /**
-     *
-     * @param \Exception $objEx
-     */
-    private function pushErrorTrace(\Exception $objEx)
-    {
-        if ($this->versionType === 'dev') {
-            try {
-                $this->logger->addError(Carbon::now()->toDateTimeString() . ' : ' . $objEx->getTraceAsString());
-            } catch(\Exception $e) {
-                $this->exceptionObject->push($e);
-            }
-            $this->exceptionObject->push($objEx);
-        }
-    }
-
-    /**
      * Parsing Json to array and that is all
      */
     private function parseJsonToArray()
@@ -192,18 +160,11 @@ class SearchEngine
                 /**
                  * Debug section
                  */
-                $this->exceptionObject->push($ex);
                 try {
-                    $this->logger->addError($dumpEx);
-                    $this->logger->addError($ex->getTraceAsString());
+                    $this->exceptionObject->saveToDisk($ex);
                 } catch(\Exception $e) {
                     $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
                     print $dumpEx . PHP_EOL;
-                    /**
-                     * Debug section
-                     */
-                    $this->exceptionObject->push($e);
-
                     print $e->getTraceAsString() . PHP_EOL;
                 }
             }
@@ -230,10 +191,13 @@ class SearchEngine
     public function preCompilationDirectMatch(SearchTreeWalk $searchObject)
     {
         $searchObject->preSearch();
+
         if (0 !== count($searchObject->getDirectMatch())) {
             $searchObject->setScoreMatrix($searchObject->getDirectMatch());
+
             $this->sortedScoreMatrix = $searchObject->getScoreMatrix();
             $this->setRangeSortedMatrix(count($this->sortedScoreMatrix));
+
             return true;
         } else {
             return false;
@@ -267,7 +231,12 @@ class SearchEngine
     public function run()
     {
         $this->parseJsonToArray();
-        $searchObj = new SearchTreeWalk($this->jsonTree, $this->matchString, $this->multipleResult, $this->quality);
+        $searchObj = new SearchTreeWalk(
+            $this->jsonTree,
+            $this->matchString,
+            $this->multipleResult,
+            $this->quality
+        );
 
         if (!$this->multipleResult) {
             $searchObj->preSearch();
@@ -282,6 +251,7 @@ class SearchEngine
              * Calculating matrix with scores
              */
             $searchObj->search();
+
             $this->setDirectMatch($searchObj->getDirectMatch());
             if (0 !== count($searchObj->getDirectMatch()) && !$this->multipleResult) {
                 $searchObj->setScoreMatrix($searchObj->getDirectMatch());
@@ -312,6 +282,7 @@ class SearchEngine
          * Parse stored keys
          */
         $keysArray = explode(',', $relevantArray[0]);
+
         if ($this->depth === 0) {
             $depth = count($keysArray) - 1;
         } else {
@@ -375,10 +346,10 @@ class SearchEngine
          * Logging section
          */
         if (empty($result)) {
-            $this->pushLogMessage('error');
+            $this->logger->pushFlashMsg('error');
             return $this->errorMessage;
         } else {
-            $this->pushLogMessage('info');
+            $this->logger->pushFlashMsg('info');
             return $result;
         }
     }
@@ -396,46 +367,6 @@ class SearchEngine
      * @var string
      */
     private $moreJsonTreesOnString = '';
-
-    /**
-     *
-     * Little logging system responses.
-     *
-     * @param $type
-     *
-     * @return bool
-     */
-    private function pushLogMessage($type)
-    {
-        if ($this->versionType === 'dev') {
-            try {
-                if ($type === 'error') {
-                    $this->logger->addWarning(Carbon::now()->toDateTimeString() . ' : ' . $this->errorMessage);
-                } else {
-                    $this->logger->addInfo(Carbon::now()->toDateTimeString() . ' : ' . $this->okMessage);
-                }
-                return true;
-
-            } catch (\Exception $e) {
-                /**
-                 * Print if debug setting on
-                 */
-                $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
-                $this->exceptionObject->push($e);
-
-                /**
-                 * Debug section
-                 */
-                if ($this->versionType === 'dev') {
-                    print $dumpEx . PHP_EOL;
-                    print $e->getTraceAsString() . PHP_EOL;
-                }
-            }
-        } else {
-            return false;
-        }
-        return false;
-    }
 
     /**
      * Get a set of search results, specify the number yourself.
@@ -473,18 +404,18 @@ class SearchEngine
         }
         if ($this->jsonEncode) {
             if (empty($this->moreJsonTreesOnString)) {
-                $this->pushLogMessage('error');
+                $this->logger->pushFlashMsg('error');
                 return $this->errorMessage;
             } else {
-                $this->pushLogMessage('info');
+                $this->logger->pushFlashMsg('info');
                 return $this->moreJsonTreesOnString;
             }
         } else {
             if (0 === count($this->moreRelevantJsonTreesOnArray)) {
-                $this->pushLogMessage('error');
+                $this->logger->pushFlashMsg('error');
                 return $this->errorMessage;
             } else {
-                $this->pushLogMessage('info');
+                $this->logger->pushFlashMsg('info');
                 return $this->moreRelevantJsonTreesOnArray;
             }
         }

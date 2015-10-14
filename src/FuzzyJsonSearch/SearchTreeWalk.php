@@ -50,11 +50,6 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @var int
      */
-    private static $coefficient = 1.5;
-
-    /**
-     * @var int
-     */
     private static $directMatchCoefficient = 0;
 
     /**
