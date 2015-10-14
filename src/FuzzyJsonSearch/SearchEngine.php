@@ -6,6 +6,10 @@
 
 namespace FuzzyJsonSearch;
 
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Carbon\Carbon;
+
 /**
  * Class FuzzyFuzzy Json Search Engine
  *
@@ -58,6 +62,22 @@ class SearchEngine
     private $quality;
 
     /**
+     * @var string
+     */
+    private static $version = '0.3.1';
+
+    /**
+     * On off debug features
+     * @var string
+     */
+    private $versionType; // another master
+
+    /**
+     * @var
+     */
+    private $logger;
+
+    /**
      * Search engine constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -68,7 +88,15 @@ class SearchEngine
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool              -> multiple result or no
      */
-    public function __construct($urlName, $matchString, $depth = 1, $jsonEncode = true, $multipleResult = false, $quality = 3)
+    public function __construct(
+        $urlName,
+        $matchString,
+        $depth = 1,
+        $jsonEncode = true,
+        $multipleResult = false,
+        $quality = 1,
+        $versionType = 'master'
+    )
     {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
@@ -79,6 +107,12 @@ class SearchEngine
             $this->jsonEncode = $jsonEncode;
             $this->multipleResult = $multipleResult;
             $this->quality = $quality;
+            $this->versionType = $versionType;
+
+            if ($this->versionType === 'dev') {
+                $this->logger = new Logger('Exceptions');
+                $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../data/logs/common.log', Logger::DEBUG));
+            }
         }
     }
 
@@ -103,6 +137,36 @@ class SearchEngine
     private $rangeSortedMatrix = 0;
 
     /**
+     * @param \Exception $objEx
+     */
+    private function pushErrorStackTrace(\Exception $objEx)
+    {
+        $this->errorStackTraces[] = [
+            $objEx->getCode(),
+            $objEx->getFile(),
+            $objEx->getLine(),
+            $objEx->getMessage(),
+            $objEx->getTraceAsString()
+        ];
+    }
+
+    /**
+     *
+     * @param \Exception $objEx
+     */
+    private function pushErrorTrace(\Exception $objEx)
+    {
+        if ($this->versionType === 'dev') {
+            try {
+                $this->logger->addError(Carbon::now()->toDateTimeString() . ' : ' . $objEx->getTraceAsString());
+            } catch(\Exception $e) {
+                $this->pushErrorStackTrace($e);
+            }
+            $this->pushErrorStackTrace($objEx);
+        }
+    }
+
+    /**
      * Parsing Json to array and that is all
      */
     private function parseJsonToArray()
@@ -111,18 +175,31 @@ class SearchEngine
             $this->jsonData = file_get_contents($this->urlName);
             $this->jsonTree = json_decode($this->jsonData, true);
         } catch (\Exception $ex) {
+
             /**
              * Fast view Exceptions
              */
-            print sprintf('You get exception in %s with message %s', $ex->getLine(), $ex->getMessage());
+            if ($this->versionType === 'dev') {
+                $dumpEx = sprintf('You get exception in %s with message %s', $ex->getLine(), $ex->getMessage());
+                print $dumpEx . PHP_EOL;
+                /**
+                 * Debug section
+                 */
+                $this->pushErrorTrace($ex);
+                try {
+                    $this->logger->addError($dumpEx);
+                    $this->logger->addError($ex->getTraceAsString());
+                } catch(\Exception $e) {
+                    $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
+                    print $dumpEx . PHP_EOL;
+                    /**
+                     * Debug section
+                     */
+                    $this->pushErrorTrace($e);
 
-            $this->errorStackTraces[] = [
-                $ex->getCode(),
-                $ex->getFile(),
-                $ex->getLine(),
-                $ex->getMessage(),
-                $ex->getTraceAsString()
-            ];
+                    print $e->getTraceAsString() . PHP_EOL;
+                }
+            }
         }
     }
 
@@ -157,6 +234,27 @@ class SearchEngine
     }
 
     /**
+     * @var array
+     */
+    private $directMatch = [];
+
+    /**
+     * @return array
+     */
+    public function getDirectMatch()
+    {
+        return $this->directMatch;
+    }
+
+    /**
+     * @param array $directMatch
+     */
+    public function setDirectMatch($directMatch)
+    {
+        $this->directMatch = $directMatch;
+    }
+
+    /**
      * Main method
      */
     public function run()
@@ -177,6 +275,7 @@ class SearchEngine
              * Calculating matrix with scores
              */
             $searchObj->search();
+            $this->setDirectMatch($searchObj->getDirectMatch());
             if (0 !== count($searchObj->getDirectMatch()) && !$this->multipleResult) {
                 $searchObj->setScoreMatrix($searchObj->getDirectMatch());
             } else {
@@ -189,6 +288,9 @@ class SearchEngine
     }
 
     /**
+     *
+     * Building a solid wood on the basis of the stored keys.
+     *
      * @param $relevantArray
      *
      * @return array
@@ -199,6 +301,9 @@ class SearchEngine
             $relevantArray = $this->relevantTree;
         }
 
+        /**
+         * Parse stored keys
+         */
         $keysArray = explode(',', $relevantArray[0]);
 
         if ($this->depth === 0) {
@@ -209,6 +314,9 @@ class SearchEngine
 
         $keysArray = array_slice($keysArray, 0, $depth);
         $needleBranch = [];
+        /**
+         * We are building up an array
+         */
         foreach ($keysArray as $vv) {
             if (0 === count($needleBranch)) {
                 $needleBranch = $this->jsonTree[$vv];
@@ -216,10 +324,15 @@ class SearchEngine
                 $needleBranch = $needleBranch[$vv];
             }
         }
+        /**
+         * We derive a tree whose depth pointers in parameters
+         */
         return $needleBranch;
     }
 
     /**
+     *
+     * If the flag is set, then encode the output array in json
      *
      * @return string
      */
@@ -233,6 +346,16 @@ class SearchEngine
     }
 
     /**
+     * @var string
+     */
+    private $errorMessage = ' FAIL! The desired value is not found in the json';
+
+    /**
+     * @var string
+     */
+    private $okMessage = ' OK! The desired value found in the json';
+
+    /**
      * Get only relevant search results.
      *
      * @return array|mixed
@@ -241,18 +364,72 @@ class SearchEngine
     {
         $this->relevantTree = array_pop($this->sortedScoreMatrix);
         $branchArray = $this->createResultArray($this->relevantTree);
-        return $this->jsonEncode($branchArray);
+        $result = $this->jsonEncode($branchArray);
+        /**
+         * Logging section
+         */
+        if (empty($result)) {
+            $this->pushLogMessage('error');
+            return $this->errorMessage;
+        } else {
+            $this->pushLogMessage('info');
+            return $result;
+        }
     }
 
     /**
+     * Output format
+     *
      * @var array
      */
     private $moreRelevantJsonTreesOnArray = [];
 
     /**
+     * Output format
+     *
      * @var string
      */
     private $moreJsonTreesOnString = '';
+
+    /**
+     *
+     * Little logging system responses.
+     *
+     * @param $type
+     *
+     * @return bool
+     */
+    private function pushLogMessage($type)
+    {
+        if ($this->versionType === 'dev') {
+            try {
+                if ($type === 'error') {
+                    $this->logger->addWarning(Carbon::now()->toDateTimeString() . ' : ' . $this->errorMessage);
+                } else {
+                    $this->logger->addInfo(Carbon::now()->toDateTimeString() . ' : ' . $this->okMessage);
+                }
+                return true;
+
+            } catch (\Exception $e) {
+                /**
+                 * Print if debug setting on
+                 */
+                $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
+                $this->pushErrorTrace($e);
+
+                /**
+                 * Debug section
+                 */
+                if ($this->versionType === 'dev') {
+                    print $dumpEx . PHP_EOL;
+                    print $e->getTraceAsString() . PHP_EOL;
+                }
+            }
+        } else {
+            return false;
+        }
+        return false;
+    }
 
     /**
      * Get a set of search results, specify the number yourself.
@@ -264,13 +441,20 @@ class SearchEngine
     public function fetchFew($count = 1)
     {
         if (!$this->multipleResult) {
+            /**
+             * If multiple flag off fetchOne faster
+             */
             return $this->fetchOne();
         }
 
         if ($count > $this->rangeSortedMatrix) {
             $count = $this->rangeSortedMatrix;
         }
+
         while ($count > 0) {
+            /**
+             * Get max scored values from ranged stack
+             */
             $this->relevantTree = array_pop($this->sortedScoreMatrix);
             $branchArray = $this->createResultArray($this->relevantTree);
             if ($this->jsonEncode == true) {
@@ -281,7 +465,23 @@ class SearchEngine
 
             $count--;
         }
-        return $this->jsonEncode ? $this->moreJsonTreesOnString : $this->moreRelevantJsonTreesOnArray;
+        if ($this->jsonEncode) {
+            if (empty($this->moreJsonTreesOnString)) {
+                $this->pushLogMessage('error');
+                return $this->errorMessage;
+            } else {
+                $this->pushLogMessage('info');
+                return $this->moreJsonTreesOnString;
+            }
+        } else {
+            if (0 === count($this->moreRelevantJsonTreesOnArray)) {
+                $this->pushLogMessage('error');
+                return $this->errorMessage;
+            } else {
+                $this->pushLogMessage('info');
+                return $this->moreRelevantJsonTreesOnArray;
+            }
+        }
     }
 
     /**
@@ -476,5 +676,61 @@ class SearchEngine
     public function setMultipleResult($resultsCount)
     {
         $this->multipleResult = $resultsCount;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getVersion()
+    {
+        return self::$version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionType()
+    {
+        return $this->versionType;
+    }
+
+    /**
+     * @param string $versionType
+     */
+    public function setVersionType($versionType)
+    {
+        $this->versionType = $versionType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @param string $errorMessage
+     */
+    public function setErrorMessage($errorMessage)
+    {
+        $this->errorMessage = $errorMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOkMessage()
+    {
+        return $this->okMessage;
+    }
+
+    /**
+     * @param string $okMessage
+     */
+    public function setOkMessage($okMessage)
+    {
+        $this->okMessage = $okMessage;
     }
 }

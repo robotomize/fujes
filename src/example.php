@@ -4,18 +4,23 @@ ini_set('memory_limit', '1024M');
 
 use FuzzyJsonSearch\SearchFacade;
 use FuzzyJsonSearch\SearchFactory;
+use FuzzyJsonSearch\SearchEngine;
 
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 
 
-$tt = new SearchFacade(__DIR__ . '/data/cities.json', 'ekateburg', 1, false, false);
+//$tt = new SearchFacade(__DIR__ . '/data/biographical-directory-footnotes.json', 'Christensen', 1, false, false);
+$tt = new SearchEngine(__DIR__ . '/data/biographical-directory-footnotes.json', 'Maxwell', 1, false, true, 1, 'dev');
+//print $tt->getVersionType();
 \PHP_Timer::start();
-print $tt->fetchOne()['name'] . PHP_EOL;
+//print_r($tt->fetchOne());
+$tt->run();
+print_r($tt->fetchOne());
 $time = \PHP_Timer::stop();
 print \PHP_Timer::secondsToTimeString($time);
-print PHP_EOL . $tt->getMultipleResult();
+//print PHP_EOL . $tt->getMultipleResult();
 
 //print $tt->fetchFew(4) . PHP_EOL;
 //

@@ -34,7 +34,7 @@ class SearchTreeWalk extends AbstractSearch
      * @param $inputArray
      * @param $matchString
      */
-    public function __construct($inputArray, $matchString, $multipleResult = false, $quality = 3)
+    public function __construct($inputArray, $matchString, $multipleResult = false, $quality = 1)
     {
         if (0 === count($inputArray) || $matchString === '') {
             throw new \InvalidArgumentException;
@@ -123,7 +123,7 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @var int
      */
-    private $precision = 3;
+    private $precision;
 
     /**
      * @param $current
@@ -140,6 +140,30 @@ class SearchTreeWalk extends AbstractSearch
         } else {
             return [$key, $current, $compare];
         }
+    }
+
+    /**
+     * Split current sheet
+     * @param $sheet
+     * @param $keys
+     *
+     * @return array
+     */
+    private function splitSheetJsonTree($sheet, $keys)
+    {
+        $variants = explode(' ', $sheet);
+        $iterator = 0;
+        $relevantResult = [];
+        foreach ($variants as $val) {
+            $currentValue = $this->compareStart($val, $keys);
+            if ($iterator === 0) {
+                $relevantResult = $currentValue;
+            }
+            if ($currentValue[2] < $relevantResult[2]) {
+                $relevantResult = $currentValue;
+            }
+        }
+        return $relevantResult;
     }
 
     /**
@@ -166,7 +190,7 @@ class SearchTreeWalk extends AbstractSearch
                 $this->search($vv, $keys, $level);
             } else {
                 $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
-                $this->scoreMatrix[] = $this->compareStart($vv, $keys);
+                $this->scoreMatrix[] = $this->splitSheetJsonTree($vv, $keys);
                 if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
                 }
@@ -328,17 +352,17 @@ class SearchTreeWalk extends AbstractSearch
     /**
      * @return int
      */
-    public static function getPrecision()
+    public function getPrecision()
     {
-        return self::$precision;
+        return $this->precision;
     }
 
     /**
      * @param int $precision
      */
-    public static function setPrecision($precision)
+    public function setPrecision($precision)
     {
-        self::$precision = $precision;
+        $this->precision = $precision;
     }
 
     /**

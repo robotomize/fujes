@@ -16,6 +16,8 @@
         "phpunit/php-text-template": "^1.2",
         "dflydev/markdown": "^1.0",
         "erusev/parsedown": "^1.6",
-        "phpunit/php-invoker": "^1.1"
+        "phpunit/php-invoker": "^1.1",
+        "monolog/monolog": "^1.17",
+        "nesbot/carbon": "^1.20"
     }
 }

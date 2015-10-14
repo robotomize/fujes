@@ -5,7 +5,7 @@ namespace tests;
 use FuzzyJsonSearch\SearchFacade;
 
 /**
- * Class FacadeTest
+ * Class Facade Test
  * @package tests
  * @author robotomize@gmail.com
  */
@@ -14,7 +14,7 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    private static $testUrlName = ['cities.json', 'airlines.json'];
+    private static $testUrlName = ['cities.json', 'airlines.json', 'biographical-directory-footnotes.json'];
 
     /**
      * @var array
@@ -35,7 +35,7 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
         'berdlen',              // 12
         'koleningrat',          // 13
         'smalyansk',            // 14
-        'another city'          // 15
+        'another city',         // 15
     ];
 
     /**
@@ -44,24 +44,35 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
     private static $testMatchStringAnother = ['aeroflot', 'kaskoflot', 's7', 'sseven'];
 
     /**
+     * @var array
+     */
+    private static $bioForTest =['Christensen', 'Maxwell'];
+
+    /**
      * @var string
      */
     private static $prefix = __DIR__ . '/../src/data/';
 
     public function testFetchOne()
     {
-        $tt = new SearchFacade(self::$prefix . 'cities.json', self::$testMatchString[4], 1, false, false);
+        $tt = new SearchFacade(self::$prefix . self::$testUrlName[0], self::$testMatchString[4], 1, false, false);
         $this->assertEquals('Ekaterinburg', $tt->fetchOne()['name']);
+
         $tt->setMatchString(self::$testMatchString[2]);
         $this->assertEquals('Moscow', $tt->fetchOne()['name']);
+
         $tt->setMatchString(self::$testMatchString[0]);
         $this->assertEquals('Vladivostok', $tt->fetchOne()['name']);
+
         $tt->setMatchString(self::$testMatchString[1]);
         $this->assertEquals('Vladivostok', $tt->fetchOne()['name']);
+
         $tt->setMatchString(self::$testMatchString[6]);
         $this->assertEquals('Yuzhno-Sakhalinsk', $tt->fetchOne()['name']);
+
         $tt->setMatchString(self::$testMatchString[7]);
         $this->assertEquals('Yuzhno-Sakhalinsk', $tt->fetchOne()['name']);
+
         $tt->setMatchString(self::$testMatchString[8]);
         $this->assertEquals('Yuzhno-Sakhalinsk', $tt->fetchOne()['name']);
 
@@ -69,12 +80,14 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchFew()
     {
-
+        $tt = new SearchFacade(self::$prefix . self::$testUrlName[0], self::$testMatchString[4], 1, false, true);
+        $this->assertEquals(3, count($tt->fetchFew(3)));
     }
 
     public function testFetchAll()
     {
-
+        $tt = new SearchFacade(self::$prefix . self::$testUrlName[0], self::$testMatchString[4], 1, false, true);
+        $this->markTestSkipped(9369, count($tt->fetchAll()));
     }
 }
 

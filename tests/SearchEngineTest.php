@@ -172,6 +172,9 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Ekaterinburg', count($searchEngine->fetchOne()['name']));
     }
 
+    /**
+     * Pre search test
+     */
     public function testPreSearch()
     {
         $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[10], 1, false, false);
