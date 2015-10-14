@@ -40,7 +40,6 @@ class Log
 
 
     /**
-     *
      * Little logging system responses.
      *
      * @param $type

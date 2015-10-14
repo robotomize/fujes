@@ -158,6 +158,7 @@ class SearchTreeWalk extends AbstractSearch
 
     /**
      * Split current sheet
+     *
      * @param $sheet
      * @param $keys
      *
@@ -253,15 +254,17 @@ class SearchTreeWalk extends AbstractSearch
     private function effectiveSort()
     {
         if (0 !== count($this->scoreMatrix)) {
-            usort($this->scoreMatrix, function($a, $b)
-                {
+            usort(
+                $this->scoreMatrix, function ($a, $b) {
+                
                     if ($b[2] != $a[2]) {
                         return strnatcasecmp($b[2], $a[2]);
                     }
                     elseif ($b[3] != $a[3]) {
                         return strnatcasecmp($b[3], $a[3]);
                     }
-                });
+                }
+            );
         } else {
             return false;
         }

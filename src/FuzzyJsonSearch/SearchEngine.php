@@ -11,6 +11,7 @@ use Monolog\Handler\StreamHandler;
 use Carbon\Carbon;
 use Utils\Log;
 use Utils\ExceptionWrap;
+
 /**
  * Class FuzzyFuzzy Json Search Engine
  *
@@ -102,8 +103,7 @@ class SearchEngine
         $multipleResult = false,
         $quality = 1,
         $versionType = 'master'
-    )
-    {
+    ) {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
         } else {
@@ -265,7 +265,6 @@ class SearchEngine
     }
 
     /**
-     *
      * Building a solid wood on the basis of the stored keys.
      *
      * @param $relevantArray
@@ -308,7 +307,6 @@ class SearchEngine
     }
 
     /**
-     *
      * If the flag is set, then encode the output array in json
      *
      * @return string
