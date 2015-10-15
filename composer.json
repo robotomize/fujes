@@ -1,6 +1,18 @@
 {
   "name": "robotomize/fujes",
-  "description": "This is a library that allows you to fuzzy search for json document",
+  "version": "0.3.0",
+  "description": "Library for the fuzzy search to JSON document.",
+  "keywords":     ["Fuzzy", "search", "find", "PHP", "JSON"],
+  "homepage":     "https://github.com/robotomize/fujes",
+  "type":         "library",
+  "license":      "MIT",
+  "authors": [
+    {
+      "name":      "Nikita Ivanov",
+      "email":     "robotomize@gmail.com",
+      "homepage":  "https://github.com/robotomize/"
+    }
+  ],
   "require": {
       "phpunit/phpunit": "^5.0",
       "squizlabs/php_codesniffer": "^2.3",
