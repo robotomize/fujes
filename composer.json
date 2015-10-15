@@ -1,5 +1,5 @@
 {
-  "name": "robotomize/fujaysearch",
+  "name": "robotomize/fujes",
   "description": "This is a library that allows you to fuzzy search for json document",
   "require": {
       "phpunit/phpunit": "^5.0",
