@@ -28,7 +28,7 @@ use Utils\ExceptionWrap;
  * @author  robotomize@gmail.com
  * @version 0.3
  * @usage
- * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true)
+ * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true, false, 1, 'master')
  * $tt->run();
  * print $tt->fetchOne();
  */
@@ -86,6 +86,26 @@ class SearchEngine
     private $exceptionObject;
 
     /**
+     * @var int
+     */
+    private static $depthDefault = 1;
+
+    /**
+     * @var bool
+     */
+    private static $jsonEncodeDefault = true;
+
+    /**
+     * @var bool
+     */
+    private static $multipleResultDefault = false;
+
+    /**
+     * @var int
+     */
+    private static $qualityDefault = 1;
+
+    /**
      * Search engine constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -95,6 +115,9 @@ class SearchEngine
      * @param bool
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool              -> multiple result or no
+     * @param int -> quality search , 1 - strict search, 2, 3 less strict
+     * @param string -> debug option. Dev or master.
+     * The first option writes in logs all exceptions and successful search.
      */
     public function __construct(
         $urlName,
@@ -110,10 +133,28 @@ class SearchEngine
         } else {
             $this->urlName = $urlName;
             $this->matchString = mb_strtolower($matchString);
-            $this->depth = $depth;
-            $this->jsonEncode = $jsonEncode;
-            $this->multipleResult = $multipleResult;
-            $this->quality = $quality;
+
+            if (is_int($depth)) {
+                $this->depth = $depth;
+            } else {
+                $this->depth = self::$depthDefault;
+            }
+            if (is_bool($jsonEncode)) {
+                $this->jsonEncode = $jsonEncode;
+            } else {
+                $this->jsonEncode = self::$jsonEncodeDefault;
+            }
+            if (is_bool($multipleResult)) {
+                $this->multipleResult = $multipleResult;
+            } else {
+                $this->multipleResult = self::$multipleResultDefault;
+            }
+            if (is_int($quality)) {
+                $this->quality = $quality;
+            } else {
+                $this->quality = self::$qualityDefault;
+            }
+
             $this->versionType = $versionType;
 
             $this->exceptionObject = new ExceptionWrap();
@@ -379,7 +420,13 @@ class SearchEngine
             /**
              * If multiple flag off fetchOne faster
              */
-            return $this->fetchOne();
+            if ($count > 1) {
+                throw new \Exception(
+                    'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
+                );
+            } else {
+                return $this->fetchOne();
+            }
         }
 
         if ($count > $this->rangeSortedMatrix) {
@@ -427,7 +474,9 @@ class SearchEngine
     public function fetchAll()
     {
         if (!$this->multipleResult) {
-            return $this->fetchOne();
+            throw new \Exception(
+                'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
+            );
         }
 
         $count = count($this->sortedScoreMatrix);

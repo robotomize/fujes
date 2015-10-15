@@ -51,6 +51,11 @@ class SearchFacade
     private $quality;
 
     /**
+     * @var string
+     */
+    private $versionType = '';
+
+    /**
      * Facade constructor
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -59,10 +64,20 @@ class SearchFacade
      * $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
      * @param bool
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
-     * @param bool
+     * @param bool -> multiple result u need or no
+     * @param int -> quality search , 1 - strict search, 2, 3 less strict
+     * @param string -> debug option. Dev or master.
+     * The first option writes in logs all exceptions and successful search.
      */
-    public function __construct($urlName, $matchString, $depth = 1, $jsonEncode = true, $multipleResult = false)
-    {
+    public function __construct(
+        $urlName,
+        $matchString,
+        $depth = 1,
+        $jsonEncode = true,
+        $multipleResult = false,
+        $quality = 1,
+        $versionType = 'master'
+    ) {
         if ($urlName == '' || $matchString == '') {
             throw new \InvalidArgumentException;
         } else {
@@ -71,6 +86,8 @@ class SearchFacade
             $this->depth = $depth;
             $this->jsonEncode = $jsonEncode;
             $this->multipleResult = $multipleResult;
+            $this->quality = $quality;
+            $this->versionType = $versionType;
         }
     }
 
@@ -85,7 +102,10 @@ class SearchFacade
             $this->urlName,
             $this->matchString,
             $this->depth,
-            $this->jsonEncode
+            $this->jsonEncode,
+            $this->multipleResult,
+            $this->quality,
+            $this->versionType
         );
         $jsonSearch->run();
         return $jsonSearch->fetchOne();
@@ -105,7 +125,10 @@ class SearchFacade
             $this->matchString,
             $this->depth,
             $this->jsonEncode,
-            $this->multipleResult
+            $this->multipleResult,
+            $this->multipleResult,
+            $this->quality,
+            $this->versionType
         );
         $jsonSearch->run();
         return $jsonSearch->fetchFew($count);
@@ -123,7 +146,10 @@ class SearchFacade
             $this->matchString,
             $this->depth,
             $this->jsonEncode,
-            $this->multipleResult
+            $this->multipleResult,
+            $this->multipleResult,
+            $this->quality,
+            $this->versionType
         );
         $jsonSearch->run();
         return $jsonSearch->fetchAll();
@@ -243,5 +269,21 @@ class SearchFacade
     public function setQuality($quality)
     {
         $this->quality = $quality;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVersionType()
+    {
+        return $this->versionType;
+    }
+
+    /**
+     * @param string $versionType
+     */
+    public function setVersionType($versionType)
+    {
+        $this->versionType = $versionType;
     }
 }
