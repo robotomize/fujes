@@ -24,12 +24,12 @@ require __DIR__ . '/../vendor/autoload.php';
  */
 $options = [
     'json_file_name' => __DIR__ . '/data/biographical-directory-footnotes.json', // json file
-    'search_string' => 'Christensen',         // match string
-    'depth_into_array' => '1',               // depth into output
-    'output_json' => true,                  // encode to json or output php array
-    'multiple_result' => false,          // multiple result or find one value?
-    'search_quality' => 1,          // 1 best quality search
-    'version' => 'dev'           // dev or master, logging exceptions && code event
+    'search_string' => 'Christensen',  // match string
+    'depth_into_array' => '1',      // depth into output
+    'output_json' => true,     // encode to json or output php array
+    'multiple_result' => false, // multiple result or find one value?
+    'search_quality' => 1,    // 1 best quality search
+    'version' => 'dev'  // dev or master, logging exceptions && code event
 ];
 
 $searchObject = new SearchFacade(
