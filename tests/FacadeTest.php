@@ -63,7 +63,14 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchOne()
     {
-        $tt = new SearchFacade(self::$prefix . self::$testUrlName[0], self::$testMatchString[4], 2, false, false, 'master');
+        $tt = new SearchFacade(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[4],
+            2,
+            false,
+            false,
+            'master'
+        );
         $this->assertEquals('Ekaterinburg', $tt->fetchOne()['name']);
 
         $tt->setDepth(1);

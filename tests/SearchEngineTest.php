@@ -7,12 +7,8 @@
 
 namespace tests;
 
-require __DIR__ . '/../src/autoload.php';
-
 use FuzzyJsonSearch\SearchEngine;
 use FuzzyJsonSearch\SearchTreeWalk;
-
-ini_set('memory_limit', '1024M');
 
 /**
  * Class SearchEngineTest
@@ -143,38 +139,80 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseJson()
     {
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[0], 1, false, false);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[0],
+            1,
+            false,
+            false
+        );
         $searchEngine->run();
 
         $this->assertEquals(9369, count($searchEngine->getJsonTree()));
 
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[0], 1, true, false);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[0],
+            1,
+            true,
+            false
+        );
         $searchEngine->run();
 
         $this->assertTrue($this->isJsonTest($searchEngine->getJsonData()));
 
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[1], 1, false, false);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[1],
+            1,
+            false,
+            false
+        );
         $searchEngine->run();
 
         $this->assertEquals('Vladivostok', $searchEngine->fetchOne()['name']);
 
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[2], 1, false, false);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[2],
+            1,
+            false,
+            false
+        );
         $searchEngine->run();
 
         $this->assertEquals('Moscow', $searchEngine->fetchOne()['name']);
 
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[3], 1, false, false);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[3],
+            1,
+            false,
+            false
+        );
         $searchEngine->run();
 
         $this->markTestSkipped('Moscow', $searchEngine->fetchOne()['name']);
 
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[2], 1, false, true);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[2],
+            1,
+            false,
+            true
+        );
         $searchEngine->run();
 
         $this->assertEquals(3, count($searchEngine->fetchFew(3)['name']));
         $this->assertEquals(1, count($searchEngine->fetchFew(1)['name']));
 
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[4], 1, false, true);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[4],
+            1,
+            false,
+            true
+        );
         $searchEngine->run();
 
         $this->assertEquals('Ekaterinburg', count($searchEngine->fetchOne()['name']));
@@ -185,7 +223,13 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSearch()
     {
-        $searchEngine = new SearchEngine(self::$prefix . self::$testUrlName[0], self::$testMatchString[10], 2, false, false);
+        $searchEngine = new SearchEngine(
+            self::$prefix . self::$testUrlName[0],
+            self::$testMatchString[10],
+            2,
+            false,
+            false
+        );
         $searchEngine->run();
         $this->assertEquals('Soroako', $searchEngine->fetchOne()['name']);
     }
