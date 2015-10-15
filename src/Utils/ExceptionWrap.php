@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * This file is part of the FuJaySearch package.
+ * @link    https://github.com/robotomize/FuJaySearch
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
 namespace Utils;
 
@@ -9,8 +13,9 @@ use Carbon\Carbon;
 
 /**
  * Class ExWrap
+ * Exception wrappers and extends \Exceptions in future
  * @package Utils
- * @author robotomzie@gmail.com
+ * @author robotomize@gmail.com
  */
 class ExceptionWrap
 {

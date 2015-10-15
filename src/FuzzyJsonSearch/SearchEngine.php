@@ -1,6 +1,7 @@
 <?php
 /**
- * @link    http://github.com/myclabs/php-enum
+ * This file is part of the FuJaySearch package.
+ * @link    https://github.com/robotomize/FuJaySearch
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -23,7 +24,7 @@ use Utils\ExceptionWrap;
  * The complexity of the algorithm, when passing the array O(n).
  * Use the glasses on the basis of metrics of Levenshtein. The lower floor is gaining points the higher the rank.
  *
- * @package jsonSearch
+ * @package FuJaySearch
  * @author  robotomize@gmail.com
  * @version 0.3
  * @usage

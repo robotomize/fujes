@@ -1,5 +1,13 @@
 <?php
+/**
+ * This file is part of the FuJaySearch package.
+ * @link    https://github.com/robotomize/FuJaySearch
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
+/**
+ * Examples of using the search.
+ */
 ini_set('memory_limit', '1024M');
 
 use FuzzyJsonSearch\SearchFacade;

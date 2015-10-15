@@ -1,4 +1,9 @@
 <?php
+/**
+ * This file is part of the FuJaySearch package.
+ * @link    https://github.com/robotomize/FuJaySearch
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
 namespace FuzzyJsonSearch;
 
@@ -6,7 +11,7 @@ namespace FuzzyJsonSearch;
  * Class SearchEngineFactory
  * This factory for faster access to the functions of the library.
  *
- * @package jsonSearch
+ * @package FuJaySearch
  * @author  robotomize@gmail.com
  * @version
  * @usage

@@ -1,4 +1,9 @@
 <?php
+/**
+ * This file is part of the FuJaySearch package.
+ * @link    https://github.com/robotomize/FuJaySearch
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
 spl_autoload_register(
     function ($className) {

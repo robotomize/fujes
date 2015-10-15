@@ -1,4 +1,9 @@
 <?php
+/**
+ * This file is part of the FuJaySearch package.
+ * @link    https://github.com/robotomize/FuJaySearch
+ * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+ */
 
 namespace Utils;
 
@@ -7,7 +12,7 @@ use Monolog\Handler\StreamHandler;
 use Carbon\Carbon;
 
 /**
- * Class Log
+ * Class Log. Wrap for monolog/monolog.
  * @package Utils
  * @author robotomize@gmail.com
  */
