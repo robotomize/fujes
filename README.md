@@ -74,7 +74,6 @@ try {
     */
 }
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10519580/47ce0da4-73a1-11e5-83df-5cde3dbff1df.png)](https://github.com/robotomize/fujes)
 ### Parameters
 * `path to json file`
 * `search line`
