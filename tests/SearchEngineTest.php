@@ -10,6 +10,8 @@ namespace tests;
 use FuzzyJsonSearch\SearchEngine;
 use FuzzyJsonSearch\SearchTreeWalk;
 
+require __DIR__ . '/../src/autoload.php';
+
 /**
  * Class SearchEngineTest
  * @package tests
