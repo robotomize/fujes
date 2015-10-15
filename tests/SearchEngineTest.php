@@ -63,17 +63,16 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
      *
      * @return bool
      */
-    private function isJsonTest($string) {
+    private function isJsonTest($string)
+    {
         json_decode($string);
         if (json_last_error() == JSON_ERROR_NONE) {
             if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
-                return TRUE;
-            }
-            elseif (substr($string, 0, 1) === '{' && substr($string, -1) === '}') {
-                return TRUE;
-            }
-            else {
-                return FALSE;
+                return true;
+            } elseif (substr($string, 0, 1) === '{' && substr($string, -1) === '}') {
+                return true;
+            } else {
+                return false;
             }
         }
     }

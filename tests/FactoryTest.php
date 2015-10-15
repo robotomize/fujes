@@ -181,14 +181,14 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     public function testBio()
     {
         $this->assertEquals('56939', SearchFactory::createSearchEngine(
-        self::$prefix . self::$testUrlName[2],
-        self::$bioForTest[0],
-        1,
-        false,
-        false,
-        1,
-        'dev'
-    )->fetchOne()['line']);
+            self::$prefix . self::$testUrlName[2],
+            self::$bioForTest[0],
+            1,
+            false,
+            false,
+            1,
+            'dev'
+        )->fetchOne()['line']);
         $this->assertEquals('57113', SearchFactory::createSearchEngine(
             self::$prefix . self::$testUrlName[2],
             self::$bioForTest[1],
@@ -199,6 +199,4 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             'dev'
         )->fetchOne()['line']);
     }
-
 }
-

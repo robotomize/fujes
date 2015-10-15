@@ -109,4 +109,3 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
         $this->markTestSkipped(9369, count($tt->fetchAll()));
     }
 }
-
