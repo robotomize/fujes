@@ -101,16 +101,6 @@ print SearchFactory::createSearchEngine(
     'dev'
 )->fetchOne() . PHP_EOL;    // print
 
-print SearchFactory::createSearchEngine(
-        __DIR__ . '/data/biographical-directory-footnotes.json',
-        'linkoln',
-        1,
-        true,
-        true,
-        1,
-        'dev'
-    )->fetchFew(6) . PHP_EOL;    // print
-
 /**
  * {"code":"MOW","name":"Moscow",
  * "coordinates":{"lon":37.617633,"lat":55.755786},"time_zone":"Europe\/Moscow","name_translations":
