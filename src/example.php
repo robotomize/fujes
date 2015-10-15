@@ -42,7 +42,8 @@ $searchObject = new SearchFacade(
     $options['version']
 );
 
-//print $searchObject->fetchOne();
+print $searchObject->fetchOne();
+
 /**
  * Output this
  *
