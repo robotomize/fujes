@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the FuJaySearch package.
+ * This file is part of the fujes package.
  * @link    https://github.com/robotomize/FuJaySearch
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
@@ -100,6 +100,16 @@ print SearchFactory::createSearchEngine(
     1,
     'dev'
 )->fetchOne() . PHP_EOL;    // print
+
+print SearchFactory::createSearchEngine(
+        __DIR__ . '/data/biographical-directory-footnotes.json',
+        'linkoln',
+        1,
+        true,
+        true,
+        1,
+        'dev'
+    )->fetchFew(6) . PHP_EOL;    // print
 
 /**
  * {"code":"MOW","name":"Moscow",
