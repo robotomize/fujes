@@ -20,9 +20,6 @@ composer require robotomize/fujes dev-master
 ```sh
 git clone https://github.com/robotomize/fujes.git
 ```
-## License
-Satis is licensed under the MIT License - see the LICENSE file for details
-
 ## Usage
 #### Fast, minimal params, go
 ```php
@@ -206,3 +203,6 @@ Grep is used for highlighting
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539194/dc399700-7438-11e5-9c30-0223a18ce380.png)](https://github.com/robotomize/fujes)
 ### Documentation
 - `Depth` - ...
+## License
+Satis is licensed under the MIT License - see the LICENSE file for details
+
