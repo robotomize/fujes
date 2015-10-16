@@ -7,7 +7,7 @@
 
 namespace tests;
 
-use FuzzyJsonSearch\SearchFacade;
+use robotomize\Fujes\SearchFacade;
 
 /**
  * Class Facade Test
@@ -56,7 +56,7 @@ class FacadeTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    private static $prefix = __DIR__ . '/../src/data/';
+    private static $prefix = __DIR__ . '/../src/robotomize/data/';
 
     /**
      * @group fetch1

@@ -7,8 +7,8 @@
 
 namespace tests;
 
-use FuzzyJsonSearch\SearchEngine;
-use FuzzyJsonSearch\SearchTreeWalk;
+use robotomize\Fujes\SearchEngine;
+use robotomize\Fujes\SearchTreeWalk;
 
 /**
  * Class SearchEngineTest
@@ -52,7 +52,7 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    private static $prefix = __DIR__ . '/../src/data/';
+    private static $prefix = __DIR__ . '/../src/robotomize/data/';
 
     /**
      * @param $string
@@ -61,16 +61,17 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
      */
     private function isJsonTest($string)
     {
-        json_decode($string);
+        $string = substr($string, 0, 255);
         if (json_last_error() == JSON_ERROR_NONE) {
-            if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
+            if (substr($string, 0, 1) === '[') {
                 return true;
-            } elseif (substr($string, 0, 1) === '{' && substr($string, -1) === '}') {
+            } elseif (substr($string, 0, 1) === '{') {
                 return true;
             } else {
                 return false;
             }
         }
+        return false;
     }
 
     /**
@@ -220,6 +221,7 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Pre search test
+     * @group presearch
      */
     public function testPreSearch()
     {
@@ -228,7 +230,9 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
             self::$testMatchString[10],
             2,
             false,
-            false
+            false,
+            1,
+            'dev'
         );
         $searchEngine->run();
         $this->assertEquals('Soroako', $searchEngine->fetchOne()['name']);

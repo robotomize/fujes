@@ -5,7 +5,7 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
-namespace FuzzyJsonSearch;
+namespace robotomize\Fujes;
 
 /**
  * Class SearchTreeWalk
