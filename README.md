@@ -127,7 +127,7 @@ $searchObject->setMultipleResult(true);
  */
 print $searchObject->fetchFew(3) . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10519592/51a6c5dc-73a1-11e5-9e03-eb8ef3aff6fe.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539054/cdabef54-7437-11e5-90c1-cc59ded176dd.png)](https://github.com/robotomize/fujes)
 ### Factory
 ```php
 /**
@@ -153,7 +153,7 @@ print SearchFactory::createSearchEngine(
     'dev'
 )->fetchOne() . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10519608/6197b29e-73a1-11e5-9271-42920e2cb7c5.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539171/be08a8ca-7438-11e5-92c1-b68fd652b430.png)](https://github.com/robotomize/fujes)
 
 #### Another factory example
 ```php
@@ -167,6 +167,6 @@ print SearchFactory::createSearchEngine(
         'dev'
     )->fetchFew(6) . PHP_EOL; 
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10523574/08f4ddc8-73b6-11e5-9e56-231f45fd597e.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539194/dc399700-7438-11e5-9c30-0223a18ce380.png)](https://github.com/robotomize/fujes)
 ### Documentation
 - `Depth` - ...
