@@ -18,12 +18,50 @@ composer require robotomize/fujes dev-master
 git clone https://github.com/robotomize/fujes.git
 ```
 ## Usage
+```php
+use robotomize\Fujes\SearchFacade;
+use robotomize\Fujes\SearchFactory;
+// With factory
+print SearchFactory::createSearchEngine(
+    '/path/to/jsonurl',
+    'W
+What are searching for string',
+    1,
+    true, // output to json?
+    false, // multiple results?
+    1,  //quality, 1 better
+    'master' // master or dev. Dev saved logs
+)->fetchOne() . PHP_EOL;    // print
+
+print SearchFactory::createSearchEngine(
+    '/path/to/jsonurl',
+    'W
+What are searching for string',
+    1,
+    true, // output to json?
+    true, // multiple results?
+    1,  //quality, 1 better
+    'master' // master or dev. Dev saved logs
+)->fetchFew(3) . PHP_EOL;    // count results
+
+```
+
+## Usage with example.php
 #### Basic examples you can try that.
+TThese examples work if you do 
+* git clone https://github.com/robotomize/fujes.git
+* php -q src/example.php
+
 ```php
 php -q src/example.php
 ```
+
 #### Fetch one entry
 ```php
+
+use robotomize\Fujes\SearchFacade;
+use robotomize\Fujes\SearchFactory;
+
 /**
  * Helper options. Search into biographical-directory-footnotes.json.
  * Match string Christensen
