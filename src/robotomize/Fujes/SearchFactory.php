@@ -15,9 +15,9 @@ namespace robotomize\Fujes;
  * @author  robotomize@gmail.com
  * @version
  * @usage
- * $resultArray = SearchEngineFactory::createSearchEngine('http://uWtfAPI.json', 'Avengers', 1, true)->fetchOne();
+ * $resultArray = SearchEngineFactory::find('http://uWtfAPI.json', 'Avengers', 1, true)->fetchOne();
  * -> json string
- * $resultArray = SearchEngineFactory::createSearchEngine('http://uWtfAPI.json', 'Avengers', 1, false)->fetchOne();
+ * $resultArray = SearchEngineFactory::find('http://uWtfAPI.json', 'Avengers', 1, false)->fetchOne();
  * -> PHP assoc array
  */
 class SearchFactory
@@ -30,14 +30,14 @@ class SearchFactory
      *
      * @return SearchEngine
      */
-    public static function createSearchEngine(
+    public static function find(
         $urlName,
         $matchString,
-        $depth,
-        $jsonEncode,
-        $multipleResult,
-        $quality,
-        $versionType
+        $depth = 1,
+        $jsonEncode = true,
+        $multipleResult = false,
+        $quality = 1,
+        $versionType = 'master'
     ) {
         $objectFactory = new SearchEngine(
             $urlName,
