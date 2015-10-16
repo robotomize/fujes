@@ -18,6 +18,33 @@ composer require robotomize/fujes dev-master
 git clone https://github.com/robotomize/fujes.git
 ```
 ## Usage
+#### Fast, minimal params, go
+```php
+use robotomize\Fujes\SearchFactory;
+
+/**
+* 
+* `I want to find some planes.`
+*/
+print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
+```
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10540011/222c4248-743f-11e5-9a6e-876daac97e40.png)](https://github.com/robotomize/fujes)
+#### Another example
+Grep is used for highlighting
+```php
+/**
+ * `I want to find some airports =)`
+ */
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Sheremetievo')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Domogedov')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Yugnosahalinsk')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Puklovo')->fetchOne() . PHP_EOL;
+```
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10540250/5b28cd9e-7441-11e5-9b11-1cac94a2d7e7.png)](https://github.com/robotomize/fujes)
+
+#### With full options
 ```php
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
@@ -167,6 +194,7 @@ print SearchFactory::createSearchEngine(
         'dev'
     )->fetchFew(6) . PHP_EOL; 
 ```
+Grep is used for highlighting
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539194/dc399700-7438-11e5-9c30-0223a18ce380.png)](https://github.com/robotomize/fujes)
 ### Documentation
 - `Depth` - ...
