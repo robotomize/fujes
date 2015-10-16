@@ -126,7 +126,6 @@ print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Y
 print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Puklovo')->fetchOne() . PHP_EOL;
 
 
-
 /**
  * {"code":"MOW","name":"Moscow",
  * "coordinates":{"lon":37.617633,"lat":55.755786},"time_zone":"Europe\/Moscow","name_translations":

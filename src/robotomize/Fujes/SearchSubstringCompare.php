@@ -1,19 +1,13 @@
 <?php
-/**
- * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
 
 namespace robotomize\Fujes;
 
 /**
- * Class SearchTreeWalk
- * @package Fujes
- * @author  robotomzie@gmail.com
- * @version 0.3
+ * Class SearchSubstringCompare
+ * @package robotomize\Fujes
+ * @author robotomzie@gmail.com
  */
-class SearchTreeWalk extends AbstractSearch
+class SearchSubstringCompare extends AbstractSearch
 {
     /**
      * @var array
@@ -80,6 +74,40 @@ class SearchTreeWalk extends AbstractSearch
     }
 
     /**
+     * @param $currentString
+     */
+    private function substringIterator($currentString)
+    {
+        $currentIterationCount = 0;
+        $currentMaxStackValue = 0;
+
+        $current = strlen($currentString);
+        $match = strlen($this->matchString);
+
+        if ($current > $match) {
+            $currentString = substr($current, 0, $match);
+            $matchString = $this->matchString;
+        } else {
+            $matchString = substr($this->matchString, 0, $current);
+        }
+
+        for ($i = 0; $i < strlen($currentString); $i++) {
+            for ($j = $i; $j < strlen($matchString); $j++) {
+                if ($matchString[$j] === $currentString[$i]) {
+                    $currentIterationCount++;
+                    if ($currentIterationCount > $currentMaxStackValue) {
+                        $currentMaxStackValue = $currentIterationCount;
+                    }
+                    break;
+                } else {
+                    $currentIterationCount = 1;
+                }
+            }
+        }
+        return $currentMaxStackValue;
+    }
+
+    /**
      * @param $sheet
      * @param $keys
      *
@@ -89,7 +117,7 @@ class SearchTreeWalk extends AbstractSearch
     {
         $variants = explode(' ', $sheet);
         foreach ($variants as $val) {
-            $temp = $this->directCompareTwoString($val, $keys);
+            $temp = $this->directCompareTwoString($val);
             if ($temp === true) {
                 $this->directMatch[] = [$keys, $sheet, 0, count($variants)];
                 return true;
@@ -262,7 +290,7 @@ class SearchTreeWalk extends AbstractSearch
             usort(
                 $this->scoreMatrix,
                 function ($a, $b) {
-                
+
                     if ($b[2] != $a[2]) {
                         return strnatcasecmp($b[2], $a[2]);
                     } elseif ($b[3] != $a[3]) {

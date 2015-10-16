@@ -8,7 +8,7 @@
 namespace tests;
 
 use robotomize\Fujes\SearchEngine;
-use robotomize\Fujes\SearchTreeWalk;
+use robotomize\Fujes\SearchLevenshteinCompare;
 
 /**
  * Class SearchEngineTest
@@ -89,7 +89,7 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
         );
         $searchEngine->run();
 
-        $searchWalk = new SearchTreeWalk($searchEngine->getJsonTree(), self::$testMatchString[8], false);
+        $searchWalk = new SearchLevenshteinCompare($searchEngine->getJsonTree(), self::$testMatchString[8], false);
         $this->assertEquals(
             true,
             $searchWalk->directCompareTwoString('yugno-sahalinsk', mt_rand(0, 10))
@@ -122,7 +122,7 @@ class SearchEngineTest extends \PHPUnit_Framework_TestCase
         );
         $searchEngine->run();
 
-        $searchWalk = new SearchTreeWalk($searchEngine->getJsonTree(), self::$testMatchString[8], false);
+        $searchWalk = new SearchLevenshteinCompare($searchEngine->getJsonTree(), self::$testMatchString[8], false);
 
         $searchWalk->compareStart('yugno-sahalinsk', mt_rand(0, 10));
         $this->assertEquals(1, count($searchWalk->getDirectMatch()));
