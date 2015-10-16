@@ -30,9 +30,24 @@ class SearchFactory
      *
      * @return SearchEngine
      */
-    public static function createSearchEngine($urlName, $matchString, $depth, $jsonEncode, $multipleResult, $quality, $versionType)
-    {
-        $objectFactory = new SearchEngine($urlName, $matchString, $depth, $jsonEncode, $multipleResult, $quality, $versionType);
+    public static function createSearchEngine(
+        $urlName,
+        $matchString,
+        $depth,
+        $jsonEncode,
+        $multipleResult,
+        $quality,
+        $versionType
+    ) {
+        $objectFactory = new SearchEngine(
+            $urlName,
+            $matchString,
+            $depth,
+            $jsonEncode,
+            $multipleResult,
+            $quality,
+            $versionType
+        );
         $objectFactory->run();
         return $objectFactory;
     }
