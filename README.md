@@ -24,8 +24,7 @@ use robotomize\Fujes\SearchFactory;
 // With factory
 print SearchFactory::createSearchEngine(
     '/path/to/jsonurl',
-    'W
-What are searching for string',
+    'What are searching for string',
     1,
     true, // output to json?
     false, // multiple results?
@@ -35,8 +34,7 @@ What are searching for string',
 
 print SearchFactory::createSearchEngine(
     '/path/to/jsonurl',
-    'W
-What are searching for string',
+    'What are searching for string',
     1,
     true, // output to json?
     true, // multiple results?
