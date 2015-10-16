@@ -9,6 +9,9 @@ This is useful when your service accesses a different API.
 
 The basis of the algorithm is taken Levenshtein.
 
+## Requirements
+* php 5.6+
+
 ## Installation
 ```sh
 composer require robotomize/fujes dev-master
@@ -17,6 +20,9 @@ composer require robotomize/fujes dev-master
 ```sh
 git clone https://github.com/robotomize/fujes.git
 ```
+## License
+Satis is licensed under the MIT License - see the LICENSE file for details
+
 ## Usage
 #### Fast, minimal params, go
 ```php
@@ -145,7 +151,9 @@ try {
 * **`Fetch one or more results.`**
 * `Quality, 1 by default`
 * `Version, master or dev`
+
 #### Set up $multipleResult = trueand everything will be fine.
+
 ```php
 $searchObject->setMultipleResult(true);
 
