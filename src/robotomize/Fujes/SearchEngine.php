@@ -185,9 +185,8 @@ class SearchEngine
      */
     private function parseJsonToArray()
     {
-        if (file_exists($this->urlName)) {
-            $this->jsonData = file_get_contents($this->urlName);
-
+        try {
+             $this->jsonData = file_get_contents($this->urlName);
             if ($this->isJsonTest($this->jsonData)) {
                 $this->jsonTree = json_decode($this->jsonData, true);
             } else {
@@ -202,7 +201,7 @@ class SearchEngine
 
                 throw new \Exception('The data is not in JSON format');
             }
-        } else {
+        } catch (\Exception $ex) {
             $ex = new \Exception('Input file not found');
             $this->exceptionObject->push($ex);
             try {
@@ -211,7 +210,14 @@ class SearchEngine
                 $this->exceptionObject->push($e);
             }
             throw new \Exception('Input file not found');
-        }
+        } finally {
+            if (isset($ex)) {
+                /**
+                 * code smell, i know
+                 */
+                throw new \Exception('File not found');
+            }
+         }
     }
 
     /**

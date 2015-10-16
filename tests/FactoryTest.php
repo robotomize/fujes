@@ -63,7 +63,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCities()
     {
-        $this->assertEquals('Vladivostok', SearchFactory::createSearchEngine(
+        $this->assertEquals('Vladivostok', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[0],
             2,
@@ -72,7 +72,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Vladivostok', SearchFactory::createSearchEngine(
+        $this->assertEquals('Vladivostok', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[1],
             1,
@@ -81,7 +81,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Moscow', SearchFactory::createSearchEngine(
+        $this->assertEquals('Moscow', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[2],
             1,
@@ -90,7 +90,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Moscow', SearchFactory::createSearchEngine(
+        $this->assertEquals('Moscow', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[3],
             1,
@@ -99,7 +99,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Ekaterinburg', SearchFactory::createSearchEngine(
+        $this->assertEquals('Ekaterinburg', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[4],
             2,
@@ -108,7 +108,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Moscow', SearchFactory::createSearchEngine(
+        $this->assertEquals('Moscow', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[5],
             1,
@@ -117,7 +117,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::createSearchEngine(
+        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[6],
             1,
@@ -126,7 +126,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::createSearchEngine(
+        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[7],
             2,
@@ -135,7 +135,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::createSearchEngine(
+        $this->assertEquals('Yuzhno-Sakhalinsk', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[8],
             2,
@@ -144,7 +144,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Newport', SearchFactory::createSearchEngine(
+        $this->assertEquals('Newport', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[9],
             2,
@@ -153,7 +153,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Kaliningrad', SearchFactory::createSearchEngine(
+        $this->assertEquals('Kaliningrad', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[13],
             2,
@@ -162,7 +162,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['name']);
-        $this->assertEquals('Smolensk', SearchFactory::createSearchEngine(
+        $this->assertEquals('Smolensk', SearchFactory::find(
             self::$prefix . self::$testUrlName[0],
             self::$testMatchString[14],
             2,
@@ -180,7 +180,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testBio()
     {
-        $this->assertEquals('56939', SearchFactory::createSearchEngine(
+        $this->assertEquals('56939', SearchFactory::find(
             self::$prefix . self::$testUrlName[2],
             self::$bioForTest[0],
             1,
@@ -189,7 +189,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             1,
             'dev'
         )->fetchOne()['line']);
-        $this->assertEquals('57113', SearchFactory::createSearchEngine(
+        $this->assertEquals('57113', SearchFactory::find(
             self::$prefix . self::$testUrlName[2],
             self::$bioForTest[1],
             1,

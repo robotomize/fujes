@@ -80,7 +80,7 @@ print $searchObject->fetchFew(3) . PHP_EOL;
 /**
  * The following example, you can use the factory.
  */
-print SearchFactory::createSearchEngine(
+print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/cities.json',
     'vladvostk',
     2,
@@ -90,7 +90,7 @@ print SearchFactory::createSearchEngine(
     'dev'
 )->fetchOne()['name'] . PHP_EOL;    // print Vladivostok
 
-print SearchFactory::createSearchEngine(
+print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/cities.json',
     'Mosco',
     1,
@@ -100,7 +100,7 @@ print SearchFactory::createSearchEngine(
     'dev'
 )->fetchOne() . PHP_EOL;    // print
 
-print SearchFactory::createSearchEngine(
+print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/biographical-directory-footnotes.json',
     'Lincoln',
     1,
@@ -109,6 +109,23 @@ print SearchFactory::createSearchEngine(
     1,
     'dev'
 )->fetchFew(10) . PHP_EOL;    // print
+
+/**
+ * I want to find some planes.
+ */
+print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
+
+/**
+ * I want to find some airports =)
+ */
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Sheremetievo')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Domogedov')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Yugnosahalinsk')->fetchOne() . PHP_EOL;
+print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Puklovo')->fetchOne() . PHP_EOL;
+
+
 
 /**
  * {"code":"MOW","name":"Moscow",
