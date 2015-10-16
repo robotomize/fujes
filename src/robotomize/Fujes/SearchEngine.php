@@ -217,7 +217,7 @@ class SearchEngine
                  */
                 throw new \Exception('File not found');
             }
-         }
+        }
     }
 
     /**
