@@ -101,14 +101,14 @@ print SearchFactory::createSearchEngine(
 )->fetchOne() . PHP_EOL;    // print
 
 print SearchFactory::createSearchEngine(
-        __DIR__ . '/../src/robotomize/data/biographical-directory-footnotes.json',
-        'Lincoln',
-        1,
-        true,
-        true,
-        1,
-        'dev'
-    )->fetchFew(10) . PHP_EOL;    // print
+    __DIR__ . '/../src/robotomize/data/biographical-directory-footnotes.json',
+    'Lincoln',
+    1,
+    true,
+    true,
+    1,
+    'dev'
+)->fetchFew(10) . PHP_EOL;    // print
 
 /**
  * {"code":"MOW","name":"Moscow",
