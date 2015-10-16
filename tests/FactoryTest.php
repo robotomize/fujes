@@ -7,7 +7,7 @@
 
 namespace tests;
 
-use FuzzyJsonSearch\SearchFactory;
+use robotomize\Fujes\SearchFactory;
 
 /**
  * Class Factory test
@@ -56,7 +56,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    private static $prefix = __DIR__ . '/../src/data/';
+    private static $prefix = __DIR__ . '/../src/robotomize/data/';
 
     /**
      * @group factory

@@ -5,13 +5,10 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
-namespace FuzzyJsonSearch;
+namespace robotomize\Fujes;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Carbon\Carbon;
-use Utils\Log;
-use Utils\ExceptionWrap;
+use robotomize\Utils\Log;
+use robotomize\Utils\ExceptionWrap;
 
 /**
  * Class FuzzyFuzzy Json Search Engine
@@ -157,7 +154,7 @@ class SearchEngine
 
             $this->versionType = $versionType;
 
-            $this->exceptionObject = new ExceptionWrap();
+            $this->exceptionObject = new ExceptionWrap($this->versionType);
 
             $this->logger = new Log($this->versionType);
         }
@@ -188,27 +185,32 @@ class SearchEngine
      */
     private function parseJsonToArray()
     {
-        try {
+        if (file_exists($this->urlName)) {
             $this->jsonData = file_get_contents($this->urlName);
-            $this->jsonTree = json_decode($this->jsonData, true);
-        } catch (\Exception $ex) {
-            /**
-             * Fast view Exceptions
-             */
-            if ($this->versionType === 'dev') {
-                $dumpEx = sprintf('You get exception in %s with message %s', $ex->getLine(), $ex->getMessage());
-                print $dumpEx . PHP_EOL;
-                /**
-                 * Debug section
-                 */
+
+            if ($this->isJsonTest($this->jsonData)) {
+                $this->jsonTree = json_decode($this->jsonData, true);
+            } else {
+                $ex = new \Exception('The data is not in JSON format');
+                $this->exceptionObject->push($ex);
+
                 try {
                     $this->exceptionObject->saveToDisk($ex);
                 } catch (\Exception $e) {
-                    $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
-                    print $dumpEx . PHP_EOL;
-                    print $e->getTraceAsString() . PHP_EOL;
+                    $this->exceptionObject->push($e);
                 }
+
+                throw new \Exception('The data is not in JSON format');
             }
+        } else {
+            $ex = new \Exception('Input file not found');
+            $this->exceptionObject->push($ex);
+            try {
+                $this->exceptionObject->saveToDisk($ex);
+            } catch (\Exception $e) {
+                $this->exceptionObject->push($e);
+            }
+            throw new \Exception('Input file not found');
         }
     }
 
@@ -491,6 +493,26 @@ class SearchEngine
             $count--;
         }
         return $this->jsonEncode ? $this->moreJsonTreesOnString : $this->moreRelevantJsonTreesOnArray;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return bool
+     */
+    private function isJsonTest($string)
+    {
+        $string = substr($string, 0, 255);
+        if (json_last_error() == JSON_ERROR_NONE) {
+            if (substr($string, 0, 1) === '[') {
+                return true;
+            } elseif (substr($string, 0, 1) === '{') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     /**

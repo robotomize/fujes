@@ -5,7 +5,7 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
-namespace Utils;
+namespace robotomize\Utils;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -31,13 +31,19 @@ class ExceptionWrap
     private $logger;
 
     /**
+     * @var
+     */
+    private $versionType;
+
+    /**
      * Constructor
      */
-    public function __construct()
+    public function __construct($versionType = 'master')
     {
         $this->errorStackTraces = [];
         $this->logger = new Logger('Exceptions');
         $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../data/logs/exceptions.log', Logger::DEBUG));
+        $this->versionType = $versionType;
     }
 
     /**
@@ -52,6 +58,14 @@ class ExceptionWrap
             'msg'    => $objEx->getMessage(),
             'string' => $objEx->getTraceAsString()
         ];
+        if ($this->versionType === 'dev') {
+            print sprintf(
+                'Exception in %s, line %s with message %s',
+                $objEx->getFile(),
+                $objEx->getLine(),
+                $objEx->getMessage()
+            );
+        }
     }
 
     /**

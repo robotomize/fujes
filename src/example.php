@@ -10,9 +10,8 @@
  */
 ini_set('memory_limit', '1024M');
 
-use FuzzyJsonSearch\SearchFacade;
-use FuzzyJsonSearch\SearchFactory;
-use FuzzyJsonSearch\SearchEngine;
+use robotomize\Fujes\SearchFacade;
+use robotomize\Fujes\SearchFactory;
 
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
@@ -23,7 +22,7 @@ require __DIR__ . '/../vendor/autoload.php';
  * Output encode to json
  */
 $options = [
-    'json_file_name' => __DIR__ . '/data/biographical-directory-footnotes.json', // json file
+    'json_file_name' => __DIR__ . '/robotomize/data/biographical-directory-footnotes.json', // json file
     'search_string' => 'Christensen',  // match string
     'depth_into_array' => '1',      // depth into output
     'output_json' => true,     // encode to json or output php array
@@ -82,7 +81,7 @@ print $searchObject->fetchFew(3) . PHP_EOL;
  * The following example, you can use the factory.
  */
 print SearchFactory::createSearchEngine(
-    __DIR__ . '/../src/data/cities.json',
+    __DIR__ . '/../src/robotomize/data/cities.json',
     'vladvostk',
     2,
     false,
@@ -92,7 +91,7 @@ print SearchFactory::createSearchEngine(
 )->fetchOne()['name'] . PHP_EOL;    // print Vladivostok
 
 print SearchFactory::createSearchEngine(
-    __DIR__ . '/../src/data/cities.json',
+    __DIR__ . '/../src/robotomize/data/cities.json',
     'Mosco',
     1,
     true,
