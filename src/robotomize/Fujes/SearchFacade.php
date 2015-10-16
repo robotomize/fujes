@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the FuJaySearch package.
+ * This file is part of the Fujes package.
  * @link    https://github.com/robotomize/FuJaySearch
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
@@ -13,7 +13,7 @@ namespace robotomize\Fujes;
  * I think the use of such an interface is much simpler, however,
  * have the option of using factory or techniques to deal with directly.
  *
- * @package FuJaySearch
+ * @package Fujes
  * @author  robotomize@gmail.com
  * @version 0.3
  */
