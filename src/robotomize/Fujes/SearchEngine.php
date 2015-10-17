@@ -287,6 +287,16 @@ class SearchEngine
             $this->quality
         );
 
+        /**
+         * Another algorithm for searching
+         */
+//        $searchObj = new SearchSubstringCompare(
+//            $this->jsonTree,
+//            $this->matchString,
+//            $this->multipleResult,
+//            $this->quality
+//        );
+
         if (!$this->multipleResult) {
             $searchObj->preSearch();
         }

@@ -74,40 +74,6 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @param $currentString
-     */
-    private function substringIterator($currentString)
-    {
-        $currentIterationCount = 0;
-        $currentMaxStackValue = 0;
-
-        $current = strlen($currentString);
-        $match = strlen($this->matchString);
-
-        if ($current > $match) {
-            $currentString = substr($current, 0, $match);
-            $matchString = $this->matchString;
-        } else {
-            $matchString = substr($this->matchString, 0, $current);
-        }
-
-        for ($i = 0; $i < strlen($currentString); $i++) {
-            for ($j = $i; $j < strlen($matchString); $j++) {
-                if ($matchString[$j] === $currentString[$i]) {
-                    $currentIterationCount++;
-                    if ($currentIterationCount > $currentMaxStackValue) {
-                        $currentMaxStackValue = $currentIterationCount;
-                    }
-                    break;
-                } else {
-                    $currentIterationCount = 1;
-                }
-            }
-        }
-        return $currentMaxStackValue;
-    }
-
-    /**
      * @param $sheet
      * @param $keys
      *
@@ -190,6 +156,40 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
+     * @param $currentString
+     */
+    private function substringIterator($currentString)
+    {
+        $currentIterationCount = 0;
+        $currentMaxStackValue = 0;
+
+//        //$current = strlen($currentString);
+//        //$match = strlen($this->matchString);
+//
+//        if ($current > $match) {
+//            $currentString = substr($current, 0, $match);
+//            $matchString = $this->matchString;
+//        } else {
+//            $matchString = substr($this->matchString, 0, $current);
+//        }
+
+        for ($i = 0; $i < strlen($currentString); $i++) {
+            for ($j = $i; $j < strlen($this->matchString); $j++) {
+                if ($this->matchString[$j] === $currentString[$i]) {
+                    $currentIterationCount++;
+                    if ($currentIterationCount > $currentMaxStackValue) {
+                        $currentMaxStackValue = $currentIterationCount;
+                    }
+                    break;
+                } else {
+                    $currentIterationCount = 1;
+                }
+            }
+        }
+        return $currentMaxStackValue;
+    }
+
+    /**
      * Split current sheet
      *
      * @param $sheet
@@ -201,15 +201,15 @@ class SearchSubstringCompare extends AbstractSearch
     {
         $variants = explode(' ', $sheet);
         $iterator = 0;
-        $relevantResult = [];
+        $relevantResult = 0;
         foreach ($variants as $val) {
-            $currentValue = $this->compareStart($val, $keys);
+            $currentValue = $this->substringIterator($val);
 
             if ($iterator === 0) {
                 $relevantResult = $currentValue;
             }
 
-            if ((int)$currentValue < (int)$relevantResult) {
+            if ((int)$currentValue > (int)$relevantResult) {
                 $relevantResult = (int)$currentValue;
             }
             $iterator++;
@@ -313,7 +313,7 @@ class SearchSubstringCompare extends AbstractSearch
     {
         $this->generateSortArray();
         if (0 !== count($this->scoreMatrix)) {
-            array_multisort($this->getSortingArray(), SORT_DESC, $this->scoreMatrix, SORT_ASC);
+            array_multisort($this->getSortingArray(), SORT_ASC, $this->scoreMatrix, SORT_ASC);
         } else {
             return false;
         }
