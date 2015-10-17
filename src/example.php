@@ -12,6 +12,7 @@ ini_set('memory_limit', '1024M');
 
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
+use robotomize\Utils\ExceptionWrap;
 
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
@@ -26,7 +27,7 @@ $options = [
     'search_string' => 'Christensen',  // match string
     'depth_into_array' => '1',      // depth into output
     'output_json' => true,     // encode to json or output php array
-    'multiple_result' => false, // multiple result or find one value?
+    'multiple_result' => true, // multiple result or find one value?
     'search_quality' => 1,    // 1 best quality search
     'version' => 'dev'  // dev or master, logging exceptions && code event
 ];
@@ -40,9 +41,11 @@ $searchObject = new SearchFacade(
     $options['search_quality'],
     $options['version']
 );
+\PHP_Timer::start();
+print $searchObject->fetchOne() . PHP_EOL;
+//print_r($searchObject->get)
 
-print $searchObject->fetchOne();
-
+//die();
 /**
  * Output this
  *
@@ -85,17 +88,17 @@ print SearchFactory::find(
     'vladvostk',
     2,
     false,
-    false,
+    true,
     1,
     'dev'
-)->fetchOne()['name'] . PHP_EOL;    // print Vladivostok
+)->fetchOne() . PHP_EOL;    // print Vladivostok
 
 print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/cities.json',
     'Mosco',
     1,
     true,
-    false,
+    true,
     1,
     'dev'
 )->fetchOne() . PHP_EOL;    // print
@@ -110,23 +113,30 @@ print SearchFactory::find(
     'dev'
 )->fetchFew(10) . PHP_EOL;    // print
 
-/**
- * I want to find some planes.
- */
-print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
+$exp = new ExceptionWrap('dev');
+try {
+    /**
+     * I want to find some planes.
+     */
+    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
+    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
+    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
 
-/**
- * I want to find some airports =)
- */
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Sheremetievo')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Domogedov')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Yugnosahalinsk')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Puklovo')->fetchOne() . PHP_EOL;
-
-
-
+    /**
+     * I want to find some airports =)
+     */
+    print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Sheremetievo')->fetchOne() . PHP_EOL;
+    print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Domogedov')->fetchOne() . PHP_EOL;
+    print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Yugnosahalinsk')->fetchOne().PHP_EOL;
+    print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Puklovo')->fetchOne() . PHP_EOL;
+} catch (\Exception $ex) {
+    $exp->push($ex);
+    try {
+        $exp->saveToDisk($ex);
+    } catch (\Exception $e) {
+        print sprintf('Exception in %s, in %s line with message %s', $e->getFile(), $e->getLine(), $e->getMessage());
+    }
+}
 /**
  * {"code":"MOW","name":"Moscow",
  * "coordinates":{"lon":37.617633,"lat":55.755786},"time_zone":"Europe\/Moscow","name_translations":
@@ -134,3 +144,5 @@ print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'P
  * "ru":"\u041c\u043e\u0441\u043a\u0432\u0430","it":"Mosca","es":"Mosc\u00fa","fr":"Moscou",
  * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
  */
+$time = \PHP_Timer::stop();
+print \PHP_Timer::secondsToTimeString($time);

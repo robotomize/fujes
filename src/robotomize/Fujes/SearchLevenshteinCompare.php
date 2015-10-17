@@ -8,12 +8,12 @@
 namespace robotomize\Fujes;
 
 /**
- * Class SearchTreeWalk
+ * Class SearchLevenshteinCompare
  * @package Fujes
  * @author  robotomzie@gmail.com
  * @version 0.3
  */
-class SearchTreeWalk extends AbstractSearch
+class SearchLevenshteinCompare extends AbstractSearch
 {
     /**
      * @var array

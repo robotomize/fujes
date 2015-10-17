@@ -233,11 +233,11 @@ class SearchEngine
     /**
      * Function for preliminary passage through the tree.
      *
-     * @param SearchTreeWalk $searchObject
+     * @param SearchLevenshteinCompare $searchObject
      *
      * @return bool
      */
-    public function preCompilationDirectMatch(SearchTreeWalk $searchObject)
+    public function preCompilationDirectMatch(SearchLevenshteinCompare $searchObject)
     {
         $searchObject->preSearch();
 
@@ -280,12 +280,22 @@ class SearchEngine
     public function run()
     {
         $this->parseJsonToArray();
-        $searchObj = new SearchTreeWalk(
+        $searchObj = new SearchLevenshteinCompare(
             $this->jsonTree,
             $this->matchString,
             $this->multipleResult,
             $this->quality
         );
+
+        /**
+         * Another algorithm for searching
+         */
+//        $searchObj = new SearchSubstringCompare(
+//            $this->jsonTree,
+//            $this->matchString,
+//            $this->multipleResult,
+//            $this->quality
+//        );
 
         if (!$this->multipleResult) {
             $searchObj->preSearch();
