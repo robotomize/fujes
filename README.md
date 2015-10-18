@@ -17,7 +17,8 @@ The basis of the algorithm is taken Levenshtein.
 
 ## Installation
 ```sh
-composer require robotomize/fujes dev-master
+install composer (https://getcomposer.org/download/)
+composer require robotomize/fujes
 ```
 #### or
 ```sh
