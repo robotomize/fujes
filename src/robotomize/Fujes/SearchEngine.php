@@ -288,7 +288,7 @@ class SearchEngine
         );
 
         /**
-         * Another algorithm for searching
+         * Another algorithm for searching brute force - testing, slow
          */
 //        $searchObj = new SearchSubstringCompare(
 //            $this->jsonTree,

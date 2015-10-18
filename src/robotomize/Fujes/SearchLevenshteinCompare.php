@@ -162,6 +162,11 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
+     * @var int
+     */
+    private static $exitCoefficient = 1;
+
+    /**
      * Split current sheet
      *
      * @param $sheet
@@ -186,7 +191,8 @@ class SearchLevenshteinCompare extends AbstractSearch
             }
             $iterator++;
         }
-        return [$keys, $sheet, $relevantResult, count($variants)];
+        return $relevantResult < strlen($this->matchString - self::$exitCoefficient)
+            ? [$keys, $sheet, $relevantResult] : [];
     }
 
     /**
@@ -213,7 +219,10 @@ class SearchLevenshteinCompare extends AbstractSearch
                 $this->search($vv, $keys, $level);
             } else {
                 $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
-                $this->scoreMatrix[] = $this->splitSheetJsonTree($vv, $keys);
+                $currentCompareArray = $this->splitSheetJsonTree($vv, $keys);
+                if (0 !== count($currentCompareArray)) {
+                    $this->scoreMatrix[] = $currentCompareArray;
+                }
                 if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
                 }
@@ -249,11 +258,11 @@ class SearchLevenshteinCompare extends AbstractSearch
     {
         foreach ($this->scoreMatrix as $vv) {
             $this->sortingArray[] = $vv[2];
-            $this->sortingPriorArray[] = $vv[3];
         }
     }
 
     /**
+     * @deprecated slow sort algorithm
      * @return bool
      */
     private function effectiveSort()
@@ -275,7 +284,6 @@ class SearchLevenshteinCompare extends AbstractSearch
         }
         return true;
     }
-
 
     /**
      * This method sorts the resulting array of distance.
