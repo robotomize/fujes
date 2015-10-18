@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -11,19 +11,22 @@ use robotomize\Utils\Log;
 use robotomize\Utils\ExceptionWrap;
 
 /**
- * Class FuzzyFuzzy Json Search Engine
+ * Class PHP Fuzzy Json Search Engine
  *
- * ** FuJaySearch **
+ * ** Fujes **
  *
+ * @TODO optimize all code
  * This is the class that implements the FUZZY search json document. This is an approximate version.
  * You can use it to FUZZY search when receiving data from the mongo or external API.
  * Algorithm? Simple recursive pass on the document tree json.
+ *
  * The complexity of the algorithm, when passing the array O(n).
  * Use the glasses on the basis of metrics of Levenshtein. The lower floor is gaining points the higher the rank.
  *
- * @package Fujes
+ * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.3
+ * @version 0.3.1
+ *
  * @usage
  * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true, false, 1, 'master')
  * $tt->run();

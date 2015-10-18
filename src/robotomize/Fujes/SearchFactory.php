@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -11,9 +11,10 @@ namespace robotomize\Fujes;
  * Class SearchEngineFactory
  * This factory for faster access to the functions of the library.
  *
- * @package Fujes
+ * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version
+ * @version 0.3.1
+ *
  * @usage
  * $resultArray = SearchEngineFactory::find('http://uWtfAPI.json', 'Avengers', 1, true)->fetchOne();
  * -> json string

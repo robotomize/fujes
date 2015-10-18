@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -13,9 +13,9 @@ namespace robotomize\Fujes;
  * I think the use of such an interface is much simpler, however,
  * have the option of using factory or techniques to deal with directly.
  *
- * @package Fujes
+ * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.3
+ * @version 0.3.1
  */
 class SearchFacade
 {
@@ -58,15 +58,14 @@ class SearchFacade
     /**
      * Facade constructor
      *
-     * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
-     * @param $matchString      -> 'What we are looking for'
+     * @param $urlName
+     * @param $matchString
      * @param int
-     * $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
      * @param bool
-     * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
-     * @param bool -> multiple result u need or no
-     * @param int -> quality search , 1 - strict search, 2, 3 less strict
-     * @param string -> debug option. Dev or master.
+     * @param bool
+     * @param int
+     * @param string
+     *
      * The first option writes in logs all exceptions and successful search.
      */
     public function __construct(
@@ -92,8 +91,13 @@ class SearchFacade
     }
 
     /**
+     * @var array
+     */
+    private $parsedArray = [];
+
+    /**
      * Get only relevant search results.
-     *
+     * @TODO facade shared jsonTree, + 100% acceleration
      * @return array|string
      */
     public function fetchOne()
@@ -136,7 +140,7 @@ class SearchFacade
 
     /**
      * Get all search results
-     *
+     * @TODO fetch all filtered, array filtered
      * @return array
      */
     public function fetchAll()

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -13,7 +13,7 @@ namespace robotomize\Fujes;
  * Expand this class
  * You can search for another class that implements only the search can be inherited and expanded.
  *
- * @package Fujes
+ * @package robotomize\Fujes
  * @author  robotomize@gmail.com
  */
 abstract class AbstractSearch

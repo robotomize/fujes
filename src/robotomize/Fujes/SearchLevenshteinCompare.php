@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -9,9 +9,9 @@ namespace robotomize\Fujes;
 
 /**
  * Class SearchLevenshteinCompare
- * @package Fujes
+ * @package robotomize\Fujes
  * @author  robotomzie@gmail.com
- * @version 0.3
+ * @version 0.3.1
  */
 class SearchLevenshteinCompare extends AbstractSearch
 {
@@ -49,6 +49,7 @@ class SearchLevenshteinCompare extends AbstractSearch
             $this->multipleResult = $multipleResult;
             $this->quality = $quality;
             $this->precision = $this->quality;
+            $this->exitCoefficient = $this->calculateExitCoefficient($this->matchString);
         }
     }
 
@@ -164,7 +165,17 @@ class SearchLevenshteinCompare extends AbstractSearch
     /**
      * @var int
      */
-    private static $exitCoefficient = 1;
+    private $exitCoefficient;
+
+    /**
+     * @param $string
+     *
+     * @return int
+     */
+    private function calculateExitCoefficient($string)
+    {
+        return round(strlen($string) / 2);
+    }
 
     /**
      * Split current sheet
@@ -191,7 +202,7 @@ class SearchLevenshteinCompare extends AbstractSearch
             }
             $iterator++;
         }
-        return $relevantResult < strlen($this->matchString - self::$exitCoefficient)
+        return $relevantResult < strlen($this->matchString) - $this->exitCoefficient
             ? [$keys, $sheet, $relevantResult] : [];
     }
 
