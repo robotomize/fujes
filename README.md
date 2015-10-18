@@ -1,4 +1,7 @@
 # fujes - PHP Fuzzy JSON search
+[![Latest Stable Version](https://poser.pugx.org/robotomize/fujes/v/stable)](https://packagist.org/packages/robotomize/fujes)
+[![Total Downloads](https://poser.pugx.org/robotomize/fujes/downloads)](https://packagist.org/packages/robotomize/fujes)
+[![License](https://poser.pugx.org/robotomize/fujes/license)](https://packagist.org/packages/robotomize/fujes)
 [![Build Status](https://travis-ci.org/robotomize/fujes.svg)](https://travis-ci.org/robotomize/fujes/)
 [![Code Climate](https://codeclimate.com/github/robotomize/fujes/badges/gpa.svg)](https://codeclimate.com/github/robotomize/fujes)
 
