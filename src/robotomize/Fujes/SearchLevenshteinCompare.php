@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -9,9 +9,9 @@ namespace robotomize\Fujes;
 
 /**
  * Class SearchLevenshteinCompare
- * @package Fujes
+ * @package robotomize\Fujes
  * @author  robotomzie@gmail.com
- * @version 0.3
+ * @version 0.3.1
  */
 class SearchLevenshteinCompare extends AbstractSearch
 {
@@ -49,6 +49,7 @@ class SearchLevenshteinCompare extends AbstractSearch
             $this->multipleResult = $multipleResult;
             $this->quality = $quality;
             $this->precision = $this->quality;
+            $this->exitCoefficient = $this->calculateExitCoefficient($this->matchString);
         }
     }
 
@@ -162,6 +163,21 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
+     * @var int
+     */
+    private $exitCoefficient;
+
+    /**
+     * @param $string
+     *
+     * @return int
+     */
+    private function calculateExitCoefficient($string)
+    {
+        return round(strlen($string) / 2);
+    }
+
+    /**
      * Split current sheet
      *
      * @param $sheet
@@ -186,7 +202,8 @@ class SearchLevenshteinCompare extends AbstractSearch
             }
             $iterator++;
         }
-        return [$keys, $sheet, $relevantResult, count($variants)];
+        return $relevantResult < strlen($this->matchString) - $this->exitCoefficient
+            ? [$keys, $sheet, $relevantResult] : [];
     }
 
     /**
@@ -213,7 +230,10 @@ class SearchLevenshteinCompare extends AbstractSearch
                 $this->search($vv, $keys, $level);
             } else {
                 $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
-                $this->scoreMatrix[] = $this->splitSheetJsonTree($vv, $keys);
+                $currentCompareArray = $this->splitSheetJsonTree($vv, $keys);
+                if (0 !== count($currentCompareArray)) {
+                    $this->scoreMatrix[] = $currentCompareArray;
+                }
                 if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
                 }
@@ -249,11 +269,11 @@ class SearchLevenshteinCompare extends AbstractSearch
     {
         foreach ($this->scoreMatrix as $vv) {
             $this->sortingArray[] = $vv[2];
-            $this->sortingPriorArray[] = $vv[3];
         }
     }
 
     /**
+     * @deprecated slow sort algorithm
      * @return bool
      */
     private function effectiveSort()
@@ -275,7 +295,6 @@ class SearchLevenshteinCompare extends AbstractSearch
         }
         return true;
     }
-
 
     /**
      * This method sorts the resulting array of distance.
