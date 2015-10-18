@@ -387,6 +387,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     public function setMatchString($matchString)
     {
         $this->matchString = $matchString;
+        $this->exitCoefficient = $this->calculateExitCoefficient($this->matchString);
     }
 
     /**
