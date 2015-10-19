@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of the fujes package.
- * @link    https://github.com/robotomize/FuJaySearch
+ * @link    https://github.com/robotomize/fujes
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
@@ -41,11 +41,9 @@ $searchObject = new SearchFacade(
     $options['search_quality'],
     $options['version']
 );
-\PHP_Timer::start();
+//\PHP_Timer::start();
 print $searchObject->fetchOne() . PHP_EOL;
-//print_r($searchObject->get)
 
-//die();
 /**
  * Output this
  *
@@ -145,5 +143,5 @@ try {
  * "ru":"\u041c\u043e\u0441\u043a\u0432\u0430","it":"Mosca","es":"Mosc\u00fa","fr":"Moscou",
  * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
  */
-$time = \PHP_Timer::stop();
-print \PHP_Timer::secondsToTimeString($time);
+//$time = \PHP_Timer::stop();
+//print \PHP_Timer::secondsToTimeString($time);

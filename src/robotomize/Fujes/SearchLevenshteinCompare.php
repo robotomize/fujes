@@ -174,7 +174,7 @@ class SearchLevenshteinCompare extends AbstractSearch
      */
     private function calculateExitCoefficient($string)
     {
-        return round(strlen($string) / 2);
+        return floor(strlen($string) / 2);
     }
 
     /**
