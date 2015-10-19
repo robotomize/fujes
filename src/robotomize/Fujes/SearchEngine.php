@@ -184,40 +184,112 @@ class SearchEngine
     private $rangeSortedMatrix = 0;
 
     /**
+     * Curl wrapper, check gziped connection
+     *
+     * @param $url
+     *
+     * @return mixed
+     */
+    private function curlWrap($url)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'cURL');
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+
+        $result = curl_exec($curl);
+        curl_close($curl);
+
+        return $result;
+    }
+
+    /**
      * Parsing Json to array and that is all
      */
     private function parseJsonToArray()
     {
+        /**
+         * Some smells i know
+         */
         try {
-             $this->jsonData = file_get_contents($this->urlName);
-            if ($this->isJsonTest($this->jsonData)) {
-                $this->jsonTree = json_decode($this->jsonData, true);
+            if (file_exists($this->urlName)) {
+                /**
+                 * Get JSON from file
+                 */
+                $this->jsonData = file_get_contents($this->urlName);
             } else {
+                /**
+                 * Get JSON from remote
+                 */
+                $this->jsonData = $this->curlWrap($this->urlName);
+                if (trim($this->jsonData) == '') {
+                    $ex = new \Exception('Input file not found');
+                    $this->exceptionObject->push($ex);
+                    try {
+                        /**
+                         * Log this exception
+                         */
+                        $this->exceptionObject->saveToDisk($ex);
+                    } catch (\Exception $e) {
+                        /**
+                         * Write to log failed
+                         */
+                        $this->exceptionObject->push($e);
+                    }
+                    throw new \Exception('Input file not found');
+                }
+            }
+
+            if ($this->isJsonTest($this->jsonData)) {
+                /**
+                 * JSON verify
+                 */
+                $this->jsonTree = json_decode(trim($this->jsonData), true);
+            } else {
+                /**
+                 * Throw JSON format exception, is not a JSON
+                 */
                 $ex = new \Exception('The data is not in JSON format');
                 $this->exceptionObject->push($ex);
 
                 try {
+                    /**
+                     * Log this exception
+                     */
                     $this->exceptionObject->saveToDisk($ex);
                 } catch (\Exception $e) {
+                    /**
+                     * Write to log failed
+                     */
                     $this->exceptionObject->push($e);
                 }
 
                 throw new \Exception('The data is not in JSON format');
             }
         } catch (\Exception $ex) {
+            /**
+             * Throw File not found exception
+             */
             $ex = new \Exception('Input file not found');
             $this->exceptionObject->push($ex);
             try {
+                /**
+                 * Log this exception
+                 */
                 $this->exceptionObject->saveToDisk($ex);
             } catch (\Exception $e) {
+                /**
+                 * Write to log failed
+                 */
                 $this->exceptionObject->push($e);
             }
             throw new \Exception('Input file not found');
         } finally {
             if (isset($ex)) {
-                /**
-                 * code smell, i know
-                 */
                 throw new \Exception('File not found');
             }
         }
@@ -287,7 +359,8 @@ class SearchEngine
             $this->jsonTree,
             $this->matchString,
             $this->multipleResult,
-            $this->quality
+            $this->quality,
+            $this->versionType
         );
 
         /**
@@ -303,6 +376,18 @@ class SearchEngine
         if (!$this->multipleResult) {
             $searchObj->preSearch();
         }
+
+        /**
+         * Big JSON data anylize
+         * debug version 0.3.2.3
+         */
+//        \PHP_Timer::start();
+//        if ($this->versionType === 'dev') {
+//            $searchObj->countDepth();
+//        }
+//
+//        $time = \PHP_Timer::stop();
+//        print \PHP_Timer::secondsToTimeString($time);
 
         if (0 !== count($searchObj->getDirectMatch())) {
             $searchObj->setScoreMatrix($searchObj->getDirectMatch());

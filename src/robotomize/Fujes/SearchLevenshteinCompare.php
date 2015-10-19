@@ -7,6 +7,8 @@
 
 namespace robotomize\Fujes;
 
+use robotomize\Utils\GetStatus;
+
 /**
  * Class SearchLevenshteinCompare
  * @package robotomize\Fujes
@@ -36,11 +38,21 @@ class SearchLevenshteinCompare extends AbstractSearch
     private $quality;
 
     /**
+     * @var
+     */
+    private $versionType;
+
+    /**
      * @param $inputArray
      * @param $matchString
      */
-    public function __construct($inputArray, $matchString, $multipleResult = false, $quality = 1)
-    {
+    public function __construct(
+        $inputArray,
+        $matchString,
+        $multipleResult = false,
+        $quality = 1,
+        $versionType = 'master'
+    ) {
         if (0 === count($inputArray) || $matchString === '') {
             throw new \InvalidArgumentException;
         } else {
@@ -50,6 +62,7 @@ class SearchLevenshteinCompare extends AbstractSearch
             $this->quality = $quality;
             $this->precision = $this->quality;
             $this->exitCoefficient = $this->calculateExitCoefficient($this->matchString);
+            $this->versionType = $versionType;
         }
     }
 
@@ -98,6 +111,36 @@ class SearchLevenshteinCompare extends AbstractSearch
         }
 
         return false;
+    }
+
+    /**
+     * @var int
+     */
+    private $countDepth = 0;
+
+    /**
+     * @param array $inputArray
+     * @param string $key
+     * @param int $level
+     */
+    public function countDepth($inputArray = [])
+    {
+        if (0 === count($inputArray)) {
+            $inputArray = $this->inputArray;
+        }
+        foreach ($inputArray as $kk => $vv) {
+            /**
+             * Check came an array or a string, if the string, then compare with the unknown.
+             * If you receive an array, calls itself recursively.
+             */
+            if (is_array($vv)) {
+                $this->countDepth($vv);
+            } else {
+                continue;
+            }
+            $this->countDepth++;
+        }
+        return true;
     }
 
     /**
@@ -174,7 +217,7 @@ class SearchLevenshteinCompare extends AbstractSearch
      */
     private function calculateExitCoefficient($string)
     {
-        return floor(strlen($string) / 2);
+        return strlen($this->matchString) - floor(strlen($string) / 2);
     }
 
     /**
@@ -202,9 +245,13 @@ class SearchLevenshteinCompare extends AbstractSearch
             }
             $iterator++;
         }
-        return $relevantResult < strlen($this->matchString) - $this->exitCoefficient
-            ? [$keys, $sheet, $relevantResult] : [];
+        return $relevantResult < $this->exitCoefficient ? [$keys, $sheet, $relevantResult] : [];
     }
+
+    /**
+     * @var int
+     */
+    private $searchIteration = 0;
 
     /**
      * Recursive array converted from json
@@ -238,6 +285,19 @@ class SearchLevenshteinCompare extends AbstractSearch
                     break;
                 }
             }
+
+            /**
+             * debug version 0.3.3
+             */
+//            if ($this->versionType === 'dev' && mt_rand(0, 1000) === 562) {
+//                try {
+////                    print GetStatus::getStatus($this->searchIteration, $this->countDepth) . PHP_EOL;
+//                    print 'Analyze ' . $this->searchIteration . ' values' . PHP_EOL;
+//                } catch (\Exception $ex) {
+//                    print $ex->getMessage() . PHP_EOL;
+//                }
+//            }
+//            $this->searchIteration++;
         }
         if (0 !== count($this->scoreMatrix)) {
             return true;
@@ -484,5 +544,21 @@ class SearchLevenshteinCompare extends AbstractSearch
     public function setSortingPriorArray($sortingPriorArray)
     {
         $this->sortingPriorArray = $sortingPriorArray;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountDepth()
+    {
+        return $this->countDepth;
+    }
+
+    /**
+     * @param int $countDepth
+     */
+    public function setCountDepth($countDepth)
+    {
+        $this->countDepth = $countDepth;
     }
 }

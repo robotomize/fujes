@@ -8,7 +8,7 @@
 /**
  * Some examples of using the search.
  */
-ini_set('memory_limit', '1024M');
+ini_set('memory_limit', '32000M');
 
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
@@ -41,7 +41,7 @@ $searchObject = new SearchFacade(
     $options['search_quality'],
     $options['version']
 );
-//\PHP_Timer::start();
+\PHP_Timer::start();
 print $searchObject->fetchOne() . PHP_EOL;
 
 /**
@@ -89,7 +89,7 @@ print SearchFactory::find(
     true,
     1,
     'dev'
-)->fetchOne() . PHP_EOL;    // print Vladivostok
+)->fetchOne()['name'] . PHP_EOL;    // print Vladivostok
 
 print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/cities.json',
@@ -156,6 +156,7 @@ try {
         print sprintf('Exception in %s, in %s line with message %s', $e->getFile(), $e->getLine(), $e->getMessage());
     }
 }
+
 /**
  * {"code":"MOW","name":"Moscow",
  * "coordinates":{"lon":37.617633,"lat":55.755786},"time_zone":"Europe\/Moscow","name_translations":
@@ -163,5 +164,5 @@ try {
  * "ru":"\u041c\u043e\u0441\u043a\u0432\u0430","it":"Mosca","es":"Mosc\u00fa","fr":"Moscou",
  * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
  */
-//$time = \PHP_Timer::stop();
-//print \PHP_Timer::secondsToTimeString($time);
+$time = \PHP_Timer::stop();
+print \PHP_Timer::secondsToTimeString($time);
