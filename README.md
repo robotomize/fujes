@@ -33,23 +33,52 @@ use robotomize\Fujes\SearchFactory;
 * 
 * `I want to find some planes.`
 */
-print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
+print SearchFactory::find(
+    'http://api.travelpayouts.com/data/planes.json', 
+    'Tu'
+)->fetchOne() . PHP_EOL;
+print SearchFactory::find(
+    'http://api.travelpayouts.com/data/planes.json', 
+    'Boing 7'
+)->fetchOne() . PHP_EOL;
+print SearchFactory::find(
+    'http://api.travelpayouts.com/data/planes.json', 
+    'An24'
+)->fetchOne() . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10540011/222c4248-743f-11e5-9a6e-876daac97e40.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567867/aec0b714-7649-11e5-8435-cc87dc4246de.png)](https://github.com/robotomize/fujes)
 #### Another example
 Grep is used for highlighting
 ```php
 /**
  * `I want to find some airports =)`
  */
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Sheremetievo')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Domogedov')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Yugnosahalinsk')->fetchOne() . PHP_EOL;
-print SearchFactory::find('http://api.travelpayouts.com/data/airports.json ', 'Puklovo')->fetchOne() . PHP_EOL;
+    print SearchFactory::find(
+            'http://api.travelpayouts.com/data/airports.json ',
+            'Sheremetievo',
+            1,
+            false
+        )->fetchOne()['name'] . PHP_EOL;
+    print SearchFactory::find(
+            'http://api.travelpayouts.com/data/airports.json ',
+            'Domogedov',
+            1,
+            false
+        )->fetchOne()['en'] . PHP_EOL;
+    print SearchFactory::find(
+            'http://api.travelpayouts.com/data/airports.json ',
+            'Yugnosahalinsk',
+            1,
+            false
+        )->fetchOne()['en'] . PHP_EOL;
+    print SearchFactory::find(
+            'http://api.travelpayouts.com/data/airports.json ',
+            'Puklovo',
+            1,
+            false
+        )->fetchOne()['en'] . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10540250/5b28cd9e-7441-11e5-9b11-1cac94a2d7e7.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567875/dc4d2a64-7649-11e5-9efa-210bc9a8958b.png)](https://github.com/robotomize/fujes)
 
 #### With full options
 ```php
@@ -60,21 +89,21 @@ print SearchFactory::createSearchEngine(
     '/path/to/jsonurl',
     'What are searching for string',
     1,
-    true, // output to json?
-    false, // multiple results?
-    1,  //quality, 1 better
-    'master' // master or dev. Dev saved logs
-)->fetchOne() . PHP_EOL;    // print
+    true, 
+    false, 
+    1,  
+    'master' 
+)->fetchOne() . PHP_EOL;  
 
 print SearchFactory::createSearchEngine(
     '/path/to/jsonurl',
     'What are searching for string',
     1,
-    true, // output to json?
-    true, // multiple results?
-    1,  //quality, 1 better
-    'master' // master or dev. Dev saved logs
-)->fetchFew(3) . PHP_EOL;    // count results
+    true, 
+    true, 
+    1,  
+    'master' 
+)->fetchFew(3) . PHP_EOL;
 
 ```
 
@@ -100,13 +129,13 @@ use robotomize\Fujes\SearchFactory;
  * Output encode to json
  */
 $options = [
-    'json_file_name' => __DIR__ . '/data/biographical-directory-footnotes.json', // json file
-    'search_string' => 'Christensen',                         // match string
-    'depth_into_array' => '1',                              // depth into output
-    'output_json' => true,                              // encode to json or output php array
-    'multiple_result' => false,                     // multiple result or find one value?
-    'search_quality' => 1,                        // 1 best quality search
-    'version' => 'dev'                      // dev or master, logging exceptions && code event
+    'json_file_name' => __DIR__ . '/data/biographical-directory-footnotes.json', 
+    'search_string' => 'Christensen', 
+    'depth_into_array' => '1', 
+    'output_json' => true,
+    'multiple_result' => false, 
+    'search_quality' => 1, 
+    'version' => 'dev' 
 ];
 
 $searchObject = new SearchFacade(
@@ -127,7 +156,7 @@ print $searchObject->fetchOne();
  * Biographical information under Donna Marie Christian Christensen. ]","line":56939}
  */
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10523390/3097e5d8-73b5-11e5-9170-1d4f7086e711.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567879/e3c2ad78-7649-11e5-8282-3399410c6d30.png)](https://github.com/robotomize/fujes)
 #### Next, fetch few entries. 
 ```php
 /**
@@ -163,7 +192,7 @@ $searchObject->setMultipleResult(true);
  */
 print $searchObject->fetchFew(3) . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539054/cdabef54-7437-11e5-90c1-cc59ded176dd.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567890/14cb427c-764a-11e5-8f6f-06caa51dd2fa.png)](https://github.com/robotomize/fujes)
 ### Factory
 ```php
 /**
@@ -189,7 +218,7 @@ print SearchFactory::createSearchEngine(
     'dev'
 )->fetchOne() . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539171/be08a8ca-7438-11e5-92c1-b68fd652b430.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567893/1e64ed6a-764a-11e5-8890-a24729be8843.png)](https://github.com/robotomize/fujes)
 
 #### Another factory example
 ```php
@@ -204,7 +233,7 @@ print SearchFactory::createSearchEngine(
     )->fetchFew(6) . PHP_EOL; 
 ```
 Grep is used for highlighting
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10539194/dc399700-7438-11e5-9c30-0223a18ce380.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567892/1deb0220-764a-11e5-8088-071e2ea73822.png)](https://github.com/robotomize/fujes)
 ### Documentation
 - `Depth` - ...
 ## License
