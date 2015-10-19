@@ -104,8 +104,16 @@ print SearchFactory::createSearchEngine(
     1,  
     'master' 
 )->fetchFew(3) . PHP_EOL;
-
 ```
+### Documentation for Facttory && Facade
+## Parameters
+- path to json file '/go/to/path/name.json' or 'http://myapi/1.json'
+- search line. 'search string'
+- the depth of the array. (1-..) . Nesting output array. You will use a value of 1 or 2 the most.
+- Display in json or PHP array. Output back to JSON?(true, false)
+- Fetch one or more results. Get a set of results? Put true if you need to bring some results.
+- Quality, 1 by default. @deprecated, but using. 1 default
+- Version, master or dev. If you put the dev logs will be written about the exclusion or successful and not successful recognition. Once you see all the exceptions that fall.
 
 ## Usage with example.php
 #### Basic examples you can try that.
@@ -173,15 +181,6 @@ try {
     */
 }
 ```
-### Parameters
-* `path to json file`
-* `search line`
-* `the depth of the array`
-* `Display in json and PHP array.`
-* **`Fetch one or more results.`**
-* `Quality, 1 by default`
-* `Version, master or dev`
-
 #### Set up $multipleResult = trueand everything will be fine.
 
 ```php
@@ -234,8 +233,7 @@ print SearchFactory::createSearchEngine(
 ```
 Grep is used for highlighting
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567892/1deb0220-764a-11e5-8088-071e2ea73822.png)](https://github.com/robotomize/fujes)
-### Documentation
-- `Depth` - ...
+
 ## License
 Satis is licensed under the MIT License - see the LICENSE file for details
 
