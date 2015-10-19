@@ -78,7 +78,7 @@ Grep is used for highlighting
             false
         )->fetchOne()['en'] . PHP_EOL;
 ```
-[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567875/dc4d2a64-7649-11e5-9efa-210bc9a8958b.png)](https://github.com/robotomize/fujes)
+[![Pic1](https://cloud.githubusercontent.com/assets/1207984/10570429/c6450f78-766e-11e5-8525-08ce6e91c8e9.png)](https://github.com/robotomize/fujes)
 
 #### With full options
 ```php
