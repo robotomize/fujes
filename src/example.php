@@ -124,29 +124,29 @@ try {
      * I want to find some airports =)
      */
     print SearchFactory::find(
-            'http://api.travelpayouts.com/data/airports.json ',
-            'Sheremetievo',
-            1,
-            false
-        )->fetchOne()['name'] . PHP_EOL;
+        'http://api.travelpayouts.com/data/airports.json ',
+        'Sheremetievo',
+        1,
+        false
+    )->fetchOne()['name'] . PHP_EOL;
     print SearchFactory::find(
-            'http://api.travelpayouts.com/data/airports.json ',
-            'Domogedov',
-            1,
-            false
-        )->fetchOne()['en'] . PHP_EOL;
+        'http://api.travelpayouts.com/data/airports.json ',
+        'Domogedov',
+        1,
+        false
+    )->fetchOne()['en'] . PHP_EOL;
     print SearchFactory::find(
-            'http://api.travelpayouts.com/data/airports.json ',
-            'Yugnosahalinsk',
-            1,
-            false
-        )->fetchOne()['en'] . PHP_EOL;
+        'http://api.travelpayouts.com/data/airports.json ',
+        'Yugnosahalinsk',
+        1,
+        false
+    )->fetchOne()['en'] . PHP_EOL;
     print SearchFactory::find(
-            'http://api.travelpayouts.com/data/airports.json ',
-            'Puklovo',
-            1,
-            false
-        )->fetchOne()['en'] . PHP_EOL;
+        'http://api.travelpayouts.com/data/airports.json ',
+        'Puklovo',
+        1,
+        false
+    )->fetchOne()['en'] . PHP_EOL;
 
 } catch (\Exception $ex) {
     $exp->push($ex);
