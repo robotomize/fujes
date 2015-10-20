@@ -164,10 +164,10 @@ class SearchLevenshteinCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->preSearch($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 if ($this->splitDirectMatchSheetJsonTree($vv, $keys)) {
                     break;
                 } else {
@@ -240,8 +240,8 @@ class SearchLevenshteinCompare extends AbstractSearch
                 $relevantResult = $currentValue;
             }
 
-            if ((int)$currentValue < (int)$relevantResult) {
-                $relevantResult = (int)$currentValue;
+            if ((int) $currentValue < (int) $relevantResult) {
+                $relevantResult = (int) $currentValue;
             }
             $iterator++;
         }
@@ -273,10 +273,10 @@ class SearchLevenshteinCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->search($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $currentCompareArray = $this->splitSheetJsonTree($vv, $keys);
                 if (0 !== count($currentCompareArray)) {
                     $this->scoreMatrix[] = $currentCompareArray;
@@ -341,7 +341,7 @@ class SearchLevenshteinCompare extends AbstractSearch
         if (0 !== count($this->scoreMatrix)) {
             usort(
                 $this->scoreMatrix,
-                function ($a, $b) {
+                function($a, $b) {
                 
                     if ($b[2] != $a[2]) {
                         return strnatcasecmp($b[2], $a[2]);
