@@ -343,8 +343,7 @@ class SearchLevenshteinCompare extends AbstractSearch
         if (0 !== count($this->scoreMatrix)) {
             usort(
                 $this->scoreMatrix,
-                function($a, $b) {
-                
+                function ($a, $b) {
                     if ($b[2] != $a[2]) {
                         return strnatcasecmp($b[2], $a[2]);
                     } elseif ($b[3] != $a[3]) {
