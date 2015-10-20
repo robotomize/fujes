@@ -6,7 +6,7 @@
  */
 
 spl_autoload_register(
-    function($className) {
+    function ($className) {
         $className = ltrim($className, '\\');
         $fileName = '';
         if ($lastNsPos = strripos($className, '\\')) {
