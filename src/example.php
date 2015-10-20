@@ -1,9 +1,9 @@
 <?php
 /**
- * This file is part of the fujes package.
- * @link    https://github.com/robotomize/fujes
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+     * This file is part of the fujes package.
+     * @link    https://github.com/robotomize/fujes
+     * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+     */
 
 /**
  * Some examples of using the search.
