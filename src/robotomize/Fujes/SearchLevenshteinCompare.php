@@ -333,7 +333,9 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @deprecated slow sort algorithm
+     * Slow sort algorithm
+     *
+     * @deprecated
      * @return bool
      */
     private function effectiveSort()
@@ -358,6 +360,7 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * This method sorts the resulting array of distance.
+     *
      * @return bool
      */
     private function sortingScoreMatrix()
