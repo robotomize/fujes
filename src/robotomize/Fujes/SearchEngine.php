@@ -325,6 +325,11 @@ class SearchEngine
             $this->sortedScoreMatrix = $searchObj->getScoreMatrix();
             $this->setRangeSortedMatrix(count($this->sortedScoreMatrix));
         }
+        if (0 !== count($this->sortedScoreMatrix)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

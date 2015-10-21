@@ -56,6 +56,11 @@ class SearchFacade
     private $versionType = '';
 
     /**
+     * @var
+     */
+    private $jsonSearchObject;
+
+    /**
      * Facade constructor
      * The first option writes in logs all exceptions and successful search.
      *
@@ -90,9 +95,32 @@ class SearchFacade
     }
 
     /**
-     * @var array
+     * @return SearchEngine
      */
-    private $parsedArray = [];
+    private function create()
+    {
+        return new SearchEngine(
+            $this->urlName,
+            $this->matchString,
+            $this->depth,
+            $this->jsonEncode,
+            $this->multipleResult,
+            $this->multipleResult,
+            $this->quality,
+            $this->versionType
+        );
+    }
+
+    /**
+     * @return SearchEngine
+     */
+    private function getInstance()
+    {
+        $search = $this->create();
+        $search->run();
+
+        return $search;
+    }
 
     /**
      * Get only relevant search results.
@@ -102,17 +130,7 @@ class SearchFacade
      */
     public function fetchOne()
     {
-        $jsonSearch = new SearchEngine(
-            $this->urlName,
-            $this->matchString,
-            $this->depth,
-            $this->jsonEncode,
-            $this->multipleResult,
-            $this->quality,
-            $this->versionType
-        );
-        $jsonSearch->run();
-        return $jsonSearch->fetchOne();
+        return $this->getInstance()->fetchOne();
     }
 
     /**
@@ -124,18 +142,7 @@ class SearchFacade
      */
     public function fetchFew($count)
     {
-        $jsonSearch = new SearchEngine(
-            $this->urlName,
-            $this->matchString,
-            $this->depth,
-            $this->jsonEncode,
-            $this->multipleResult,
-            $this->multipleResult,
-            $this->quality,
-            $this->versionType
-        );
-        $jsonSearch->run();
-        return $jsonSearch->fetchFew($count);
+        return $this->getInstance()->fetchFew($count);
     }
 
     /**
@@ -146,18 +153,7 @@ class SearchFacade
      */
     public function fetchAll()
     {
-        $jsonSearch = new SearchEngine(
-            $this->urlName,
-            $this->matchString,
-            $this->depth,
-            $this->jsonEncode,
-            $this->multipleResult,
-            $this->multipleResult,
-            $this->quality,
-            $this->versionType
-        );
-        $jsonSearch->run();
-        return $jsonSearch->fetchAll();
+        return $this->getInstance()->fetchAll();
     }
 
     /**
