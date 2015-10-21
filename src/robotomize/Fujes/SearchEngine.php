@@ -108,8 +108,8 @@ class SearchEngine
     /**
      * Search engine constructor
      *
-     * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
-     * @param $matchString      -> 'What we are looking for'
+     * @param string $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
+     * @param string $matchString      -> 'What we are looking for'
      * @param int $depth
      * $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
      * @param bool $jsonEncode

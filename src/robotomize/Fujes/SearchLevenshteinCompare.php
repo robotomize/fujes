@@ -190,7 +190,7 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * @param $current
-     * @param $key
+     * @param string $key
      *
      * @return int
      */
@@ -390,7 +390,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @return int[]
+     * @return integer[]
      */
     public function getCountArrays()
     {
