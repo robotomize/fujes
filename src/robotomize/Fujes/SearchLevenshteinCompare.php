@@ -1,9 +1,9 @@
 <?php
-/**
- * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/fujes
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+    /**
+     * This file is part of the Fujes package.
+     * @link    https://github.com/robotomize/fujes
+     * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+     */
 
 namespace robotomize\Fujes;
 
@@ -44,7 +44,7 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * @param $inputArray
-     * @param $matchString
+     * @param string $matchString
      */
     public function __construct(
         $inputArray,
@@ -82,7 +82,7 @@ class SearchLevenshteinCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array|bool
+     * @return boolean
      */
     public function directCompareTwoString($current)
     {
@@ -120,8 +120,6 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * @param array $inputArray
-     * @param string $key
-     * @param int $level
      */
     public function countDepth($inputArray = [])
     {
@@ -164,10 +162,10 @@ class SearchLevenshteinCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->preSearch($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 if ($this->splitDirectMatchSheetJsonTree($vv, $keys)) {
                     break;
                 } else {
@@ -192,7 +190,7 @@ class SearchLevenshteinCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array
+     * @return int
      */
     public function compareStart($current, $key)
     {
@@ -211,9 +209,9 @@ class SearchLevenshteinCompare extends AbstractSearch
     private $exitCoefficient;
 
     /**
-     * @param $string
+     * @param string $string
      *
-     * @return int
+     * @return double
      */
     private function calculateExitCoefficient($string)
     {
@@ -240,8 +238,8 @@ class SearchLevenshteinCompare extends AbstractSearch
                 $relevantResult = $currentValue;
             }
 
-            if ((int)$currentValue < (int)$relevantResult) {
-                $relevantResult = (int)$currentValue;
+            if ((int) $currentValue < (int) $relevantResult) {
+                $relevantResult = (int) $currentValue;
             }
             $iterator++;
         }
@@ -273,10 +271,10 @@ class SearchLevenshteinCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->search($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $currentCompareArray = $this->splitSheetJsonTree($vv, $keys);
                 if (0 !== count($currentCompareArray)) {
                     $this->scoreMatrix[] = $currentCompareArray;
@@ -333,7 +331,9 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @deprecated slow sort algorithm
+     * Slow sort algorithm
+     *
+     * @deprecated
      * @return bool
      */
     private function effectiveSort()
@@ -342,7 +342,6 @@ class SearchLevenshteinCompare extends AbstractSearch
             usort(
                 $this->scoreMatrix,
                 function ($a, $b) {
-                
                     if ($b[2] != $a[2]) {
                         return strnatcasecmp($b[2], $a[2]);
                     } elseif ($b[3] != $a[3]) {
@@ -358,6 +357,7 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * This method sorts the resulting array of distance.
+     *
      * @return bool
      */
     private function sortingScoreMatrix()
@@ -426,7 +426,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getCountArrays()
     {
@@ -499,7 +499,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {

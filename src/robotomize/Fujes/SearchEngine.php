@@ -1,9 +1,9 @@
 <?php
-/**
- * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/fujes
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+    /**
+     * This file is part of the Fujes package.
+     * @link    https://github.com/robotomize/fujes
+     * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+     */
 
 namespace robotomize\Fujes;
 
@@ -186,7 +186,7 @@ class SearchEngine
     /**
      * Curl wrapper, check gziped connection
      *
-     * @param $url
+     * @param string $url
      *
      * @return mixed
      */
@@ -212,86 +212,26 @@ class SearchEngine
      */
     private function parseJsonToArray()
     {
-        /**
-         * Some smells i know
-         */
-        try {
-            if (file_exists($this->urlName)) {
-                /**
-                 * Get JSON from file
-                 */
-                $this->jsonData = file_get_contents($this->urlName);
-            } else {
-                /**
-                 * Get JSON from remote
-                 */
-                $this->jsonData = $this->curlWrap($this->urlName);
-                if (trim($this->jsonData) == '') {
-                    $ex = new \Exception('Input file not found');
-                    $this->exceptionObject->push($ex);
-                    try {
-                        /**
-                         * Log this exception
-                         */
-                        $this->exceptionObject->saveToDisk($ex);
-                    } catch (\Exception $e) {
-                        /**
-                         * Write to log failed
-                         */
-                        $this->exceptionObject->push($e);
-                    }
-                    throw new \Exception('Input file not found');
-                }
-            }
 
-            if ($this->isJsonTest($this->jsonData)) {
-                /**
-                 * JSON verify
-                 */
-                $this->jsonTree = json_decode(trim($this->jsonData), true);
-            } else {
-                /**
-                 * Throw JSON format exception, is not a JSON
-                 */
-                $ex = new \Exception('The data is not in JSON format');
+        if (file_exists($this->urlName)) {
+            $this->jsonData = file_get_contents($this->urlName);
+        } else {
+            $this->jsonData = $this->curlWrap($this->urlName);
+            if (trim($this->jsonData) == '') {
+                $ex = new \Exception('Input file not found');
                 $this->exceptionObject->push($ex);
-
-                try {
-                    /**
-                     * Log this exception
-                     */
-                    $this->exceptionObject->saveToDisk($ex);
-                } catch (\Exception $e) {
-                    /**
-                     * Write to log failed
-                     */
-                    $this->exceptionObject->push($e);
-                }
-
-                throw new \Exception('The data is not in JSON format');
-            }
-        } catch (\Exception $ex) {
-            /**
-             * Throw File not found exception
-             */
-            $ex = new \Exception('Input file not found');
-            $this->exceptionObject->push($ex);
-            try {
-                /**
-                 * Log this exception
-                 */
                 $this->exceptionObject->saveToDisk($ex);
-            } catch (\Exception $e) {
-                /**
-                 * Write to log failed
-                 */
-                $this->exceptionObject->push($e);
+                throw new \Exception('Input file not found');
             }
-            throw new \Exception('Input file not found');
-        } finally {
-            if (isset($ex)) {
-                throw new \Exception('File not found');
-            }
+        }
+
+        if ($this->isJsonTest($this->jsonData)) {
+            $this->jsonTree = json_decode(trim($this->jsonData), true);
+        } else {
+            $ex = new \Exception('The data is not in JSON format');
+            $this->exceptionObject->push($ex);
+            $this->exceptionObject->saveToDisk($ex);
+            throw new \Exception('The data is not in JSON format');
         }
     }
 
@@ -480,7 +420,7 @@ class SearchEngine
     /**
      * Get only relevant search results.
      *
-     * @return array|mixed
+     * @return string
      */
     public function fetchOne()
     {
@@ -620,7 +560,7 @@ class SearchEngine
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function __toString()
     {
@@ -632,7 +572,7 @@ class SearchEngine
     }
 
     /**
-     * @return array|mixed
+     * @return string
      */
     public function __invoke()
     {
@@ -765,7 +705,7 @@ class SearchEngine
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getJsonEncode()
     {
@@ -773,7 +713,7 @@ class SearchEngine
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {
