@@ -33,7 +33,7 @@ use robotomize\Fujes\SearchFactory;
 
 /**
 * 
-* `I want to find some planes.`
+* I want to find some planes
 */
 print SearchFactory::find(
     'http://api.travelpayouts.com/data/planes.json', 
@@ -53,9 +53,9 @@ print SearchFactory::find(
 Grep is used for highlighting
 ```php
 <?php
-/**
- * `I want to find some airports =)`
- */
+    /**
+     * I want to find some airports
+     */
     print SearchFactory::find(
             'http://api.travelpayouts.com/data/airports.json ',
             'Sheremetievo',
@@ -127,6 +127,7 @@ TThese examples work if you do
 * php -q src/example.php
 
 ```php
+<?php
 php -q src/example.php
 ```
 
@@ -192,6 +193,7 @@ try {
 #### Set up $multipleResult = trueand everything will be fine.
 
 ```php
+<?php
 $searchObject->setMultipleResult(true);
 
 /**
