@@ -7,8 +7,6 @@
 
 namespace robotomize\Fujes;
 
-use robotomize\Utils\GetStatus;
-
 /**
  * Class SearchLevenshteinCompare
  * @package robotomize\Fujes

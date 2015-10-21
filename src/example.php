@@ -28,11 +28,11 @@ require __DIR__ . '/../vendor/autoload.php';
  */
 $options = [
     'json_file_name' => __DIR__ . '/robotomize/data/biographical-directory-footnotes.json', // json file
-    'search_string' => 'Christensen',  // match string
-    'depth_into_array' => '1',      // depth into output
-    'output_json' => true,     // encode to json or output php array
+    'search_string' => 'Christensen', // match string
+    'depth_into_array' => '1', // depth into output
+    'output_json' => true, // encode to json or output php array
     'multiple_result' => true, // multiple result or find one value?
-    'search_quality' => 1,    // 1 best quality search
+    'search_quality' => 1, // 1 best quality search
     'version' => 'dev'  // dev or master, logging exceptions && code event
 ];
 
@@ -93,7 +93,7 @@ print SearchFactory::find(
     true,
     1,
     'dev'
-)->fetchOne()['name'] . PHP_EOL;    // print Vladivostok
+)->fetchOne()['name'] . PHP_EOL; // print Vladivostok
 
 print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/cities.json',
@@ -103,7 +103,7 @@ print SearchFactory::find(
     true,
     1,
     'dev'
-)->fetchOne() . PHP_EOL;    // print
+)->fetchOne() . PHP_EOL; // print
 
 print SearchFactory::find(
     __DIR__ . '/../src/robotomize/data/biographical-directory-footnotes.json',
@@ -113,7 +113,7 @@ print SearchFactory::find(
     true,
     1,
     'dev'
-)->fetchFew(10) . PHP_EOL;    // print
+)->fetchFew(10) . PHP_EOL; // print
 
 $exp = new ExceptionWrap('dev');
 try {
