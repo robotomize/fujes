@@ -1,9 +1,9 @@
 <?php
-/**
- * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/fujes
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+    /**
+     * This file is part of the Fujes package.
+     * @link    https://github.com/robotomize/fujes
+     * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+     */
 
 namespace robotomize\Fujes;
 
@@ -98,7 +98,7 @@ class SearchFacade
     /**
      * Get only relevant search results.
      * @TODO facade shared jsonTree, + 100% acceleration
-     * @return array|string
+     * @return string
      */
     public function fetchOne()
     {
@@ -160,7 +160,7 @@ class SearchFacade
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function __invoke()
     {
@@ -244,7 +244,7 @@ class SearchFacade
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {

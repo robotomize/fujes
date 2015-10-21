@@ -1,9 +1,9 @@
 <?php
-/**
- * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/fujes
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+    /**
+     * This file is part of the Fujes package.
+     * @link    https://github.com/robotomize/fujes
+     * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+     */
 
 namespace robotomize\Fujes;
 
@@ -44,7 +44,7 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * @param $inputArray
-     * @param $matchString
+     * @param string $matchString
      */
     public function __construct(
         $inputArray,
@@ -82,7 +82,7 @@ class SearchLevenshteinCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array|bool
+     * @return boolean
      */
     public function directCompareTwoString($current)
     {
@@ -120,8 +120,6 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * @param array $inputArray
-     * @param string $key
-     * @param int $level
      */
     public function countDepth($inputArray = [])
     {
@@ -192,7 +190,7 @@ class SearchLevenshteinCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array
+     * @return int
      */
     public function compareStart($current, $key)
     {
@@ -211,9 +209,9 @@ class SearchLevenshteinCompare extends AbstractSearch
     private $exitCoefficient;
 
     /**
-     * @param $string
+     * @param string $string
      *
-     * @return int
+     * @return double
      */
     private function calculateExitCoefficient($string)
     {
@@ -428,7 +426,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getCountArrays()
     {
@@ -501,7 +499,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {

@@ -1,9 +1,9 @@
 <?php
-/**
- * This file is part of the Fujes package.
- * @link    https://github.com/robotomize/fujes
- * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
- */
+    /**
+     * This file is part of the Fujes package.
+     * @link    https://github.com/robotomize/fujes
+     * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
+     */
 
 namespace robotomize\Fujes;
 
@@ -186,7 +186,7 @@ class SearchEngine
     /**
      * Curl wrapper, check gziped connection
      *
-     * @param $url
+     * @param string $url
      *
      * @return mixed
      */
@@ -420,7 +420,7 @@ class SearchEngine
     /**
      * Get only relevant search results.
      *
-     * @return array|mixed
+     * @return string
      */
     public function fetchOne()
     {
@@ -560,7 +560,7 @@ class SearchEngine
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function __toString()
     {
@@ -572,7 +572,7 @@ class SearchEngine
     }
 
     /**
-     * @return array|mixed
+     * @return string
      */
     public function __invoke()
     {
@@ -705,7 +705,7 @@ class SearchEngine
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getJsonEncode()
     {
@@ -713,7 +713,7 @@ class SearchEngine
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {
