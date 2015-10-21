@@ -56,11 +56,6 @@ class SearchFacade
     private $versionType = '';
 
     /**
-     * @var
-     */
-    private $jsonSearchObject;
-
-    /**
      * Facade constructor
      * The first option writes in logs all exceptions and successful search.
      *
