@@ -9,6 +9,7 @@ namespace robotomize\Fujes;
 
 use robotomize\Utils\Log;
 use robotomize\Utils\ExceptionWrap;
+use robotomize\Utils\Utils;
 
 /**
  * Class PHP Fuzzy Json Search Engine
@@ -106,6 +107,11 @@ class SearchEngine
     private static $qualityDefault = 1;
 
     /**
+     * @var
+     */
+    private $utilsAggregate;
+
+    /**
      * Search engine constructor
      *
      * @param string $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -184,41 +190,16 @@ class SearchEngine
     private $rangeSortedMatrix = 0;
 
     /**
-     * Curl wrapper, check gziped connection
-     *
-     * @param string $url
-     *
-     * @return mixed
-     */
-    private function curlWrap($url)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'cURL');
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
-    }
-
-
-
-    /**
      * Parsing Json to array and that is all
      */
     private function parseJsonToArray()
     {
+        $this->utilsAggregate = new Utils();
 
         if (file_exists($this->urlName)) {
             $this->jsonData = file_get_contents($this->urlName);
         } else {
-            $this->jsonData = $this->curlWrap($this->urlName);
+            $this->jsonData = $this->utilsAggregate->curlWrap($this->urlName);
             if (trim($this->jsonData) == '') {
                 $this->exceptionObject->create('Input file not found');
                 throw new \Exception('Input file not found');
