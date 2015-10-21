@@ -275,7 +275,7 @@ class SearchSubstringCompare extends AbstractSearch
             $this->sortingPriorArray[] = $vv[3];
         }
     }
-    
+
     /**
      * This method sorts the resulting array of distance.
      * @return bool

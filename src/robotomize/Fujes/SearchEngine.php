@@ -430,6 +430,51 @@ class SearchEngine
     private $moreJsonTreesOnString = '';
 
     /**
+     * @return array|string
+     */
+    private function outputInfo()
+    {
+        if ($this->jsonEncode) {
+            if (empty($this->moreJsonTreesOnString)) {
+                $this->logger->pushFlashMsg('error');
+                return $this->errorMessage;
+            } else {
+                $this->logger->pushFlashMsg('info');
+                return $this->moreJsonTreesOnString;
+            }
+        } else {
+            if (0 === count($this->moreRelevantJsonTreesOnArray)) {
+                $this->logger->pushFlashMsg('error');
+                return $this->errorMessage;
+            } else {
+                $this->logger->pushFlashMsg('info');
+                return $this->moreRelevantJsonTreesOnArray;
+            }
+        }
+    }
+
+    /**
+     * @param int $count
+     */
+    private function generateOutputData($count)
+    {
+        while ($count > 0) {
+            /**
+             * Get max scored values from ranged stack
+             */
+            $this->relevantTree = array_pop($this->sortedScoreMatrix);
+            $branchArray = $this->createResultArray($this->relevantTree);
+            if ($this->jsonEncode === true) {
+                $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
+            } else {
+                $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
+            }
+
+            $count--;
+        }
+    }
+
+    /**
      * Get a set of search results, specify the number yourself.
      *
      * @param int $count
@@ -455,37 +500,10 @@ class SearchEngine
             $count = $this->rangeSortedMatrix;
         }
 
-        while ($count > 0) {
-            /**
-             * Get max scored values from ranged stack
-             */
-            $this->relevantTree = array_pop($this->sortedScoreMatrix);
-            $branchArray = $this->createResultArray($this->relevantTree);
-            if ($this->jsonEncode === true) {
-                $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
-            } else {
-                $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
-            }
+        $this->generateOutputData($count);
 
-            $count--;
-        }
-        if ($this->jsonEncode) {
-            if (empty($this->moreJsonTreesOnString)) {
-                $this->logger->pushFlashMsg('error');
-                return $this->errorMessage;
-            } else {
-                $this->logger->pushFlashMsg('info');
-                return $this->moreJsonTreesOnString;
-            }
-        } else {
-            if (0 === count($this->moreRelevantJsonTreesOnArray)) {
-                $this->logger->pushFlashMsg('error');
-                return $this->errorMessage;
-            } else {
-                $this->logger->pushFlashMsg('info');
-                return $this->moreRelevantJsonTreesOnArray;
-            }
-        }
+        return $this->outputInfo();
+
     }
 
     /**
@@ -500,18 +518,8 @@ class SearchEngine
                 'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
             );
         }
-
         $count = count($this->sortedScoreMatrix);
-        while ($count > 0) {
-            $this->relevantTree = array_pop($this->sortedScoreMatrix);
-            $branchArray = $this->createResultArray($this->relevantTree);
-            if ($this->jsonEncode == true) {
-                $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
-            } else {
-                $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
-            }
-            $count--;
-        }
+        $this->generateOutputData($count);
         return $this->jsonEncode ? $this->moreJsonTreesOnString : $this->moreRelevantJsonTreesOnArray;
     }
 
