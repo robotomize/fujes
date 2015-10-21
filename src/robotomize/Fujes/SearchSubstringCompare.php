@@ -67,7 +67,7 @@ class SearchSubstringCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array|bool
+     * @return boolean
      */
     public function directCompareTwoString($current)
     {
@@ -119,10 +119,10 @@ class SearchSubstringCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->preSearch($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 if ($this->splitDirectMatchSheetJsonTree($vv, $keys)) {
                     break;
                 } else {
@@ -147,7 +147,7 @@ class SearchSubstringCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array
+     * @return integer
      */
     public function compareStart($current, $key)
     {
@@ -204,8 +204,8 @@ class SearchSubstringCompare extends AbstractSearch
                 $relevantResult = $currentValue;
             }
 
-            if ((int)$currentValue > (int)$relevantResult) {
-                $relevantResult = (int)$currentValue;
+            if ((int) $currentValue > (int) $relevantResult) {
+                $relevantResult = (int) $currentValue;
             }
             $iterator++;
         }
@@ -232,10 +232,10 @@ class SearchSubstringCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->search($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->scoreMatrix[] = $this->splitSheetJsonTree($vv, $keys);
                 if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
@@ -284,7 +284,7 @@ class SearchSubstringCompare extends AbstractSearch
         if (0 !== count($this->scoreMatrix)) {
             usort(
                 $this->scoreMatrix,
-                function ($a, $b) {
+                function($a, $b) {
 
                     if ($b[2] != $a[2]) {
                         return strnatcasecmp($b[2], $a[2]);
@@ -370,7 +370,7 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @return array
+     * @return integer[]
      */
     public function getCountArrays()
     {
@@ -442,7 +442,7 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {
