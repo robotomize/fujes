@@ -56,17 +56,21 @@ class SearchFacade
     private $versionType = '';
 
     /**
+     * @var
+     */
+    private $jsonSearchObject;
+
+    /**
      * Facade constructor
+     * The first option writes in logs all exceptions and successful search.
      *
      * @param $urlName
      * @param $matchString
-     * @param int
-     * @param bool
-     * @param bool
-     * @param int
-     * @param string
-     *
-     * The first option writes in logs all exceptions and successful search.
+     * @param int $depth
+     * @param bool $jsonEncode
+     * @param bool $multipleResult
+     * @param int $quality
+     * @param string $versionType
      */
     public function __construct(
         $urlName,
@@ -91,72 +95,65 @@ class SearchFacade
     }
 
     /**
-     * @var array
+     * @return SearchEngine
      */
-    private $parsedArray = [];
-
-    /**
-     * Get only relevant search results.
-     * @TODO facade shared jsonTree, + 100% acceleration
-     * @return string
-     */
-    public function fetchOne()
+    private function create()
     {
-        $jsonSearch = new SearchEngine(
+        return new SearchEngine(
             $this->urlName,
             $this->matchString,
             $this->depth,
             $this->jsonEncode,
             $this->multipleResult,
+            $this->multipleResult,
             $this->quality,
             $this->versionType
         );
-        $jsonSearch->run();
-        return $jsonSearch->fetchOne();
+    }
+
+    /**
+     * @return SearchEngine
+     */
+    private function getInstance()
+    {
+        $search = $this->create();
+        $search->run();
+
+        return $search;
+    }
+
+    /**
+     * Get only relevant search results.
+     * @TODO facade shared jsonTree, + 100% acceleration
+     *
+     * @return string
+     */
+    public function fetchOne()
+    {
+        return $this->getInstance()->fetchOne();
     }
 
     /**
      * Get a set of search results, specify the number yourself.
      *
-     * @param $count
+     * @param int $count
      *
      * @return array
      */
     public function fetchFew($count)
     {
-        $jsonSearch = new SearchEngine(
-            $this->urlName,
-            $this->matchString,
-            $this->depth,
-            $this->jsonEncode,
-            $this->multipleResult,
-            $this->multipleResult,
-            $this->quality,
-            $this->versionType
-        );
-        $jsonSearch->run();
-        return $jsonSearch->fetchFew($count);
+        return $this->getInstance()->fetchFew($count);
     }
 
     /**
      * Get all search results
      * @TODO fetch all filtered, array filtered
+     *
      * @return array
      */
     public function fetchAll()
     {
-        $jsonSearch = new SearchEngine(
-            $this->urlName,
-            $this->matchString,
-            $this->depth,
-            $this->jsonEncode,
-            $this->multipleResult,
-            $this->multipleResult,
-            $this->quality,
-            $this->versionType
-        );
-        $jsonSearch->run();
-        return $jsonSearch->fetchAll();
+        return $this->getInstance()->fetchAll();
     }
 
     /**
@@ -252,7 +249,7 @@ class SearchFacade
     }
 
     /**
-     * @param int $resultsCount
+     * @param boolean $resultsCount
      */
     public function setMultipleResult($resultsCount)
     {

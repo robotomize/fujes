@@ -25,17 +25,13 @@ class Status
     private $curr = 0;
 
     /**
-     * @param $curr
-     * @param $cnt
+     * @param int $curr
+     * @param int $cnt
      */
     public function __construct($curr, $cnt)
     {
-        if ($curr === '' || $cnt === '') {
-            throw new \InvalidArgumentException;
-        } else {
-            $this->curr = $curr;
-            $this->cnt = $cnt;
-        }
+        $this->curr = $curr;
+        $this->cnt = $cnt;
     }
 
     /**

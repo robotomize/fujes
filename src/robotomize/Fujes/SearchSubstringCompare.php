@@ -67,7 +67,7 @@ class SearchSubstringCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array|bool
+     * @return boolean
      */
     public function directCompareTwoString($current)
     {
@@ -119,10 +119,10 @@ class SearchSubstringCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->preSearch($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 if ($this->splitDirectMatchSheetJsonTree($vv, $keys)) {
                     break;
                 } else {
@@ -147,7 +147,7 @@ class SearchSubstringCompare extends AbstractSearch
      * @param $current
      * @param $key
      *
-     * @return array
+     * @return integer
      */
     public function compareStart($current, $key)
     {
@@ -161,22 +161,12 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @param $currentString
+     * @param string $currentString
      */
     private function substringIterator($currentString)
     {
         $currentIterationCount = 0;
         $currentMaxStackValue = 0;
-
-//        //$current = strlen($currentString);
-//        //$match = strlen($this->matchString);
-//
-//        if ($current > $match) {
-//            $currentString = substr($current, 0, $match);
-//            $matchString = $this->matchString;
-//        } else {
-//            $matchString = substr($this->matchString, 0, $current);
-//        }
 
         for ($i = 0; $i < strlen($currentString); $i++) {
             for ($j = $i; $j < strlen($this->matchString); $j++) {
@@ -214,8 +204,8 @@ class SearchSubstringCompare extends AbstractSearch
                 $relevantResult = $currentValue;
             }
 
-            if ((int)$currentValue > (int)$relevantResult) {
-                $relevantResult = (int)$currentValue;
+            if ((int) $currentValue > (int) $relevantResult) {
+                $relevantResult = (int) $currentValue;
             }
             $iterator++;
         }
@@ -242,10 +232,10 @@ class SearchSubstringCompare extends AbstractSearch
              * If you receive an array, calls itself recursively.
              */
             if (is_array($vv)) {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->search($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ?  sprintf('%s,%s', $key, $kk) : $kk;
+                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->scoreMatrix[] = $this->splitSheetJsonTree($vv, $keys);
                 if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
@@ -285,30 +275,6 @@ class SearchSubstringCompare extends AbstractSearch
             $this->sortingPriorArray[] = $vv[3];
         }
     }
-
-    /**
-     * @return bool
-     */
-    private function effectiveSort()
-    {
-        if (0 !== count($this->scoreMatrix)) {
-            usort(
-                $this->scoreMatrix,
-                function ($a, $b) {
-
-                    if ($b[2] != $a[2]) {
-                        return strnatcasecmp($b[2], $a[2]);
-                    } elseif ($b[3] != $a[3]) {
-                        return strnatcasecmp($b[3], $a[3]);
-                    }
-                }
-            );
-        } else {
-            return false;
-        }
-        return true;
-    }
-
 
     /**
      * This method sorts the resulting array of distance.
@@ -380,7 +346,7 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @return array
+     * @return integer[]
      */
     public function getCountArrays()
     {
@@ -452,7 +418,7 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @return int
+     * @return boolean
      */
     public function getMultipleResult()
     {

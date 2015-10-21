@@ -7,12 +7,10 @@
 
 namespace robotomize\Fujes;
 
-use robotomize\Utils\GetStatus;
-
 /**
  * Class SearchLevenshteinCompare
  * @package robotomize\Fujes
- * @author  robotomzie@gmail.com
+ * @author  robotomize@gmail.com
  * @version 0.3.1
  */
 class SearchLevenshteinCompare extends AbstractSearch
@@ -43,8 +41,11 @@ class SearchLevenshteinCompare extends AbstractSearch
     private $versionType;
 
     /**
-     * @param $inputArray
+     * @param array $inputArray
      * @param string $matchString
+     * @param bool $multipleResult
+     * @param int $quality
+     * @param string $versionType
      */
     public function __construct(
         $inputArray,
@@ -80,7 +81,6 @@ class SearchLevenshteinCompare extends AbstractSearch
      * Direct comparison for equality.
      *
      * @param $current
-     * @param $key
      *
      * @return boolean
      */
@@ -94,8 +94,8 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @param $sheet
-     * @param $keys
+     * @param array $sheet
+     * @param string $keys
      *
      * @return bool
      */
@@ -188,7 +188,7 @@ class SearchLevenshteinCompare extends AbstractSearch
 
     /**
      * @param $current
-     * @param $key
+     * @param string $key
      *
      * @return int
      */
@@ -204,7 +204,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @var int
+     * @var double
      */
     private $exitCoefficient;
 
@@ -221,8 +221,8 @@ class SearchLevenshteinCompare extends AbstractSearch
     /**
      * Split current sheet
      *
-     * @param $sheet
-     * @param $keys
+     * @param array $sheet
+     * @param string $keys
      *
      * @return array
      */
@@ -254,8 +254,8 @@ class SearchLevenshteinCompare extends AbstractSearch
     /**
      * Recursive array converted from json
      *
-     * @param $inputArray
-     * @param string     $key
+     * @param array $inputArray
+     * @param string $key
      *
      * @return bool
      */
@@ -283,19 +283,6 @@ class SearchLevenshteinCompare extends AbstractSearch
                     break;
                 }
             }
-
-            /**
-             * debug version 0.3.3
-             */
-//            if ($this->versionType === 'dev' && mt_rand(0, 1000) === 562) {
-//                try {
-////                    print GetStatus::getStatus($this->searchIteration, $this->countDepth) . PHP_EOL;
-//                    print 'Analyze ' . $this->searchIteration . ' values' . PHP_EOL;
-//                } catch (\Exception $ex) {
-//                    print $ex->getMessage() . PHP_EOL;
-//                }
-//            }
-//            $this->searchIteration++;
         }
         if (0 !== count($this->scoreMatrix)) {
             return true;
@@ -331,31 +318,6 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * Slow sort algorithm
-     *
-     * @deprecated
-     * @return bool
-     */
-    private function effectiveSort()
-    {
-        if (0 !== count($this->scoreMatrix)) {
-            usort(
-                $this->scoreMatrix,
-                function ($a, $b) {
-                    if ($b[2] != $a[2]) {
-                        return strnatcasecmp($b[2], $a[2]);
-                    } elseif ($b[3] != $a[3]) {
-                        return strnatcasecmp($b[3], $a[3]);
-                    }
-                }
-            );
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * This method sorts the resulting array of distance.
      *
      * @return bool
@@ -364,7 +326,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     {
         $this->generateSortArray();
         if (0 !== count($this->scoreMatrix)) {
-            array_multisort($this->getSortingArray(), SORT_DESC, $this->scoreMatrix, SORT_ASC);
+            array_multisort($this->sortingArray, SORT_DESC, $this->scoreMatrix, SORT_ASC);
         } else {
             return false;
         }
@@ -426,7 +388,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @return int[]
+     * @return integer[]
      */
     public function getCountArrays()
     {
@@ -507,7 +469,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @param int $resultsCount
+     * @param boolean $resultsCount
      */
     public function setMultipleResult($resultsCount)
     {

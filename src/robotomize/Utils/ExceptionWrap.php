@@ -36,7 +36,7 @@ class ExceptionWrap
     private $versionType;
 
     /**
-     * Constructor
+     * @param string $versionType
      */
     public function __construct($versionType = 'master')
     {
@@ -44,6 +44,16 @@ class ExceptionWrap
         $this->logger = new Logger('Exceptions');
         $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../data/logs/exceptions.log', Logger::DEBUG));
         $this->versionType = $versionType;
+    }
+
+    /**
+     * @param string $exceptionString
+     */
+    public function create($exceptionString)
+    {
+        $ex = new \Exception($exceptionString);
+        $this->push($ex);
+        $this->saveToDisk($ex);
     }
 
     /**

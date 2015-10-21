@@ -24,8 +24,14 @@ class Log
      */
     private $logger;
 
+    /**
+     * @var string
+     */
     private $versionType;
 
+    /**
+     * @param string $versionType
+     */
     public function __construct($versionType = 'master')
     {
         $this->versionType = $versionType;
@@ -47,7 +53,7 @@ class Log
     /**
      * Little logging system responses.
      *
-     * @param $type
+     * @param string $type
      *
      * @return bool
      */
@@ -72,7 +78,6 @@ class Log
              * Debug section
              */
             if ($this->versionType === 'dev') {
-                $dumpEx = sprintf('Monolog is down in %s with %s', $e->getLine(), $e->getMessage());
                 $exceptionObject->push($e);
                 print $e->getTraceAsString() . PHP_EOL;
             }
