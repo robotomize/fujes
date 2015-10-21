@@ -28,6 +28,7 @@ git clone https://github.com/robotomize/fujes.git
 ## Usage
 #### Fast, minimal params, go
 ```php
+<?php
 use robotomize\Fujes\SearchFactory;
 
 /**
@@ -51,6 +52,7 @@ print SearchFactory::find(
 #### Another example
 Grep is used for highlighting
 ```php
+<?php
 /**
  * `I want to find some airports =)`
  */
@@ -83,6 +85,8 @@ Grep is used for highlighting
 
 #### With full options
 ```php
+<?php
+
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
 // With factory
@@ -128,6 +132,7 @@ php -q src/example.php
 
 #### Fetch one entry
 ```php
+<?php
 
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
@@ -168,6 +173,8 @@ print $searchObject->fetchOne();
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567879/e3c2ad78-7649-11e5-8282-3399410c6d30.png)](https://github.com/robotomize/fujes)
 #### Next, fetch few entries. 
 ```php
+<?php
+
 /**
  * Get exception
  */
@@ -195,6 +202,7 @@ print $searchObject->fetchFew(3) . PHP_EOL;
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567890/14cb427c-764a-11e5-8f6f-06caa51dd2fa.png)](https://github.com/robotomize/fujes)
 ### Factory
 ```php
+<?php
 /**
  * The following example, you can use the factory.
  */
@@ -222,6 +230,8 @@ print SearchFactory::createSearchEngine(
 
 #### Another factory example
 ```php
+<?php
+
 print SearchFactory::createSearchEngine(
         __DIR__ . '/data/biographical-directory-footnotes.json',
         'linkoln',
