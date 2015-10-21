@@ -1,9 +1,10 @@
 # fujes - PHP Fuzzy JSON search
+[![Code Climate2](https://scrutinizer-ci.com/g/robotomize/fujes/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/robotomize/fujes/?branch=master)
+[![Code Climate](https://codeclimate.com/github/robotomize/fujes/badges/gpa.svg)](https://codeclimate.com/github/robotomize/fujes)
+[![Build Status](https://travis-ci.org/robotomize/fujes.svg)](https://travis-ci.org/robotomize/fujes/)
 [![Latest Stable Version](https://poser.pugx.org/robotomize/fujes/v/stable)](https://packagist.org/packages/robotomize/fujes)
 [![Total Downloads](https://poser.pugx.org/robotomize/fujes/downloads)](https://packagist.org/packages/robotomize/fujes)
 [![License](https://poser.pugx.org/robotomize/fujes/license)](https://packagist.org/packages/robotomize/fujes)
-[![Build Status](https://travis-ci.org/robotomize/fujes.svg)](https://travis-ci.org/robotomize/fujes/)
-[![Code Climate](https://codeclimate.com/github/robotomize/fujes/badges/gpa.svg)](https://codeclimate.com/github/robotomize/fujes)
 
 ## Why?
 Firstly, it is the implementation of the search on the format of the data in PHP. 
