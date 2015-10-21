@@ -204,7 +204,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @var int
+     * @var double
      */
     private $exitCoefficient;
 
@@ -326,7 +326,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     {
         $this->generateSortArray();
         if (0 !== count($this->scoreMatrix)) {
-            array_multisort($this->getSortingArray(), SORT_DESC, $this->scoreMatrix, SORT_ASC);
+            array_multisort($this->sortingArray, SORT_DESC, $this->scoreMatrix, SORT_ASC);
         } else {
             return false;
         }
@@ -469,7 +469,7 @@ class SearchLevenshteinCompare extends AbstractSearch
     }
 
     /**
-     * @param int $resultsCount
+     * @param boolean $resultsCount
      */
     public function setMultipleResult($resultsCount)
     {

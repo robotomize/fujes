@@ -116,7 +116,7 @@ class SearchEngine
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
      * @param bool $multipleResult              -> multiple result or no
      * @param int $quality -> quality search , 1 - strict search, 2, 3 less strict
-     * @param string $versionType-> debug option. Dev or master.
+     * @param string $versionType -> debug option. Dev or master.
      * The first option writes in logs all exceptions and successful search.
      */
     public function __construct(

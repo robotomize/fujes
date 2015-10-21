@@ -30,12 +30,8 @@ class Status
      */
     public function __construct($curr, $cnt)
     {
-        if ($curr === '' || $cnt === '') {
-            throw new \InvalidArgumentException;
-        } else {
-            $this->curr = $curr;
-            $this->cnt = $cnt;
-        }
+        $this->curr = $curr;
+        $this->cnt = $cnt;
     }
 
     /**
