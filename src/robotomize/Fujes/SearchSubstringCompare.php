@@ -11,6 +11,7 @@ namespace robotomize\Fujes;
  * Class SearchSubstringCompare
  * @package robotomize\Fujes
  * @author robotomize@gmail.com
+ * @version 0.4.0.0
  */
 class SearchSubstringCompare extends AbstractSearch
 {

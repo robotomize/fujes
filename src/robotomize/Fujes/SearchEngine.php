@@ -26,7 +26,7 @@ use robotomize\Utils\Utils;
  *
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.3.1
+ * @version 0.4.0.0
  *
  * @usage
  * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true, false, 1, 'master')
@@ -68,13 +68,13 @@ class SearchEngine
     /**
      * @var string
      */
-    private static $version = '0.3.1';
+    private static $version = '0.4.0.0';
 
     /**
      * On off debug features
      * @var string
      */
-    private $versionType; // another master
+    private $versionType;
 
     /**
      * @var
