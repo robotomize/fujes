@@ -161,22 +161,12 @@ class SearchSubstringCompare extends AbstractSearch
     }
 
     /**
-     * @param $currentString
+     * @param string $currentString
      */
     private function substringIterator($currentString)
     {
         $currentIterationCount = 0;
         $currentMaxStackValue = 0;
-
-//        //$current = strlen($currentString);
-//        //$match = strlen($this->matchString);
-//
-//        if ($current > $match) {
-//            $currentString = substr($current, 0, $match);
-//            $matchString = $this->matchString;
-//        } else {
-//            $matchString = substr($this->matchString, 0, $current);
-//        }
 
         for ($i = 0; $i < strlen($currentString); $i++) {
             for ($j = $i; $j < strlen($this->matchString); $j++) {

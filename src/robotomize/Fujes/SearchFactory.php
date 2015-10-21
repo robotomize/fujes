@@ -24,10 +24,13 @@ namespace robotomize\Fujes;
 class SearchFactory
 {
     /**
-     *
-     * @param $urlName
-     * @param $matchString
-     * @param $depth
+     * @param string $urlName
+     * @param string $matchString
+     * @param int $depth
+     * @param bool $jsonEncode
+     * @param bool $multipleResult
+     * @param int $quality
+     * @param string $versionType
      *
      * @return SearchEngine
      */

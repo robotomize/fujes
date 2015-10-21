@@ -18,5 +18,12 @@ namespace robotomize\Fujes;
  */
 abstract class AbstractSearch
 {
+    /**
+     * @param array $inputArray
+     * @param string $key
+     * @param string $level
+     *
+     * @return mixed
+     */
     abstract public function search($inputArray, $key, $level);
 }

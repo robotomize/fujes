@@ -15,6 +15,12 @@ namespace robotomize\Utils;
  */
 class GetStatus
 {
+    /**
+     * @param int $current
+     * @param int $count
+     *
+     * @return Status
+     */
     public static function getStatus($current, $count)
     {
         return new Status($current, $count);

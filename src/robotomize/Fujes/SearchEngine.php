@@ -110,13 +110,13 @@ class SearchEngine
      *
      * @param $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
      * @param $matchString      -> 'What we are looking for'
-     * @param int
+     * @param int $depth
      * $depth      -> 'Nesting depth of the resulting array. Standard 1, key => value'
-     * @param bool
+     * @param bool $jsonEncode
      * $jsonEncode -> 'Encode whether the result back in json or leave in an array php'
-     * @param bool              -> multiple result or no
-     * @param int -> quality search , 1 - strict search, 2, 3 less strict
-     * @param string -> debug option. Dev or master.
+     * @param bool $multipleResult              -> multiple result or no
+     * @param int $quality -> quality search , 1 - strict search, 2, 3 less strict
+     * @param string $versionType-> debug option. Dev or master.
      * The first option writes in logs all exceptions and successful search.
      */
     public function __construct(
@@ -169,7 +169,7 @@ class SearchEngine
     private $jsonData = '';
 
     /**
-     * @var array
+     * @var
      */
     private $jsonTree = [];
 
@@ -207,6 +207,8 @@ class SearchEngine
         return $result;
     }
 
+
+
     /**
      * Parsing Json to array and that is all
      */
@@ -218,9 +220,7 @@ class SearchEngine
         } else {
             $this->jsonData = $this->curlWrap($this->urlName);
             if (trim($this->jsonData) == '') {
-                $ex = new \Exception('Input file not found');
-                $this->exceptionObject->push($ex);
-                $this->exceptionObject->saveToDisk($ex);
+                $this->exceptionObject->create('Input file not found');
                 throw new \Exception('Input file not found');
             }
         }
@@ -228,9 +228,7 @@ class SearchEngine
         if ($this->isJsonTest($this->jsonData)) {
             $this->jsonTree = json_decode(trim($this->jsonData), true);
         } else {
-            $ex = new \Exception('The data is not in JSON format');
-            $this->exceptionObject->push($ex);
-            $this->exceptionObject->saveToDisk($ex);
+            $this->exceptionObject->create('The data is not in JSON format');
             throw new \Exception('The data is not in JSON format');
         }
     }
@@ -303,31 +301,9 @@ class SearchEngine
             $this->versionType
         );
 
-        /**
-         * Another algorithm for searching brute force - testing, slow
-         */
-//        $searchObj = new SearchSubstringCompare(
-//            $this->jsonTree,
-//            $this->matchString,
-//            $this->multipleResult,
-//            $this->quality
-//        );
-
         if (!$this->multipleResult) {
             $searchObj->preSearch();
         }
-
-        /**
-         * Big JSON data anylize
-         * debug version 0.3.2.3
-         */
-//        \PHP_Timer::start();
-//        if ($this->versionType === 'dev') {
-//            $searchObj->countDepth();
-//        }
-//
-//        $time = \PHP_Timer::stop();
-//        print \PHP_Timer::secondsToTimeString($time);
 
         if (0 !== count($searchObj->getDirectMatch())) {
             $searchObj->setScoreMatrix($searchObj->getDirectMatch());
@@ -396,7 +372,7 @@ class SearchEngine
     /**
      * If the flag is set, then encode the output array in json
      *
-     * @return string
+     * @return string|array
      */
     private function jsonEncode($needleBranch)
     {
@@ -485,7 +461,7 @@ class SearchEngine
              */
             $this->relevantTree = array_pop($this->sortedScoreMatrix);
             $branchArray = $this->createResultArray($this->relevantTree);
-            if ($this->jsonEncode == true) {
+            if ($this->jsonEncode === true) {
                 $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
             } else {
                 $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
@@ -721,7 +697,7 @@ class SearchEngine
     }
 
     /**
-     * @param int $resultsCount
+     * @param boolean $resultsCount
      */
     public function setMultipleResult($resultsCount)
     {

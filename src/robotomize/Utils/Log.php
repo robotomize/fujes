@@ -24,8 +24,14 @@ class Log
      */
     private $logger;
 
+    /**
+     * @var string
+     */
     private $versionType;
 
+    /**
+     * @param string $versionType
+     */
     public function __construct($versionType = 'master')
     {
         $this->versionType = $versionType;
@@ -47,7 +53,7 @@ class Log
     /**
      * Little logging system responses.
      *
-     * @param $type
+     * @param string $type
      *
      * @return bool
      */

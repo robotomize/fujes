@@ -57,16 +57,15 @@ class SearchFacade
 
     /**
      * Facade constructor
+     * The first option writes in logs all exceptions and successful search.
      *
      * @param $urlName
      * @param $matchString
-     * @param int
-     * @param bool
-     * @param bool
-     * @param int
-     * @param string
-     *
-     * The first option writes in logs all exceptions and successful search.
+     * @param int $depth
+     * @param bool $jsonEncode
+     * @param bool $multipleResult
+     * @param int $quality
+     * @param string $versionType
      */
     public function __construct(
         $urlName,
@@ -98,6 +97,7 @@ class SearchFacade
     /**
      * Get only relevant search results.
      * @TODO facade shared jsonTree, + 100% acceleration
+     *
      * @return string
      */
     public function fetchOne()
@@ -118,7 +118,7 @@ class SearchFacade
     /**
      * Get a set of search results, specify the number yourself.
      *
-     * @param $count
+     * @param int $count
      *
      * @return array
      */
@@ -141,6 +141,7 @@ class SearchFacade
     /**
      * Get all search results
      * @TODO fetch all filtered, array filtered
+     *
      * @return array
      */
     public function fetchAll()
@@ -252,7 +253,7 @@ class SearchFacade
     }
 
     /**
-     * @param int $resultsCount
+     * @param boolean $resultsCount
      */
     public function setMultipleResult($resultsCount)
     {
