@@ -6,10 +6,6 @@
      */
 
 /**
- * PSR2 fix vendor/bin/phpcbf --standard=PSR2 ./src/
- */
-
-/**
  * Some examples of using the search.
  */
 ini_set('memory_limit', '32000M');

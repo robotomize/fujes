@@ -9,7 +9,9 @@ before_script:
 
 script:
   - vendor/bin/phpunit
+  - vendor/bin/phpcbf --standard=PSR2 ./src/
   - vendor/bin/phpcs --standard=PSR2 ./src/
+  - vendor/bin/phpcbf --standard=PSR2 ./tests/
   - vendor/bin/phpcs --standard=PSR2 ./tests/
 
 
