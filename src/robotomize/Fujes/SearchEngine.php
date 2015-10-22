@@ -7,9 +7,11 @@
 
 namespace robotomize\Fujes;
 
+use robotomize\Exceptions\JsonNotRecognized;
 use robotomize\Utils\Log;
 use robotomize\Utils\ExceptionWrap;
 use robotomize\Utils\Utils;
+use robotomize\Exceptions\FileNotFoundException;
 
 /**
  * Class PHP Fuzzy Json Search Engine
@@ -202,7 +204,7 @@ class SearchEngine
             $this->jsonData = $this->utilsAggregate->curlWrap($this->urlName);
             if (trim($this->jsonData) == '') {
                 $this->exceptionObject->create('Input file not found');
-                throw new \Exception('Input file not found');
+                throw new FileNotFoundException('Input file not found');
             }
         }
 
@@ -210,7 +212,7 @@ class SearchEngine
             $this->jsonTree = json_decode(trim($this->jsonData), true);
         } else {
             $this->exceptionObject->create('The data is not in JSON format');
-            throw new \Exception('The data is not in JSON format');
+            throw new JsonNotRecognized('The data is not in JSON format');
         }
     }
 
