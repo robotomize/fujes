@@ -13,7 +13,7 @@ namespace robotomize\Fujes;
  *
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.3.1
+ * @version 0.4.0.0
  *
  * @usage
  * $resultArray = SearchEngineFactory::find('http://uWtfAPI.json', 'Avengers', 1, true)->fetchOne();

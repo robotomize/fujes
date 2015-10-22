@@ -28,11 +28,12 @@ git clone https://github.com/robotomize/fujes.git
 ## Usage
 #### Fast, minimal params, go
 ```php
+<?php
 use robotomize\Fujes\SearchFactory;
 
 /**
 * 
-* `I want to find some planes.`
+* I want to find some planes
 */
 print SearchFactory::find(
     'http://api.travelpayouts.com/data/planes.json', 
@@ -51,9 +52,10 @@ print SearchFactory::find(
 #### Another example
 Grep is used for highlighting
 ```php
-/**
- * `I want to find some airports =)`
- */
+<?php
+    /**
+     * I want to find some airports
+     */
     print SearchFactory::find(
             'http://api.travelpayouts.com/data/airports.json ',
             'Sheremetievo',
@@ -83,6 +85,8 @@ Grep is used for highlighting
 
 #### With full options
 ```php
+<?php
+
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
 // With factory
@@ -123,11 +127,13 @@ TThese examples work if you do
 * php -q src/example.php
 
 ```php
+<?php
 php -q src/example.php
 ```
 
 #### Fetch one entry
 ```php
+<?php
 
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
@@ -168,6 +174,8 @@ print $searchObject->fetchOne();
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567879/e3c2ad78-7649-11e5-8282-3399410c6d30.png)](https://github.com/robotomize/fujes)
 #### Next, fetch few entries. 
 ```php
+<?php
+
 /**
  * Get exception
  */
@@ -185,6 +193,7 @@ try {
 #### Set up $multipleResult = trueand everything will be fine.
 
 ```php
+<?php
 $searchObject->setMultipleResult(true);
 
 /**
@@ -195,6 +204,7 @@ print $searchObject->fetchFew(3) . PHP_EOL;
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567890/14cb427c-764a-11e5-8f6f-06caa51dd2fa.png)](https://github.com/robotomize/fujes)
 ### Factory
 ```php
+<?php
 /**
  * The following example, you can use the factory.
  */
@@ -222,6 +232,8 @@ print SearchFactory::createSearchEngine(
 
 #### Another factory example
 ```php
+<?php
+
 print SearchFactory::createSearchEngine(
         __DIR__ . '/data/biographical-directory-footnotes.json',
         'linkoln',

@@ -15,7 +15,7 @@ namespace robotomize\Fujes;
  *
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.3.1
+ * @version 0.4.0.0
  */
 class SearchFacade
 {
@@ -54,6 +54,11 @@ class SearchFacade
      * @var string
      */
     private $versionType = '';
+
+    /**
+     * @var string
+     */
+    private static $version = '0.4.0.0';
 
     /**
      * Facade constructor
@@ -281,5 +286,13 @@ class SearchFacade
     public function setVersionType($versionType)
     {
         $this->versionType = $versionType;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getVersion()
+    {
+        return self::$version;
     }
 }
