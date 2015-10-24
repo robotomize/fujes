@@ -115,7 +115,7 @@ print SearchFactory::createSearchEngine(
     'master' 
 )->fetchFew(3) . PHP_EOL;
 ```
-### Documentation for Facttory && Facade
+### Documentation for Factory && Facade
 ## Parameters
 - path to json file '/go/to/path/name.json' or 'http://myapi/1.json'
 - search line. 'search string'
@@ -127,7 +127,7 @@ print SearchFactory::createSearchEngine(
 
 ## Usage with example.php
 #### Basic examples you can try that.
-TThese examples work if you do 
+These examples work if you do 
 * git clone https://github.com/robotomize/fujes.git
 * php -q src/example.php
 
