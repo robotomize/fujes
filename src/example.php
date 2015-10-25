@@ -168,5 +168,14 @@ try {
  * "ru":"\u041c\u043e\u0441\u043a\u0432\u0430","it":"Mosca","es":"Mosc\u00fa","fr":"Moscou",
  * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
  */
+
+//    print SearchFactory::find(
+//        '/Users/robotomize/playlist.json',
+//        'McFerrin',
+//        1,
+//        true,
+//        false,
+//        'dev'
+//    )->fetchOne() . PHP_EOL;
 $time = \PHP_Timer::stop();
 print \PHP_Timer::secondsToTimeString($time);
