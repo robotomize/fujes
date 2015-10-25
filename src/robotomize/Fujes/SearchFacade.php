@@ -105,7 +105,6 @@ class SearchFacade
             $this->depth,
             $this->jsonEncode,
             $this->multipleResult,
-            $this->multipleResult,
             $this->quality,
             $this->versionType
         );

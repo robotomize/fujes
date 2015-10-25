@@ -119,11 +119,10 @@ class SearchSubstringCompare extends AbstractSearch
              * Check came an array or a string, if the string, then compare with the unknown.
              * If you receive an array, calls itself recursively.
              */
+            $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
             if (is_array($vv)) {
-                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->preSearch($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 if ($this->splitDirectMatchSheetJsonTree($vv, $keys)) {
                     break;
                 } else {
@@ -232,11 +231,10 @@ class SearchSubstringCompare extends AbstractSearch
              * Check came an array or a string, if the string, then compare with the unknown.
              * If you receive an array, calls itself recursively.
              */
+            $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
             if (is_array($vv)) {
-                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->search($vv, $keys, $level);
             } else {
-                $keys = $key !== '' ? sprintf('%s,%s', $key, $kk) : $kk;
                 $this->scoreMatrix[] = $this->splitSheetJsonTree($vv, $keys);
                 if (0 !== count($this->directMatch) && !$this->multipleResult) {
                     break;
