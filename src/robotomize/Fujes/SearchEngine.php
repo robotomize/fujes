@@ -192,6 +192,11 @@ class SearchEngine
     private $rangeSortedMatrix = 0;
 
     /**
+     * @var string
+     */
+    private $jsonErrorString = '';
+
+    /**
      * Parsing Json to array and that is all
      */
     private function parseJsonToArray()
@@ -207,9 +212,9 @@ class SearchEngine
                 throw new FileNotFoundException('Input file not found');
             }
         }
-
         if ($this->isJsonTest($this->jsonData)) {
             $this->jsonTree = json_decode(trim($this->jsonData), true);
+            $this->jsonErrorString = json_last_error() == 1 ? json_last_error_msg() : '';
         } else {
             $this->exceptionObject->create('The data is not in JSON format');
             throw new JsonNotRecognized('The data is not in JSON format');
@@ -276,6 +281,10 @@ class SearchEngine
     public function run()
     {
         $this->parseJsonToArray();
+        if (0 === count($this->jsonTree)) {
+            $this->exceptionObject->create('The data is not in JSON format');
+            throw new JsonNotRecognized('The data is not in JSON format');
+        }
         $searchObj = new SearchLevenshteinCompare(
             $this->jsonTree,
             $this->matchString,
