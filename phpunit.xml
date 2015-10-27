@@ -15,7 +15,7 @@
          syntaxCheck="false"
          bootstrap="src/autoload.php">
     <testsuites>
-        <testsuite name="FuJaySearch tests">
+        <testsuite name="fujes tests">
             <directory suffix=".php">./tests</directory>
         </testsuite>
     </testsuites>

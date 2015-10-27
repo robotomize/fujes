@@ -46,136 +46,136 @@ $searchObject = new SearchFacade(
     $options['version']
 );
 \PHP_Timer::start();
-print $searchObject->fetchOne() . PHP_EOL;
-
-/**
- * Output this
- *
- * {"item":"Donna Christian-Green, St. Croix ","note":"[5125:
- * Biographical information under Donna Marie Christian Christensen. ]","line":56939}
- *
- */
-
-/**
- * Get exception
- */
-try {
-    print $searchObject->fetchFew(3) . PHP_EOL;
-} catch (\Exception $ex) {
-    print $ex->getMessage() . PHP_EOL; // -> multipleResult flag off, use $this->setMultipleResult(true)
-                            // and call this function again
-}
-
-$searchObject->setMultipleResult(true);
-
-/**
- * And this work
- */
-print $searchObject->fetchFew(3) . PHP_EOL;
-
-/**
- *
- * multipleResult flag off, use $this->setMultipleResult(true) and call this function again
- * {"item":"Donna MC Christensen, St. Croix ","note":"[5141:  Biographical information under Donna Marie Christian
- * Christensen. ]","line":57672}{"item":"Donna MC Christensen, St. Croix ","note":"[5141:
- * Biographical information under Donna Marie Christian Christensen. ]","line":57672}{"item":"Donna Christian-Green,
- * St. Croix ","note":"[5125:  Biographical information under Donna Marie Christian Christensen. ]","line":56939}%
- */
-
-/**
- * The following example, you can use the factory.
- */
-print SearchFactory::find(
-    __DIR__ . '/../src/robotomize/data/cities.json',
-    'vladvostk',
-    2,
-    false,
-    true,
-    1,
-    'dev'
-)->fetchOne()['name'] . PHP_EOL; // print Vladivostok
-
-print SearchFactory::find(
-    __DIR__ . '/../src/robotomize/data/cities.json',
-    'Mosco',
-    1,
-    true,
-    true,
-    1,
-    'dev'
-)->fetchOne() . PHP_EOL; // print
-
-print SearchFactory::find(
-    __DIR__ . '/../src/robotomize/data/biographical-directory-footnotes.json',
-    'Lincoln',
-    1,
-    true,
-    true,
-    1,
-    'dev'
-)->fetchFew(10) . PHP_EOL; // print
-
-$exp = new ExceptionWrap('dev');
-try {
-    /**
-     * I want to find some planes.
-     */
-    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
-    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
-    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
-
-    /**
-     * I want to find some airports =)
-     */
-    print SearchFactory::find(
-        'http://api.travelpayouts.com/data/airports.json ',
-        'Sheremetievo',
-        1,
-        false
-    )->fetchOne()['name'] . PHP_EOL;
-    print SearchFactory::find(
-        'http://api.travelpayouts.com/data/airports.json ',
-        'Domogedov',
-        1,
-        false
-    )->fetchOne()['en'] . PHP_EOL;
-    print SearchFactory::find(
-        'http://api.travelpayouts.com/data/airports.json ',
-        'Yugnosahalinsk',
-        1,
-        false
-    )->fetchOne()['en'] . PHP_EOL;
-    print SearchFactory::find(
-        'http://api.travelpayouts.com/data/airports.json ',
-        'Puklovo',
-        1,
-        false
-    )->fetchOne()['en'] . PHP_EOL;
-
-} catch (\Exception $ex) {
-    $exp->push($ex);
-    try {
-        $exp->saveToDisk($ex);
-    } catch (\Exception $e) {
-        print sprintf('Exception in %s, in %s line with message %s', $e->getFile(), $e->getLine(), $e->getMessage());
-    }
-}
-
-/**
- * {"code":"MOW","name":"Moscow",
- * "coordinates":{"lon":37.617633,"lat":55.755786},"time_zone":"Europe\/Moscow","name_translations":
- * {"de":"Moskau","en":"Moscow","zh-CN":"\u83ab\u65af\u79d1","tr":"Moscow",
- * "ru":"\u041c\u043e\u0441\u043a\u0432\u0430","it":"Mosca","es":"Mosc\u00fa","fr":"Moscou",
- * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
- */
-
+//print $searchObject->fetchOne() . PHP_EOL;
+//
+///**
+// * Output this
+// *
+// * {"item":"Donna Christian-Green, St. Croix ","note":"[5125:
+// * Biographical information under Donna Marie Christian Christensen. ]","line":56939}
+// *
+// */
+//
+///**
+// * Get exception
+// */
+//try {
+//    print $searchObject->fetchFew(3) . PHP_EOL;
+//} catch (\Exception $ex) {
+//    print $ex->getMessage() . PHP_EOL; // -> multipleResult flag off, use $this->setMultipleResult(true)
+//                            // and call this function again
+//}
+//
+//$searchObject->setMultipleResult(true);
+//
+///**
+// * And this work
+// */
+//print $searchObject->fetchFew(3) . PHP_EOL;
+//
+///**
+// *
+// * multipleResult flag off, use $this->setMultipleResult(true) and call this function again
+// * {"item":"Donna MC Christensen, St. Croix ","note":"[5141:  Biographical information under Donna Marie Christian
+// * Christensen. ]","line":57672}{"item":"Donna MC Christensen, St. Croix ","note":"[5141:
+// * Biographical information under Donna Marie Christian Christensen. ]","line":57672}{"item":"Donna Christian-Green,
+// * St. Croix ","note":"[5125:  Biographical information under Donna Marie Christian Christensen. ]","line":56939}%
+// */
+//
+///**
+// * The following example, you can use the factory.
+// */
+//print SearchFactory::find(
+//    __DIR__ . '/../src/robotomize/data/cities.json',
+//    'vladvostk',
+//    2,
+//    false,
+//    true,
+//    1,
+//    'dev'
+//)->fetchOne()['name'] . PHP_EOL; // print Vladivostok
+//
+//print SearchFactory::find(
+//    __DIR__ . '/../src/robotomize/data/cities.json',
+//    'Mosco',
+//    1,
+//    true,
+//    true,
+//    1,
+//    'dev'
+//)->fetchOne() . PHP_EOL; // print
+//
+//print SearchFactory::find(
+//    __DIR__ . '/../src/robotomize/data/biographical-directory-footnotes.json',
+//    'Lincoln',
+//    1,
+//    true,
+//    true,
+//    1,
+//    'dev'
+//)->fetchFew(10) . PHP_EOL; // print
+//
+//$exp = new ExceptionWrap('dev');
+//try {
+//    /**
+//     * I want to find some planes.
+//     */
+//    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Tu')->fetchOne() . PHP_EOL;
+//    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'Boing 7')->fetchOne() . PHP_EOL;
+//    print SearchFactory::find('http://api.travelpayouts.com/data/planes.json ', 'An24')->fetchOne() . PHP_EOL;
+//
+//    /**
+//     * I want to find some airports =)
+//     */
 //    print SearchFactory::find(
-//        '/Users/robotomize/playlist.json',
-//        'McFerrin',
+//        'http://api.travelpayouts.com/data/airports.json ',
+//        'Sheremetievo',
 //        1,
-//        true,
-//        false,
-//        'dev'
-//    )->fetchOne() . PHP_EOL;
+//        false
+//    )->fetchOne()['name'] . PHP_EOL;
+//    print SearchFactory::find(
+//        'http://api.travelpayouts.com/data/airports.json ',
+//        'Domogedov',
+//        1,
+//        false
+//    )->fetchOne()['en'] . PHP_EOL;
+//    print SearchFactory::find(
+//        'http://api.travelpayouts.com/data/airports.json ',
+//        'Yugnosahalinsk',
+//        1,
+//        false
+//    )->fetchOne()['en'] . PHP_EOL;
+//    print SearchFactory::find(
+//        'http://api.travelpayouts.com/data/airports.json ',
+//        'Puklovo',
+//        1,
+//        false
+//    )->fetchOne()['en'] . PHP_EOL;
+//
+//} catch (\Exception $ex) {
+//    $exp->push($ex);
+//    try {
+//        $exp->saveToDisk($ex);
+//    } catch (\Exception $e) {
+//        print sprintf('Exception in %s, in %s line with message %s', $e->getFile(), $e->getLine(), $e->getMessage());
+//    }
+//}
+//
+///**
+// * {"code":"MOW","name":"Moscow",
+// * "coordinates":{"lon":37.617633,"lat":55.755786},"time_zone":"Europe\/Moscow","name_translations":
+// * {"de":"Moskau","en":"Moscow","zh-CN":"\u83ab\u65af\u79d1","tr":"Moscow",
+// * "ru":"\u041c\u043e\u0441\u043a\u0432\u0430","it":"Mosca","es":"Mosc\u00fa","fr":"Moscou",
+// * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
+// */
+
+    print SearchFactory::find(
+        '/Users/robotomize/playlist.json',
+        'McFerrin',
+        1,
+        true,
+        false,
+        'dev'
+    )->fetchOne() . PHP_EOL;
 $time = \PHP_Timer::stop();
 print \PHP_Timer::secondsToTimeString($time);

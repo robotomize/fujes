@@ -9,11 +9,12 @@ namespace robotomize\Fujes;
 
 /**
  * Class SearchLevenshteinCompare
+ * Class based on Levenshtein compare 2 strings
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
  * @version 0.4.0.0
  */
-class SearchLevenshteinCompare extends AbstractSearch
+class SearchLevenshteinCompare implements ISearch
 {
     /**
      * @var array

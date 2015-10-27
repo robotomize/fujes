@@ -9,11 +9,12 @@ namespace robotomize\Fujes;
 
 /**
  * Class SearchSubstringCompare
+ * Class based on direct compare 2 strings and counting symbols
  * @package robotomize\Fujes
  * @author robotomize@gmail.com
  * @version 0.4.0.0
  */
-class SearchSubstringCompare extends AbstractSearch
+class SearchSubstringCompare implements ISearch
 {
     /**
      * @var array

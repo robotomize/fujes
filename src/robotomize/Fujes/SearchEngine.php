@@ -8,9 +8,10 @@
 namespace robotomize\Fujes;
 
 use robotomize\Exceptions\JsonNotRecognized;
+use robotomize\Utils\Json;
 use robotomize\Utils\Log;
 use robotomize\Utils\ExceptionWrap;
-use robotomize\Utils\Utils;
+use robotomize\Utils\Network;
 use robotomize\Exceptions\FileNotFoundException;
 
 /**
@@ -109,11 +110,6 @@ class SearchEngine
     private static $qualityDefault = 1;
 
     /**
-     * @var
-     */
-    private $utilsAggregate;
-
-    /**
      * Search engine constructor
      *
      * @param string $urlName          -> 'url like http://api.travelpayouts.com/data/cities.json'
@@ -192,27 +188,30 @@ class SearchEngine
     private $rangeSortedMatrix = 0;
 
     /**
+     * @var string
+     */
+    private $jsonErrorString = '';
+
+    /**
      * Parsing Json to array and that is all
      */
     private function parseJsonToArray()
     {
-        $this->utilsAggregate = new Utils();
-
         if (file_exists($this->urlName)) {
             $this->jsonData = file_get_contents($this->urlName);
         } else {
-            $this->jsonData = $this->utilsAggregate->curlWrap($this->urlName);
+            $this->jsonData = Network::curlWrap($this->urlName);
             if (trim($this->jsonData) == '') {
                 $this->exceptionObject->create('Input file not found');
                 throw new FileNotFoundException('Input file not found');
             }
         }
-
-        if ($this->isJsonTest($this->jsonData)) {
+        if (Json::isJsonTest($this->jsonData)) {
             $this->jsonTree = json_decode(trim($this->jsonData), true);
-        } else {
-            $this->exceptionObject->create('The data is not in JSON format');
-            throw new JsonNotRecognized('The data is not in JSON format');
+            $this->jsonErrorString = json_last_error_msg();
+            if (json_last_error() > 0) {
+                $this->jsonTree = Json::jsonDecode(trim($this->jsonData), true);
+            }
         }
     }
 
@@ -229,7 +228,7 @@ class SearchEngine
     /**
      * Function for preliminary passage through the tree.
      *
-     * @param SearchLevenshteinCompare $searchObject
+     * @param Search LevenshteinCompare $searchObject
      *
      * @return bool
      */
@@ -276,6 +275,10 @@ class SearchEngine
     public function run()
     {
         $this->parseJsonToArray();
+        if (0 === count($this->jsonTree)) {
+            $this->exceptionObject->create('The data is not in JSON format');
+            throw new JsonNotRecognized('The data is not in JSON format');
+        }
         $searchObj = new SearchLevenshteinCompare(
             $this->jsonTree,
             $this->matchString,
@@ -357,19 +360,7 @@ class SearchEngine
         return $needleBranch;
     }
 
-    /**
-     * If the flag is set, then encode the output array in json
-     *
-     * @return string|array
-     */
-    private function jsonEncode($needleBranch)
-    {
-        if (0 !== count($needleBranch)) {
-            return $this->jsonEncode ? json_encode($needleBranch) : $needleBranch;
-        } else {
-            return $this->jsonEncode ? json_encode($this->relevantTree) : $this->relevantTree;
-        }
-    }
+
 
     /**
      * @var string
@@ -390,7 +381,7 @@ class SearchEngine
     {
         $this->relevantTree = array_pop($this->sortedScoreMatrix);
         $branchArray = $this->createResultArray($this->relevantTree);
-        $result = $this->jsonEncode($branchArray);
+        $result = Json::jsonEncode($branchArray, $this->relevantTree, $this->jsonEncode);
         /**
          * Logging section
          */
@@ -453,11 +444,11 @@ class SearchEngine
             $this->relevantTree = array_pop($this->sortedScoreMatrix);
             $branchArray = $this->createResultArray($this->relevantTree);
             if ($this->jsonEncode === true) {
-                $this->moreJsonTreesOnString .= $this->jsonEncode($branchArray);
+                $this->moreJsonTreesOnString .= Json::jsonEncode($branchArray, $this->relevantTree, $this->jsonEncode);
             } else {
-                $this->moreRelevantJsonTreesOnArray[] = $this->jsonEncode($branchArray);
+                $this->moreRelevantJsonTreesOnArray[] =
+                    Json::jsonEncode($branchArray, $this->relevantTree, $this->jsonEncode);
             }
-
             $count--;
         }
     }
@@ -511,25 +502,7 @@ class SearchEngine
         return $this->jsonEncode ? $this->moreJsonTreesOnString : $this->moreRelevantJsonTreesOnArray;
     }
 
-    /**
-     * @param $string
-     *
-     * @return bool
-     */
-    private function isJsonTest($string)
-    {
-        $string = substr($string, 0, 255);
-        if (json_last_error() == JSON_ERROR_NONE) {
-            if (substr($string, 0, 1) === '[') {
-                return true;
-            } elseif (substr($string, 0, 1) === '{') {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * @return string
@@ -539,7 +512,7 @@ class SearchEngine
         if (0 === count($this->relevantTree)) {
             return '';
         } else {
-            return $this->jsonEncode($this->relevantTree);
+            return Json::jsonEncode($this->relevantTree, $this->relevantTree, $this->jsonEncode);
         }
     }
 

@@ -13,6 +13,9 @@ This is useful when your service accesses a different API.
 
 The basis of the algorithm is taken Levenshtein.
 
+[Look composer package here](https://packagist.org/packages/robotomize/fujes "")
+
+
 ## Requirements
 * php 5.6+
 
@@ -29,6 +32,7 @@ git clone https://github.com/robotomize/fujes.git
 #### Fast, minimal params, go
 ```php
 <?php
+
 use robotomize\Fujes\SearchFactory;
 
 /**
@@ -53,6 +57,7 @@ print SearchFactory::find(
 Grep is used for highlighting
 ```php
 <?php
+
     /**
      * I want to find some airports
      */
@@ -110,7 +115,7 @@ print SearchFactory::createSearchEngine(
     'master' 
 )->fetchFew(3) . PHP_EOL;
 ```
-### Documentation for Facttory && Facade
+### Documentation for Factory && Facade
 ## Parameters
 - path to json file '/go/to/path/name.json' or 'http://myapi/1.json'
 - search line. 'search string'
@@ -122,12 +127,13 @@ print SearchFactory::createSearchEngine(
 
 ## Usage with example.php
 #### Basic examples you can try that.
-TThese examples work if you do 
+These examples work if you do 
 * git clone https://github.com/robotomize/fujes.git
 * php -q src/example.php
 
 ```php
 <?php
+
 php -q src/example.php
 ```
 
@@ -194,6 +200,7 @@ try {
 
 ```php
 <?php
+
 $searchObject->setMultipleResult(true);
 
 /**
@@ -205,6 +212,7 @@ print $searchObject->fetchFew(3) . PHP_EOL;
 ### Factory
 ```php
 <?php
+
 /**
  * The following example, you can use the factory.
  */
