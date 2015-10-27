@@ -12,7 +12,7 @@ namespace robotomize\Fujes;
  * Class based on direct compare 2 strings and counting symbols
  * @package robotomize\Fujes
  * @author robotomize@gmail.com
- * @version 0.4.0.0
+ * @version 0.4.1.0
  */
 class SearchSubstringCompare implements ISearch
 {

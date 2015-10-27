@@ -31,7 +31,7 @@ use InvalidArgumentException;
  *
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.4.0.0
+ * @version 0.4.1.0
  *
  * @usage
  * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true, false, 1, 'master')
@@ -73,7 +73,7 @@ class SearchEngine
     /**
      * @var string
      */
-    private static $version = '0.4.0.0';
+    private static $version = '0.4.1.0';
 
     /**
      * On off debug features

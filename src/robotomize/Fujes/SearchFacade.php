@@ -15,7 +15,7 @@ namespace robotomize\Fujes;
  *
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.4.0.0
+ * @version 0.4.1.0
  */
 class SearchFacade
 {
@@ -58,7 +58,7 @@ class SearchFacade
     /**
      * @var string
      */
-    private static $version = '0.4.0.0';
+    private static $version = '0.4.1.0';
 
     /**
      * Facade constructor
