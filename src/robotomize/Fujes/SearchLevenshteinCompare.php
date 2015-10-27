@@ -12,7 +12,7 @@ namespace robotomize\Fujes;
  * Class based on Levenshtein compare 2 strings
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.4.0.0
+ * @version 0.4.1.0
  */
 class SearchLevenshteinCompare implements ISearch
 {
@@ -106,7 +106,7 @@ class SearchLevenshteinCompare implements ISearch
         foreach ($variants as $val) {
             $temp = $this->directCompareTwoString($val, $keys);
             if ($temp === true) {
-                $this->directMatch[] = [$keys, $sheet, 0, count($variants)];
+                $this->directMatch[] = [$keys, $sheet, 0];
                 return true;
             }
         }

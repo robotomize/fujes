@@ -9,11 +9,11 @@ namespace robotomize\Exceptions;
 use Exception;
 
 /**
- * Class FileNotFoundException
+ * Class MultipleResultException
  * @package robotomize\Exceptions
- * @author robotomize@gmail.com
+ * @author robotomzie@gmail.com
  */
-class FileNotFoundException extends Exception
+class MultipleResultException extends Exception
 {
 
 }

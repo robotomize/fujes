@@ -1,6 +1,6 @@
 {
   "name": "robotomize/fujes",
-  "version": "0.4.0.0",
+  "version": "0.4.1.0",
   "description": "Library for the fuzzy search to JSON document.",
   "keywords":     ["Fuzzy", "search", "find", "PHP", "JSON"],
   "homepage":     "https://github.com/robotomize/fujes",

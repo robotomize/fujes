@@ -13,6 +13,8 @@ use robotomize\Utils\Log;
 use robotomize\Utils\ExceptionWrap;
 use robotomize\Utils\Network;
 use robotomize\Exceptions\FileNotFoundException;
+use robotomize\Exceptions\MultipleResultException;
+use InvalidArgumentException;
 
 /**
  * Class PHP Fuzzy Json Search Engine
@@ -29,7 +31,7 @@ use robotomize\Exceptions\FileNotFoundException;
  *
  * @package robotomize\Fujes
  * @author  robotomize@gmail.com
- * @version 0.4.0.0
+ * @version 0.4.1.0
  *
  * @usage
  * $tt = new SearchEngine('http://uWtfAPI.json', 'Avengers', 1, true, false, 1, 'master')
@@ -71,7 +73,7 @@ class SearchEngine
     /**
      * @var string
      */
-    private static $version = '0.4.0.0';
+    private static $version = '0.4.1.0';
 
     /**
      * On off debug features
@@ -133,7 +135,7 @@ class SearchEngine
         $versionType = 'master'
     ) {
         if ($urlName == '' || $matchString == '') {
-            throw new \InvalidArgumentException;
+            throw new InvalidArgumentException;
         } else {
             $this->urlName = $urlName;
             $this->matchString = mb_strtolower($matchString);
@@ -467,7 +469,7 @@ class SearchEngine
              * If multiple flag off fetchOne faster
              */
             if ($count > 1) {
-                throw new \Exception(
+                throw new MultipleResultException(
                     'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
                 );
             } else {
@@ -493,7 +495,7 @@ class SearchEngine
     public function fetchAll()
     {
         if (!$this->multipleResult) {
-            throw new \Exception(
+            throw new MultipleResultException(
                 'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
             );
         }
