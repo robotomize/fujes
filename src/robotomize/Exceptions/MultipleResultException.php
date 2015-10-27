@@ -7,6 +7,7 @@
 namespace robotomize\Exceptions;
 
 use Exception;
+
 /**
  * Class MultipleResultException
  * @package robotomize\Exceptions

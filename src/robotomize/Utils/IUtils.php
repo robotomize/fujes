@@ -11,6 +11,7 @@ namespace robotomize\Utils;
  * @package robotomize\Utils
  * @author robotomize@gmail.com
  */
-interface IUtils {
-}
+interface IUtils
+{
 
+}
