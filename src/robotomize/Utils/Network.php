@@ -7,20 +7,19 @@
 namespace robotomize\Utils;
 
 /**
- * Class Utils - common utils
+ * Class Network
  * @package robotomize\Utils
- * @author robotomzie@gmail.com
+ * @author robotomize@gmail.com
  */
-class Utils
+class Network implements IUtils
 {
     /**
-     * Curl wrapper, check gziped connection
-     *
+     * Check gzip connection
      * @param string $url
      *
      * @return mixed
      */
-    public function curlWrap($url)
+    public static function curlWrap($url)
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
