@@ -13,6 +13,8 @@ use robotomize\Utils\Log;
 use robotomize\Utils\ExceptionWrap;
 use robotomize\Utils\Network;
 use robotomize\Exceptions\FileNotFoundException;
+use robotomize\Exceptions\MultipleResultException;
+use InvalidArgumentException;
 
 /**
  * Class PHP Fuzzy Json Search Engine
@@ -133,7 +135,7 @@ class SearchEngine
         $versionType = 'master'
     ) {
         if ($urlName == '' || $matchString == '') {
-            throw new \InvalidArgumentException;
+            throw new InvalidArgumentException;
         } else {
             $this->urlName = $urlName;
             $this->matchString = mb_strtolower($matchString);
@@ -467,7 +469,7 @@ class SearchEngine
              * If multiple flag off fetchOne faster
              */
             if ($count > 1) {
-                throw new \Exception(
+                throw new MultipleResultException(
                     'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
                 );
             } else {
@@ -493,7 +495,7 @@ class SearchEngine
     public function fetchAll()
     {
         if (!$this->multipleResult) {
-            throw new \Exception(
+            throw new MultipleResultException(
                 'multipleResult flag off, use $this->setMultipleResult(true) and call this function again'
             );
         }
