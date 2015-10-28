@@ -17,6 +17,7 @@ ini_set('memory_limit', '32000M');
 use robotomize\Fujes\SearchFacade;
 use robotomize\Fujes\SearchFactory;
 use robotomize\Utils\ExceptionWrap;
+use robotomize\Utils\Network;
 
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
@@ -169,12 +170,15 @@ try {
  * "th":"\u0e21\u0e2d\u0e2a\u0e42\u0e01"},"country_code":"RU"}
  */
 
+/**
+ * Oh God, bug. Cyclic recursion. In the process of repair.
+ */
 //    print SearchFactory::find(
-//        '/Users/robotomize/playlist.json',
-//        'McFerrin',
+//        'http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=42r4rbkmpe3bm7ny68n9qvzj&q=Iron&page_limit=5&page=1',
+//        'Iron',
 //        1,
 //        true,
-//        false,
+//        true,
 //        'dev'
 //    )->fetchOne() . PHP_EOL;
 $time = \PHP_Timer::stop();
