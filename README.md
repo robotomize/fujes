@@ -7,14 +7,17 @@
 [![License](https://poser.pugx.org/robotomize/fujes/license)](https://packagist.org/packages/robotomize/fujes)
 
 ## Why?
-Firstly, it is the implementation of the search on the format of the data in PHP. 
-You can look up information on the fly. You can look for anything to JSON files. 
+Firstly, it is the implementation of the search on the format of the data in PHP.
+You can look up information on the fly. You can look for anything to JSON files.
 This is useful when your service accesses a different API.
 
 The basis of the algorithm is taken Levenshtein.
 
 [Look composer package here](https://packagist.org/packages/robotomize/fujes "")
 
+## Bugs
+`Oh God, bug. Cyclic recursion. Bug operates 10% of cases.
+In the process of repair.`
 
 ## Requirements
 * php 5.6+
@@ -36,19 +39,19 @@ git clone https://github.com/robotomize/fujes.git
 use robotomize\Fujes\SearchFactory;
 
 /**
-* 
+*
 * I want to find some planes
 */
 print SearchFactory::find(
-    'http://api.travelpayouts.com/data/planes.json', 
+    'http://api.travelpayouts.com/data/planes.json',
     'Tu'
 )->fetchOne() . PHP_EOL;
 print SearchFactory::find(
-    'http://api.travelpayouts.com/data/planes.json', 
+    'http://api.travelpayouts.com/data/planes.json',
     'Boing 7'
 )->fetchOne() . PHP_EOL;
 print SearchFactory::find(
-    'http://api.travelpayouts.com/data/planes.json', 
+    'http://api.travelpayouts.com/data/planes.json',
     'An24'
 )->fetchOne() . PHP_EOL;
 ```
@@ -99,35 +102,40 @@ print SearchFactory::createSearchEngine(
     '/path/to/jsonurl',
     'What are searching for string',
     1,
-    true, 
-    false, 
+    true,
+    false,
     1,  
-    'master' 
+    'master'
 )->fetchOne() . PHP_EOL;  
 
 print SearchFactory::createSearchEngine(
     '/path/to/jsonurl',
     'What are searching for string',
     1,
-    true, 
-    true, 
+    true,
+    true,
     1,  
-    'master' 
+    'master'
 )->fetchFew(3) . PHP_EOL;
 ```
 ### Documentation for Factory && Facade
 ## Parameters
 - path to json file '/go/to/path/name.json' or 'http://myapi/1.json'
 - search line. 'search string'
-- the depth of the array. (1-..) . Nesting output array. You will use a value of 1 or 2 the most.
+- the depth of the array. (1-..) . Nesting output array.
+You will use a value of 1 or 2 the most.
 - Display in json or PHP array. Output back to JSON?(true, false)
-- Fetch one or more results. Get a set of results? Put true if you need to bring some results.
+- Fetch one or more results. Get a set of results?
+Put true if you need to bring some results.
 - Quality, 1 by default. @deprecated, but using. 1 default
-- Version, master or dev. If you put the dev logs will be written about the exclusion or successful and not successful recognition. Once you see all the exceptions that fall.
+- Version, master or dev.
+If you put the dev logs will be written about the exclusion or
+successful and not successful recognition.
+Once you see all the exceptions that fall.
 
 ## Usage with example.php
 #### Basic examples you can try that.
-These examples work if you do 
+These examples work if you do
 * git clone https://github.com/robotomize/fujes.git
 * php -q src/example.php
 
@@ -150,13 +158,13 @@ use robotomize\Fujes\SearchFactory;
  * Output encode to json
  */
 $options = [
-    'json_file_name' => __DIR__ . '/data/biographical-directory-footnotes.json', 
-    'search_string' => 'Christensen', 
-    'depth_into_array' => '1', 
+    'json_file_name' => __DIR__ . '/data/biographical-directory-footnotes.json',
+    'search_string' => 'Christensen',
+    'depth_into_array' => '1',
     'output_json' => true,
-    'multiple_result' => false, 
-    'search_quality' => 1, 
-    'version' => 'dev' 
+    'multiple_result' => false,
+    'search_quality' => 1,
+    'version' => 'dev'
 ];
 
 $searchObject = new SearchFacade(
@@ -174,11 +182,12 @@ print $searchObject->fetchOne();
  * Output this
  *
  * {"item":"Donna Christian-Green, St. Croix ","note":"[5125:
- * Biographical information under Donna Marie Christian Christensen. ]","line":56939}
+ * Biographical information under Donna Marie Christian Christensen. ]",
+ * "line":56939}
  */
 ```
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567879/e3c2ad78-7649-11e5-8282-3399410c6d30.png)](https://github.com/robotomize/fujes)
-#### Next, fetch few entries. 
+#### Next, fetch few entries.
 ```php
 <?php
 
@@ -188,7 +197,7 @@ print $searchObject->fetchOne();
 try {
     print $searchObject->fetchFew(3) . PHP_EOL;
 } catch (\Exception $ex) {
-    print $ex->getMessage() . PHP_EOL; 
+    print $ex->getMessage() . PHP_EOL;
     /**
     * Output this exception
     * multipleResult flag off, use $this->setMultipleResult(true)
@@ -250,11 +259,10 @@ print SearchFactory::createSearchEngine(
         true,
         1,
         'dev'
-    )->fetchFew(6) . PHP_EOL; 
+    )->fetchFew(6) . PHP_EOL;
 ```
 Grep is used for highlighting
 [![Pic1](https://cloud.githubusercontent.com/assets/1207984/10567892/1deb0220-764a-11e5-8088-071e2ea73822.png)](https://github.com/robotomize/fujes)
 
 ## License
 Satis is licensed under the MIT License - see the LICENSE file for details
-
