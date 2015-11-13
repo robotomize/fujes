@@ -15,10 +15,6 @@ The basis of the algorithm is taken Levenshtein.
 
 [Look composer package here](https://packagist.org/packages/robotomize/fujes "")
 
-## Bugs
-`Oh God, bug. Cyclic recursion. Bug operates 10% of cases.
-In the process of repair.`
-
 ## Requirements
 * php 5.6+
 
